@@ -1,0 +1,18 @@
+verificar que tiene la clase: hasClass(nombreClase)
+
+verificar cambios realizados en tags hijos: con el evento 'DOMSubtreeModified'
+
+realizar acción antes de hacer un click: el evento sería 'mousedown' que es antes de que se ejecute el click<
+
+'$(window).scrollTop()' => nos devuelve en pixeles el alto que tiene el navegador dependiendo del scroll
+
+verificar que tiene la clase: hasClass(nombreClase)
+
+verificar cambios realizados en tags hijos: con el evento 'DOMSubtreeModified'
+
+realizar acción antes de hacer un click: el evento sería 'mousedown' que es antes de que se ejecute el click<
+
+realizar que solamente un checkbox sea unicamente uno seleccionado => $(input:checkbox).click(function() { $(input:checkbox).not(this).prop('checked', false) })
+
+cargar un script => $.getScript('nombre_archivo.js', function() { ejecutar metodos dentro del script })
+

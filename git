@@ -1,0 +1,5 @@
+ver el log de los commits => git log
+
+ver las diferencias de las ramas actuales con la del commit deseado => git diff commit
+
+guardar las credenciales en git (para no usar email y password cuando se realiza un push) => git config --global credential.helper store

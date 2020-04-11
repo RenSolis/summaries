@@ -1,0 +1,301 @@
+tipos de software:
+    genérico: sistema que se vende al mercado abierto
+    personalizado: desarrollo específico para un cliente
+
+ciclo de vida del software:
+    detallar las especificaciones
+    diseñar la solución
+    codificar el algoritmo
+    probar el programa
+    documentar
+    mantener
+
+tendencias:
+    patrones de diseño (solución general de arquitectura)
+    armazones de software (frameworks)
+    líneas de productos de software (desarrollo para un conjunto de productos relacionados)
+    desarrollo ligero (metodologías ágiles)
+    desarrollo dirigido por modelos
+    arquitecturas orientadas a servicios (SOA - agentes de software interactuando)
+    ingeniería de software basada en componentes (ensamblado a partir de componentes existentes)
+    desarrollo colaborativo (ingeniería de software libre)
+
+RUP:
+
+    conjunto de actividades necesarias para transformar los requerimientos del usuario en el sistema de software, adoptando las mejores prácticas en el desarrollo moderno de software que son aplicables para un amplio rango de proyectos
+
+    productividad del equipo:
+        base de conocimiento
+        proceso
+        enfoque de como desarrollar software
+        UML
+
+    puestos:
+        administrador de base de datos
+        ingeniero de desempeño
+        líder del proyecto
+        analista
+        diseñador/desarrollador
+        pruebas
+        administrador de configuración
+
+    mejores prácticas:
+        administración de requerimientos
+            los requerimientos son fácilmente capturados y comunicados a través de diagramas
+        desarrollo iterativo de software
+            permite entender incrementalmente el problema a través de refinamientos sucesivos
+        modelamiento visual del software
+            captura la estructura y comportamiento de arquitecturas y componentes, mantiene la consistencia entre diseño y su implementación
+        verificación de la calidad de software
+            crea pruebas de validación para asegurar que se estén implementados apropiadamente
+        arquitectura basada en componentes
+            enfoque en el pronto desarollo de software de una arquitectura ejecutable robusta, siendo resistente al cambio mediante el uso de componentes
+        control de cambios de software
+            controlar, llevar un registro y monitorear cambios para permitir un desarrollo iterativo
+
+    rol: define las responsabilidades y el comportamiento de un individuo
+
+    actividad: es una unidad de trabajo que se asigna a un rol
+
+    artefacto: elementos de información productidos, modificados o usados por el proceso
+
+    estructura:
+        eje horizontal: representa el tiempo y el aspecto dinámico del proceso expresado en ciclos
+        eje vertical: el aspecto estático, actividades, artefactos, trabajadores, flujos de trabajo
+
+    fases:
+        inicio: define el alcance y objetivos del proyecto
+        elaboración: plan del proyecto, establecer una buena arquitectura
+        construcción: desarrollar incrementalmente el producto de software completo
+        transición: hacer la transición final del producto de software al usuario
+
+    flujos de trabajo:
+        modelo del negocio: entender los procesos de la empresa que son el contexto que se necesita para la propuesta informática
+        requerimientos: los desarrolladores y clientes deben acordar lo que el sistema debe hacer
+        diseño y analisis: identificación de los componentes, definición de patrones de diseño
+        implementación: probar los componentes desarrollados, integrar los componentes en un sistema ejecutable
+        pruebas: verificar la interacción entre los objetos
+        distribución y despliegue: producir un producto y hacerlo llegar a sus usuarios finales
+        administración de proyectos: gestiona el cumplimiento de objetivos, maneja riesgos
+        configuración y administración de cambios: forma de controlar los artefactos producidos por las personas que trabajan en el proyecto
+        administración del entorno: prepara el ambiente y herramientas de despliegue
+
+    vistas:
+        vistas de casos de uso: funcionalidad percibida por actores externos
+        vista lógica: la funcionalidad diseñada dentro del sistema
+        vista de componentes o implementación: organización de componentes de código
+        vista concurrente o de procesos: concurrencia del sistema
+        vista de despliegue: arquitectura física del sistema
+
+    determinar la situación de la empresa:
+        vision del negocio
+            objetivos de alto nivel del negocio
+        objetivos del negocio
+            describe el valor deseado
+        reglas del negocio
+            política o condición que debe ser satisfecha por el negocio
+        glosario de términos
+            acordar emplear una terminología de negocio común
+
+    casos de uso del negocio, diagrama de objetos del negocio y diagrama de dominio del negocio son la base para la estructuración por parte del negocio
+
+    requisitos:
+        los requisitos funcionales se obtienen mediante los casos de uso del negocio
+        propósitos:
+            establecer y mantener los acuerdos con los clientes y los stakeholders sobre lo que el sistema debe hacer
+            proporcionar a los desarrolladores un mejor entendimiento de los requisitos del sistema
+        problemas:
+            alcance: los usuarios detallan cosas innecesarias que están fuera del alcance del sistema
+            rendimiento: los usuarios no están completamente seguros de lo que necesitan
+            volatilidad: requerimientos cambian con el tiempo
+        actividades:
+            analizar el problema
+            entender las necesidades de los stakeholders
+            definir el sistema
+            administrar el alcance del sistema
+            refinar la definición del sistema
+            administrar cambios de requisitos
+
+    estimaciones:
+        medicion grado de personalizacion:
+            c = Ndp / (Ndp / Nsp), c = indice de personalizacion, Ndp = número de páginas dinámicas, Nsp = número de páginas estáticas
+        etapas:
+            puntos de caso de uso inajustables (UUCP): UUCP = TCF * EF
+                TCF = 0.6 + (0.01 * sumatoria(valor asignado * ponderacion del factor))
+                T1 Sistema distribuido -> 2
+                T2 Tiempo de respuesta -> 1
+                T3 Eficiencia del usuario final -> 1
+                T4 Procesamiento complejo interno -> 1
+                T5 Código que debe ser rehusado -> 1
+                T6 Facilidad de instalación -> 0.5
+                T7 Facilidad de uso -> 0.5
+                T8 Portabilidad -> 2
+                T9 Facilidad de cambio -> 1
+                T10 Concurrencia -> 1
+                T11 Características especiales de seguridad -> 1
+                T12 Proveer directiva acceso por nivel -> 1
+                T13 Facilidad de entrenamiento a usuarios -> 1
+
+                EF = 1.4 + (-0.03 * sumatoria(valor asignado * ponderación del factor))
+                F1 Familiaridad con el proceso de desarrollo -> 1.5
+                F2 Experiencia en el desarollo de aplicaciones -> 0.5
+                F3 Experiencia en orientado a objetos -> 1
+                F4 Capacidad del líder del equipo -> 0.5
+                F5 Motivación -> 1
+                F6 Establecer los requerimientos -> 2
+                F7 Trabaja a tiempo parcial -> -1
+                F8 Deficiencias en el manejo de lenguajes de programación -> -1
+
+            puntos de caso de uso ajustados (UCP): UCP = (PA + PCU) * UUCP
+                PA = PAS + PAP + PAC, PAS,PAP,PAC = número de actores posibles por complejidad * ponderación del factor
+                Simple interfaz con otro sistema -> 1
+                Promedio interfaz con un protocolo -> 2
+                Complejo interfaz gráfica -> 3
+
+                PCU = PCUS + PCUP + PCUC, PCUS,PCUP,PCUC = número de caso de usos por complejidad * ponderación del factor
+                Simple menos de 3 transacciones -> 5
+                Promedio entre 4 y 7 transacciones -> 10
+                Complejo más de 7 transacciones -> 15
+
+            esfuerzo horas-hombre: TEP = (((FactoresHorasPersonas) * UCP / 48) + FC) / NPE
+                FC: factor de contingencia (semanas)
+                NPE = número de personas por equipo
+                Factores Horas Personas = promedio(F1 hasta F6) + promedio(F7 hasta F8)
+
+                si FHP <= 2 significa 20 horas/persona
+                si FHP entre 3 y 4 significa 28 horas/persona
+                si FHP > 5 significa replantear el proyecto
+
+    diseño de interfaces:
+        principios:
+            familiaridad del usuario: utilizar términos familiares para el usuario
+            consistencia: las operaciones comparables se activan de la misma forma
+            mínima sorpresa: el comportamiento del sistema no debe sorprender al usuario
+            recuperabilidad: permitir a los usuarios recuperarse de los errores
+            guía del usuario: proveer retroalimentación al usuario
+            diversidad de usuarios: interacción apropiada para diferentes tipos de usuarios
+        prototipos:
+            estáticos: no permiten la alteración de sus componentes, sirve para identificar y resolver problemas de diseño
+            dinámicos: incluyen la validación del diseño del sistema en términos de requerimientos no funcionales, ejemplo: performance
+            robustos: completos en las características dinámicas de la interfaz, ejemplo: mensajes de error
+        interacción del usuario:
+            manipulación directa: interacción directa con los objetos de la pantalla
+            selección de menús: usuario selecciona un comando de una lista de posibilidades
+            llenado de formularios: introducción de datos sencilla en los campos de un formulario
+            lenguaje de comandos: usuarios emiten un comando especial para indicar al sistema que hacer
+            lenguaje natural: usuario emite comandos en lenguaje natural
+        color: no más de 4 o 5 en una ventana y no más de 7 en total
+
+    análisis orientado a objetos:
+        participantes:
+            arquitecto: arquitectura del modelo de análisis
+            ingeniero de casos de uso: responde a las realizaciones de casos de uso
+            ingeniero de componentes: define las relaciones entre los paquetes del análisis
+        artefactos:
+            modelo de análisis: contiene a clases de análisis y sus objetos organizados en paquetes que colaboran (vista interna del sistema)
+            paquetes: contienen las clases de análisis para organizar
+            clases de analisis: se centra en los requisitos funcionales
+                interfaz
+                control
+                entidad
+        pasos:
+            identificación de los paquetes de análisis: agrupa los casos de uso en paquetes
+            definición de las dependencias entre los paquetes de análisis: conseguir paquetes relativamente independientes
+            identificación de clases de entidad obvias por cada paquete de análisis: identificar las entidades
+            identificación de mecanismos de análisis: persistencia, comunicación, concurrencia transacciones, etc
+            identificación de las características fundamentales de un requisito funcional: número de objetos persistentes, periodo de persistencia, etc
+
+    modelo de diseño:
+        diagrama de secuencias
+        diagrama de componentes
+        diagrama de despliegue
+
+    Diagrama de secuencias:
+        son útiles para mostrar el orden cronológico de ejecución, indicando qué objetos se comunican con qué otros y los mensajes que disparan esas comunicaciones
+        la línea de vida es manejada por actor, interfaz, control y entidad
+        mensajes:
+            completo: transferencia del control de un objeto a otro (con retorno implícito)
+            síncrono: el objeto espera respuesta antes de continuar con su trabajo
+            asíncrono: el objeto no espera respuesta para continuar con su trabajo
+            self: es una llamada de recursividad de una operación
+            perdidos: son los que llegaron a un destino que no se muestra en el diagrama actual
+            encontrados: llegan de un remitente no reconocido en el diagrama actual
+        ocurrencia de la ejecución: es un rectángulo fino al último que denota la ocurrencia de ejecución
+        restricción de tiempo y duración: al poner un tiempo en que se realizará una acción la línea se inclina y se indica el tiempo
+        fragmentos combinados: es una o más secuencias de procesos ejecutadas bajo circunstancias nombradas específicas
+        puerta: es un punto de conexión para conectar un mensaje dentro de un fragmento con un mensaje fuera del fragmento
+        descomposición en parte: Un objeto puede tener más de una línea de vida que viene de ésta
+        continuaciones o invariantes de estado: es una restricción ubicada en una línea de vida que debe ser verdadera en el tiempo de ejecución
+
+    diagrama de componentes:
+        componente: es una parte física de un sistema, es una unidad autónoma que proveee una interfaz, se agrupan en paquetes
+        existen relaciones de dependencia:
+            generalización
+            asociación
+            composición
+            realización
+        tipos de componentes:
+            executable: componente que se puede ejecutar
+            library: biblioteca de objetos estáticos o dinámicos
+            table: componentes que representan una tabla de base de datos
+            file: componente que representa un documento con código fuente o datos
+            document: representa un documento
+        interfaces: lazo de unión entre componentes
+        subsistema: componente formado por otros componentes
+
+    diagrama de despliegue:
+        roles:
+            arquitecto: responsable de implementación de acuerdo a lo descrito en el modelo de diseño
+            ingeniero de componentes: define y mantiene uno o varios componentes y subsistemas
+            integrador de sistemas: planifica las iteraciones de construcción
+        nodo: representa un dispositivo sobre el cual se despliegan los componentes
+        artefacto: producto del proceso de software, siempre debe ser documentado
+        asociación: una ruta de comunicación entre nodos
+        nodo como contenedor: un nodo puede contener otros elementos, como componentes o artefactos
+
+    para el mapeo de tablas de clases, cuando es uno se direcciona hacia donde el que no tiene el FK y cuando son de muchos a muchos se direcciona hacia las que no son intermediarias
+
+    pasos para la construccion del diagrama de comunicación:
+
+        crear la realización del analisis de casos de uso: que clases construir a partir del caso de uso
+        encontrar clases de análisis: identificar clases que participan en cada caso de uso
+        crear el diagrama de clases de análisis: representar las clases de análisis
+        crear diagramas de comunicación: la interacción dinamica entre los objetos
+
+    trabajadores en Analisis orientado a objetos:
+
+        arquitect, ing de componentes, ing de casos de uso
+
+    diferencias entre modelo de casos de uso vs modelo de analisis
+
+        CU es escrito en un lenguaje para el cliente, y el de analisis para el de desarrolladores, el CU se estructura por casos de uso y el de analisis con paquetes y clases estereotipados
+
+    actividades para realzar el modelo de análisis:
+
+        análisis de la arquitectura (identificar paquetes y clases)
+        analisis de casos de uso (objetos para el CU)
+        analisis de clases (identificar atributos)
+        analisis de paquetes (identificar relaciones)
+
+    analisis de la arquitectura
+
+        identificacion de los paquetes de analisis
+        definicion de las dependencias
+        identificacion de clases de entidad por cada paquete
+        identificacion de mecanismos de analisis
+        identificacion de las caracteristicas fundamentales de un requisito especial
+
+    artefactos del diseño orientado a objetos
+
+        modelo de diseño
+        diagramas de secuencia y de clases
+        diagrama de componentes
+        modelo de despliegue
+
+    modelo de analisis vs modelo de diseño
+
+        AOO es menos formal y el DOO es mas formal, el AOO es conceptual y el DOO es concreto, AOO define al sistema y DOO da forma al sistema
+
+//
+
+dependency injection => trata de volver más manejable y testeable el código al crear una forma en que la funcionalidad del servicio pueda variar

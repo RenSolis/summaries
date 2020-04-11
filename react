@@ -1,0 +1,5 @@
+tiene una arquitectura basada en componentes:
+    cada componente conserva su propio estado y propiedades
+    cada componente se encarga de una función independiente
+    las vistas se construyen con múltiples componentes
+    el template de la vista viene con el componente

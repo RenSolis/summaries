@@ -1,0 +1,11 @@
+para ejecutar con electron los archivos => npx electron ., el . indica que se ejecturá el package.json al mismo nivel
+
+obtener la base de app => require { app } = require('electron'), esta constante tiene todas las funciones y métodos de electron
+
+para cargar la aplicación de electron => app.on('ready', () => { logica aplicacion })
+
+para poder crear una ventana => const { app, BrowserWindow } = require('electron'), y agregarlo dentro de la función ready
+
+cargar un archivo para la ventana => objeto_browser_window.load(path_file)
+
+poder utilizar la API de Node => objeto_browser_window = new BrowserWindow({ webPreferences: { nodeIntegration: true } })

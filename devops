@@ -1,0 +1,176 @@
+====================================================================================================
+
+AMAZON WEB SERVICES
+
+servicios =>
+  - compute =>
+    - elastic beanstalk => servicio para manejar los deploys y escalas en la aplicación web
+      - se pueden manejar el provisionamiento, load balancing, auto scaling y application health monitoring
+    - EC2 => son un conjunto de máquinas virtuales para desarrollo, calidad o producción
+    - aws lambda => permite ejecutar código sin provisionar o manejar un servidor (FaaS)
+  - storage =>
+  - database =>
+  - migration & transfer =>
+  - networking & content delivery =>
+    - route 53 => es un servicio DNS web escalable, también cumple con IPv6
+  - developer tools =>
+  - management tools =>
+    - cloudwatch => servicio de monitoreo de las aplicaciones para cambias de rendimiento, optimizar el uso de un recurso y lograr vista unificada del estado de las operaciones
+  - media services =>
+  - machine learning =>
+  - analytics =>
+  - security, identity & compliance =>
+    - certificate manager => servicio para manejar, provisionar e implementar certificados SSL/TLS públicos y privados
+  - mobile services =>
+  - AR & VR =>
+  - application integration =>
+    - step functions => permite coordinar múltiples servicios AWS en flujos de trabajo sin servidor para poder crear y actualizar aplicaciones rápidamente
+  - customer engagement =>
+  - business productivity =>
+  - desktop & app streaming =>
+  - internet of things =>
+  - game development =>
+
+instances => son servidores de la aplicación
+
+auto scaling => permite indicar hasta que límite se podrá escalar la aplicación (CPU, RAM, ...)
+
+EC2 =>
+  - instancias => máquinas virtuales con diversas opciones de sistema operativo, cpu, ram, ect.
+  - seguridad => generación de llaves únicas para poder conectarse a la máquina mediante Linux o Windows de forma segura
+  - espacio => diversas opciones de espacio en disco duro
+  - redundancia => se pueden poner distintas copias en diferentes zona geográficas
+  - firewall => controlar de manera fina como conectarse a la máquina y por cuales puertos
+  - respaldos => se puede hacer un respaldo de toda la máquina
+  - escalable => se puede incrementar/decrementar los recursos de la máquina
+  - migración de snapshot => se puede hacer una copia de la máquina para utilizarlo en otras regiones
+
+aws lambda =>
+  - event source => son eventos que harán que se ejecute el lambda
+    - cambios en el estado de la data
+    - requests a endpoints
+    - cambios en los recursos del estado
+  - limitaciones => tiene que ser disparado por algo (ejecutado) y solo se puede ejecutar por 15 minutos
+
+modelos de informática en la nube =>
+  - Infrastructure as a Service (IaaS) => contiene bloques de creación fundamentales para la TI en la nube, permite acceder a las características de conexión de red, a los equipos (virtuales o en software dedicado) y el espacio de almacenamiento de datos
+    - ejemplos => Amazon EC2, Digital Ocean, Azure Virtual Machine, etc.
+  - Platform as a Service (PaaS) => administran la infraestructura subyacente (hardware y sistemas operativos) permitiendo centrarse en la implementación y administración de las aplicaciones
+    - ejemplos => The Heroku Platform, OpenShift, etc.
+  - Software as a Service (SaaS) => proporciona un producto completo que el proveedor del servicio ejecuta y administra, el encargado únicamente se tiene que preocupar en como usar el software
+  - Backend as a Service (BaaS) => es un modelo para proporcionar a los desarrolladores web y mobile para vincular las aplicaciones a diferentes servicios para poder manejar los datos del backend, por ejemplo Firebase
+
+modelos de implementación informática en la nube =>
+  - nube => implementada totalmente en la nube
+  - solución híbrida => es una manera de conectar la infraestructura y las aplicaciones entre los recursos basados en la nube y los recursos existentes fuera de esta
+  - implementación local (nube privada) => administración de recursos y virtualización que ofrece recursos dedicados, no posee los beneficios de la informática en la nube
+
+=======================================
+ANOTACIONES AWS GIRL
+  amazon sagemaker
+    https://www.google.com/search?client=ubuntu&channel=fs&q=amazon+sagemaker&ie=utf-8&oe=utf-8
+  aws lambda layer
+    https://www.google.com/search?client=ubuntu&channel=fs&q=api+gateway&ie=utf-8&oe=utf-8
+  https://github.com/jlhood/tweet-sentiment
+
+primer millon de lambda gratuito
+
+========================================
+pasar infraestructura a un solo papel(documento)
+  cloudformation
+    https://aws.amazon.com/es/cloudformation/
+
+console => clouformation => CFN Template => Stack creado
+ansible => CFN Template => Stack creado
+
+ver en events del stack para ver como ha sido creado
+
+https://www.google.com/search?client=ubuntu&channel=fs&q=terraform&ie=utf-8&oe=utf-8
+
+environment instanci applicaiton numero_build
+
+https://github.com/cherrera91/cloudformation
+https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-importvalue.html
+
+========================================
+optimizacion de costos
+https://d1.awsstatic.com/whitepapers/architecture/AWS-Cost-Optimization-Pillar.pdf
+trusted advisor
+  optimizacion de costos, rendimiento, seguridad, tolerancia a fallas, limites de servicios
+cost explorer
+  reportes de cobertura de instancias reveladas
+instancia reservada => suscripcion (cupon de descuento aplicada en forma horaria)
+plan de ahorro => modelo de precios flexible para reducir hasta un 72% de los costos de computo
+
+=============================
+machine learning en aws
+
+https://aws.amazon.com/es/deepracer/
+
+https://es.wikipedia.org/wiki/Aprendizaje_por_refuerzo
+
+reinforcement learning => es un tipo de aprendizaje automático
+
+deeprace usa PPO
+
+aws robomaker https://aws.amazon.com/es/robomaker/
+
+===========================
+kubernetes en aws
+https://aws.amazon.com/es/fargate/
+
+
+
+
+==================================================================
+SERVERLESS
+
+serverless: evolución del diseño de aplicaciones, no servidores a administrar, escalabilidad automatica, pago por uso, alta disponibilidad por defecto
+arquitectura monolítica: todos los componentes de software se encuentran acopladas dentro de una aplicación (frontend, backend, etc)
+arquitectura de microservicios => componentes desacoplados
+aws trusted advisor
+aws elastic beanstalk
+aws opsworks
+ec2 auto-recovering
+ec2 containers service
+aplicación serverless =>
+  fuente del evento (cambios de estados en los datos, peticiones a endpoints, cambios en recursos) => lambda (tambien se pueden usar otros servicios) => acción (base de datos, nube)
+lambda => servicio de computo detonado por eventos, sin servidores (microservicio sin servidor)
+  componentes =>
+    - función
+    - evento externo
+    - servicio aws lambda
+    - ambiente de red para la función
+  tiempo de ejecucion =>
+    - sincrono, API gateway
+    - asincrono, S3 o aws sns
+    - basado en evento, cambios como en DynamoDB, amazon kinesis
+  ambiente de red de la funcion =>
+    - default, ambiente de red
+    - customer vcp
+  casos de uso lambda =>
+    - web
+    - backend
+    - procesamiento de datos
+    - chatbots
+    - amazon alexa
+    - automatizacion
+  unicidad =>
+    - abstraccion a nivel codigo/funcion
+    - modelo de seguridad (IAM, VPC)
+    - modelo de precio, se escribe una logica y se toma el tiempo ejecutando todas las lineas de codigo, ese tiempo de ejecucion es lo que cobra
+    - comunidad
+    - integracion con los servicios de aws
+    - escalabilidad
+    - ejecucion basada en eventos
+  solo puede guardar en bd, cache o s3 porque es stateless
+rol IAM => se indican las politicas y roles
+cold start
+api gateway =>
+  crea un api unificada
+  proteccion ddos y throttling para backend
+  autenticacion y autorizacion en los requests para el backend
+  throttle , meter and monetize api uso por 3rd party-developers
+todo el frontend dentro de los assets
+aws step functions => orquestacion de como estará organizado el serverless
+serverless framework

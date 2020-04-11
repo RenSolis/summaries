@@ -1,0 +1,244 @@
+docker toolbox => es para utilizar en ordenadores antiguos, es una máquina virtual que nos inicia un entorno linux
+
+image => es la aplicación que queremos ejecutar
+
+container => es una instancia de la image corriendo como un proceso y se pueden tener muchos containers ejecutando la misma image
+
+usar docker con vpn => primero tenemos que hacer la configuración con docker-compose, donde indicamos el servicio, donde se definira el container_name, cap_add, image, ports, volumes, y
+  tambien indicar los volumes
+  - docker-compose run --rm openvpn ovpn_getconfig -u udp://ruta, para configurar el openvpn a la direccion que se le está dando
+  - docker-compose run --rm openvpn ovpn_initpki, para configurar por el SSL
+  - docker-compose run --rm openvpn easyrsa build-client-full nombre nopass, para crear un usuario
+  - docker-compose up -d openvpn, para ejecutar el servicio
+  - docker-compose run --rm openvpn ovpn_getclient nombre > nombre.ovpn, para guardar la configuración del usuario dentro de un archivo
+
+obtener la versión de docker => docker version
+
+mostrar más detalles sobre docker engine => docker info
+
+ejecutar nginx => docker container run --publish puerto_local:80 nginx
+	- ejecutarlo en background => docker container run --publish puerto_host:80 --detach nginx ó docker container run --publish puerto_local:80 -d nginx
+	- abrir su bash => docker container run -it nginx bash
+
+ejecutar ubuntu
+	- como ubuntu utiliza por defecto bash como su CMD no es necesario indicarlo => docker container run -it ubuntu
+
+indicar el puerto determinado => docker container run --publish puerto_host:puerto_private_network_listening image ó docker container run -p puerto_host:puerto_private_network_listening image
+
+ver los containers que se están ejecutando:
+	- mostrar los containers ejecutandose => docker container ls
+	- mostrar todos los containers (ejecutandose y detenidos) => dockert container ls -a
+
+detener container ejecutandose => docker container stop CONTAINER_ID
+
+indicar un nombre determinado para el container => docker container run --publish puerto_local:80 --name nombre_container nginx
+
+usar versión especifica para la imagen (al usar, docker instala directamente la última disponible) => docker container run --publish puerto_local:80 nginx:version
+
+volver a ejecutar un container => docker container start container_name
+	- añadir STDOUT/STDERR y demás señales => docker container start -a container_name
+	- mantener el STDIN => docker container start -i container_name
+
+secuencia cuando se ejecuta docker container run:
+	- observa si la image existe localmente en el cache
+	- observa en un image repository (por defecto Docker Hub)
+	- descarga la última versión
+	- crea un nuevo container basado en la image preparado para iniciar
+	- nos proporciona una ip en una red privada dentro del docker engine
+	- abre el puerto 80 del host y reenvía el puerto 80 en el container
+	- empieza el container usando el CMD en la image DockerFile
+
+mostrar los logs de un determinado container => docker container logs nombre_container
+  - mantener que siga observando el log => docker container logs -f nombre_container
+
+ver los procesos del container => docker container top nombre_container
+
+remover uno o más containers:
+	- remover containers detenidos => docker container rm CONTAINER_ID
+	- remover containers que se estan ejecutando => docker container rm -f CONTAINER_ID
+
+diferencias docker run y start =>
+	- run => siempre empieza un nuevo container
+	- start => empieza un container ya existente detenido
+
+agregar variables de entorno a los containers => docker container run image --env VARIABLE=valor ó docker container run image -e VARIABLE=valor
+
+obtener los detalles de la configuración (metadata) de un container => docker container inspect nombre_container
+	aplicar un formato => docker container inspect --format '{{ .NetworkSettings.IPAddress }}' nombre_container
+
+obtener las estadísticas de rendimiento de los containers:
+	- todos los containers => docker container stats
+	- un solo container => docker container stats nombre_container
+
+abrir la terminal de un container => docker container run -t nombre_container bash
+
+mantener el STDIN abierto para recibir entradas al container => docker container run -i nombre_container bash
+
+ejecutar un container de manera interactiva => docker container run -it nombre_container bash
+
+ejecutar un proceso adicional en el container que se ejecuta => docker container exec -it container_name comando
+
+descargar una image => docker pull image
+
+listar todas las image => docker image ls
+
+obtener el puerto del container => docker container port nombre_container
+
+mostrar las redes => docker network ls
+
+la network bridge es la virtual network por defecto de docker
+la network host gana rendimiento al omitir redes virtuales pero sacrifica la seguridad del model container, la ip propia
+la network none remueve eth0 o la red por defecto principal y solo te deja con la interfaz de localhost del container
+
+network driver => construido o extensiones tercerizadas que nos da características de red virtual
+
+inspeccionar una red => docker network inspect network_name
+
+crear una nueva network => docker network create nombre_network
+	seleccionar el driver => dockert network create nombre_network --driver nombre_driver
+
+añadir una virtual network a un container (le crea una NIC) => docker network connect nombre_network nombre_container
+
+eliminar una virtual network de un container (remueve el NIC) => docker network disconnect nombre_network nombre_container nombre_network nombre_container
+
+asignar una network a nuestro nuevo container => docker container run --network network_name container_name o docker container run --net network_name container_name
+
+olvidar ip's => ip's estaticas y usando ip's para hablar con containers es un anti-pattern, lo mejor es evitarlos
+
+docker daemon => es un servicio que se ejecuta en el host del sistema operativo
+
+docker dns => docker daemon tiene un servidor DNS construido que los containers usan por defecto
+
+dns default names => docker por defecto determina el nombre del host al nombre de los contenedores pero tambien puede establecerse alias (los containers cuando se hace inspect al network)
+
+ejecutar un container y cuando se termine la ejecución se elimine => docker run container --rm nombre_container
+
+agregar un alias al momento de crear un container => docker container run --net-alias alias nombre_container ó docker container run --network-alias alias nombre_container
+	varios containers pueden tener el mismo alias, asi nos permite tener múltiples IP's respondiendo para un DNS
+
+docker layers => son ciertas instrucciones que se realizan en el Dockerfile
+	- crean un layer => RUN, COPY, ADD, afectando el tamaño de la imagen
+	- crean un intermediate layer => todas las instrucciones sobrantes, son intermediates layers porque no afectan el tamaño de la imagen
+
+mostrar los layers de los cambios hechos en la image => docker image history nombre_imagen:version
+
+obtener la información de la imagen => docker image inspect nombre_imagen
+
+asignar tags(versiones) a una image => docker image tag nombre_image nombre_image:nombre_tag
+
+latest tag => es el tag por defecto pero los propietarios de la imagen deberían asignarlo como la última versión estable de la imagen
+
+subir los cambios de layers a un registro de image => docker image push nombre_image
+
+iniciar sesión => docker login <server>, opcionalmente el server por si no queremos iniciar sesión en docker hub
+
+seguridad de autenticación => docker guarda en nuestra máquina la key de auth para el login en el archivo .docker/config.json
+
+para cerrar sesión => docker logout
+
+package manager => como apt o yum es una de las razones para construir containers para Debian, Ubuntu, Fedora o CentOS
+
+Dockerfile:
+  - indicar que imagen usaremos => FROM image:tag
+  - indicar variables de entorno => ENV VARIABLE valor
+  - indicar comandos que se ejecutarán en un layer => RUN comandos && ...
+  - indicar que puertos serán expuestos a escucha => EXPOSE puerto puerto ...
+  - WORKDIR /path => indicamos que directorio será el principal donde se tendrán los archivos, para evitar hacer cambios de archivos
+  - COPY archivo archivo_para_image
+  - proporcionar valores predeterminados al contenedor (ejecutables) => CMD ['comando', 'parametro', ...], es el último comando que se debe ejecutar cada vez que se lanza un nuevo
+    container de la image o se reinicia un container
+
+construir una imagen a partir del Dockerfile:
+  - indicar el tag => docker image build -t nombre_imagen .
+  - indicar el path del Dockerfile => docker image build -f path/Dockerfile
+
+ver la cantidad de espacio que utiliza Docker => docker system df
+
+limpiar las imagenes colgadas (que no se usan en ningun contenedor) => docker image prune
+
+limpiar todas las imagenes que no se usen => docker image prune -a
+
+limpiar toda la data que no usa => docker system prune
+
+volumes => son una opción de configuración de un container que crea un espacio fuera de la union del sistema de archivos del container (UFS)
+
+bind mounts => compartir un directorio de nuestro host (local) a nuestro container, no se puede usar en un Dockerfile
+  - para crear un bind mount => docker container run [opciones] -v $(pwd):/directorio_container/ nombre_image
+
+limpiar los volumenes que no son utilizados => docker volume prune
+
+obtener todos los volumes => docker volume ls
+
+ver detalles de volume => docker volume inspect nombre_volume
+
+crear un named volume para los containers => docker container run [opciones] -v nombre_volume:direccion_destino nombre_image
+
+crear volumes personalizados => docker volume create --driver tipo_drive nombre_volume
+
+docker compose: configura las relaciones entre los contenedores, guarda nuestra configuración de los contenedores en un archivo
+  se encuentra separado por 2 cosas relacionadas entre sí:
+    - yaml file => describe nuestra solución con los containers, networks y volumes
+    - CLI docker compose para uso local dev/test automatización con los yaml files, no es muy bueno usar en producción
+
+especificar un nombre diferente para el docker compose => docker compose -f nombre_archivo
+
+docker-compose yml file:
+  - version => si no se especifica la versión se asume que es la v1
+  - services => son los containers que se utilizaran
+    - servicename => es un nombre amigable para el servicio
+      - image => opcional si se usa build
+      - build =>
+        - content: ubicacion del archivo
+        - dockerfile: nombre del dockerfile
+        si no tiene un nombre de dockerfile distinto y se encuentra en el mismo directorio entonces solamente => build: .
+      - command => opcional, reemplaza el CMD especificado en la imagen
+      - enviroment => opcional es como el -e de los containers
+      - volumes => opcional es como el -v de los containers
+  - volumes => opcional, es igual que crear volumes
+  - networks => opcional, es igual que crear una network
+  - depends_on => opcional, es para indicar de que otros servicios dependerá para su funcionamiento
+
+configurar los volumes/networks y empezar todos los container => docker-compose up
+  - en background => docker-compose up -d
+
+detener todos los containers y remover los containers/volumes/networks => docker-compose down
+  - eliminando los volumes => docker-compose down -v
+  - eliminando las imagenes => docker-compose down --rmi valor
+    - eliminar todas las imagenes => docker-compose down --rmi all
+    - eliminar las imagenes que no tienen tag => docker-compose down --rmi local
+
+ver los logs del compose => docker-compose logs
+
+ver los containers que están activos => docker-compose ps
+
+ver los procesos activos => docker-compose top
+
+raft consensus => es la forma en como manejar el agrupamiento de los nodos con el algoritmo Raft Consensus para asegurarnos que todos los nodos se estan guardando el mismo estado consistente
+
+iniciar swarm => docker swarm init
+
+ver todos los nodos dentro del swarm => docker node ls
+
+manejar el servicio de swarm (misma funcionalidad que docker run) => docker service
+  - crear un service => docker service create nombre_image commands
+    - indicar el número de replicas => docker service create --replicas cantidad nombre_image command
+  - obtener más información del service junto a sus replicas => docker service ps nombre_service
+  - actualizar el service => docker service update ID_SERVICE
+    - actualizar las replicas => docker service update ID_SERVICE --replicas cantidad_replicas
+    - actualizar un nodo para que tenga privilegios => docker service update --role manager nombre_service
+  - remover el service => docker service rm nombre_service
+  - añadir un node como manager directamente => docker service join-token manager, y el resultado se pega en el ssh del otro node
+
+actualizar docker-machine existente => docker-machine upgrade nombre_vm
+
+crear una máquina virtual => docker-machine create nombre_maquina
+
+entrar con ssh a la máquina => docker-machine ssh nombre_maquina
+
+ver las variables de entorno de la máquina => docker-machine env nombre_maquina
+
+eliminar una máquina virtual => docker-machine kill nombre_maquina
+
+remover maquina virtual => docker-machine rm nombre_maquina
+
+en swarm solo un nodo puede tener el privilegio para ver los demás nodos, los demás no podrán realizar el docker node ls

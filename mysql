@@ -1,0 +1,266 @@
+evento => tarea que se ejecuta de manera automática para el momento en que este programado, o también conocidos como cron jobs
+  - modificar el sistema para utilizar eventos => SET GLOBAL event_scheduler = ON;, poner en OFF si se quiere detener todos los eventos
+  - crear un evento => CREATE EVENT nombre_evento ON SCHEDULE AT tiempo DO consulta;, si se ejecuta más de una sentencia sql entonces después del DO debe haber un BEGIN
+  - para eliminar un evento => DROP EVENT nombre_evento;
+  - mostrar los eventos actuales de la base de datos => SHOW events;
+  - cada vez que el evento haya sido expirado se eliminará automáticamente, para evitar eso se debe agregar después del tiempo => ON COMPLETION PRESERVE
+  - crear eventos periodicos: CREATE EVENT nombre_evento ON SCHEDULE EVERY INTERVAL tiempo STARTS 'yyyy-mm-dd hh:mm:ss' ENDS 'yyyy-mm-dd hh:mm:ss' DO funciones;, el ENDS es opcional
+  - editar un evento => ALTER EVENT nombre_evento DISABLE/ENABLE;
+
+crear una base de datos => CREATE DATABASE nombre_bd;
+
+ver todas las bases de datos => SHOW DATABASES;
+
+conectar a una base de datos => connect nombre_bdo
+
+devolver el tiempo actual => CURRENT_TIMESTAMP o NOW()
+
+indicar un intervalo de tiempo => INTERVAL tiempo tipo_tiempo, donde tiempo se indica la cantidad exacta y el tipo de tiempo será minuto, segundo o cualquier otro
+
+para dar formato al consultar => CONSULTA\G;
+
+reestablecer la contraseña en una máquina remota:
+	- detener el servidor =>
+		- mysql.server stop
+		- service mysqld stop
+		- mysqld stop
+	- reiniciar el servidor en modo seguro => sudo mysqld_safe --skip-grant-tables --skip-networkin
+	- conectarnos al servidor => mysql -u root
+	- usar la base de datos mysql => USE mysql;
+	- actualizar contraseña => UPDATE user SET password=PASSWORD('contraseña') WHERE user='root';
+	- comprobar que la actualización haya sido exitosa => FLUSH PRIVILEGES;
+
+iniciar mysql client =>
+	- indicando el usuario => mysql -u root
+	- indicando el host => mysql -u root -h localhost
+
+para limpiar la pantalla => system clear
+
+definir variables => SET @variable = valor, @variable = valor, ...;
+
+obtener el valor de una variable encapsulada => SELECT @variable, @variable, ...;
+
+crear comentario en una sola línea => -- comentario
+
+tipos de datos:
+	- VARCHAR(cantidad) => permite almacenar caracteres alfanumericos desde 0 hasta 2¹⁶
+	- CHAR(cantidad) => permite almacenar caracteres alfanumericos desde 0 a 255
+	- DATE => es un formato dia mes año
+	- DATETIME => es un formato dia mes año con horas minutos segundos
+	- TIMESTAMP => es un formato igual a datetime
+	- TIME => solamente horas minutos y segundos
+	- enteros:
+		- TINYINT => enteros con valores muy pequeños desde -128 a 127
+		- SMALLINT => enteros con valores pequeños
+		- MEDIUMINT => enteros con valores medios
+		- INT => puede almacenar grandes cantidades desde negativo hasta positivo de enteros
+		- BIGINT => enteros con grandes cantidades
+	- flotantes:
+		- DOUBLE(cantidad, decimales), se especifica la cantidad de numeros y la de decimales
+		- FLOAT(cantidad, decimales), se especifica la cantidad de numeros y la de decimales
+
+definir el charset que se utilizará:
+	- en columna => VARCHAR(cantidad) CHARACTER SET utf8
+	- en base de datos => CREATE DATABASE nombre CHARACTER SET utf8;
+
+ver todas las tablas => SHOW TABLES;
+
+ver en que BD estamos => SELECT DATABASE();
+
+mostrar las columnas de una tabla => SHOW COLUMNS FROM nombre; ó DESC nombre;
+
+crear una tabla a partir de otra => CREATE TABLE nombre LIKE tabla_existente;
+
+ejecutar un archivo sql =>
+	- fuera del client => mysql -u root < archivo.sql
+	- dentro del client => SOURCE archivo.sql
+
+condicionar en caso exista la BD o Tabla => QUERY IF EXISTS nombre;
+
+condicionar si no existe la BD o Tabla => QUERY IF NOT EXISTS nombre;
+
+ejecutar directamente una consulta sin entrar al client => mysql -u root nombre_bd -e "query"
+
+para que el entero no acepte negativos => column INT UNSIGNED
+
+usar enum para restringir las opciones => columna ENUM('valor', 'valor', ...)
+
+crear una llave foranea => FOREIGN KEY (columna) REFERENCES tabla(llave_primaria)
+  - eliminar en cascada => FOREIGN KEY (columna) REFERENCES tabla(llave_primaria) ON DELETE CASCADE
+
+integridad referencial => la llave foranea de un registro debe ser una llave primaria valida (existente)
+
+modificar tabla: ALTER TABLE nombre
+	- renombrar tabla => ALTER TABLE nombre RENAME nuevo_nombre;
+	- añadir una nueva columna => ALTER TABLE nombre ADD columna TIPO [CONSTRAINTS];
+	- modificar el tipo de la columna => ALTER TABLE nombre MODIFY columna TIPO;
+	- remover columnas => ALTER TABLE nombre DROP COLUMN columna;
+	- agregar una llave foranea => ALTER TABLE nombre ADD FOREIGN KEY (columna) REFERENCES tabla(llave_primaria)
+	- eliminar llave foranea => ALTER TABLE nombre DROP FOREIGN KEY columna;
+
+formas de crear un unique dentro de la tabla:
+	- directamente en la columna => columna TIPO UNIQUE
+	- después de la declaración de la columna => CONSTRAINT [nombre(opcional)] UNIQUE (columna, columna, ...)
+
+las llaves primarias => PRIMARY KEY (columna) si se quiere agregar después de la declaración de la columna
+
+ver las consultas en un formato vertical => SELECT * FROM tabla\G;
+
+consultar por valores nulos => SELECT columnas FROM tabla WHERE columna IS NULL; o SELECT columnas FROM tabla WHERE columna <=> NULL;
+
+consultar por valores no nulos => SELECT columnas FROM tabla WHERE columa IS NOT NULL;
+
+usar un delimitador de rangos => SELECT columnas FROM tabla BETWEEN inicio AND final;
+
+cambiar los valores de columnas => UPDATE tabla SET columnas = valores CONDICION;
+
+eliminar un registro => DELETE FROM tabla CONDICION;
+
+eliminar un registro sin condición (no puede usar condición, es como un reset a la tabla) => TRUNCATE TABLE tabla;
+
+concatenar columnas => CONCAT(columna, columna, ..)
+
+obtener el tamaño de la columna => LENGTH(columna)
+
+poner en mayúsculas => UPPER(columna)
+
+poner en minisculas => LOWER(columna)
+
+eliminar los espacios de más => TRIM(columna)
+
+obtener los substring dependiendo de cada parte:
+  - por izquierda => LEFT(columna, cantidad_caracteres)
+  - por derecha => RIGHT(columna, cantidad_caracteres)
+
+obtener un número al azar => RAND()
+
+redondear un número => ROUND(columna)
+
+determinar cantidad de flotantes => TRUNCATE(columna, cantidad_flotantes)
+
+exponencia => POWER(base, exponente) ó POW(base, exponente)
+
+funciones para fechas:
+  - obtener el año => YEAR(columna)
+  - obtener el mes => MONTH(columna)
+  - obtener el día => DAY(columna)
+  - obtener la hora => HOUR(columna)
+  - obtener el minuto => MINUTE(columna)
+  - obtener el segundo => SECOND(columna)
+  - obtener el día de la semana => DAYOFWEEK(columna)
+  - obtener el día del mes => DAYOFMONTH(columna)
+  - obtener el día del año => DAYOFYEAR(columna)
+  - convertir a tipo Date => DATE(columna)
+  - obtener la fecha actual en tipo Date => CURDATE()
+  - suma o resta de la fecha => columna +/- INTERVAL cantidad_tiempo tipo(SECOND, MINUTE, HOUR, DAY, WEEK, MONTH, YEAR)
+
+condicional como columna => SELECT IF(condicion, valor cuando es verdadero, valor cuando es falso)
+  - si fuera nulo => SELECT IFNULL(condicion, valor cuando es nulo), en caso que no sea nulo devolverá la columna
+
+cambiar el delimitador que termina las sentencias => DELIMITER signo, por defecto es ;
+
+crear una función =>
+  CREATE FUNCTION nombre_function(parametros tipo_parametro)
+  RETURNS tipo
+  BEGIN
+    RETURN tipo;
+  ENDdelimitador_especial
+
+ver todos los procedures y functions => SELECT * FROM mysql.proc;
+
+eliminar una function => DROP FUNCTION nombre_function;
+
+realizar unn query de la columna con un string => columna LIKE 'valor'
+  - el valor al que se quiere igual puede tener => '%valor%'
+  - especificar la cantidad de caracteres => '_', cada _ es un caracter
+
+realizar un query con regexp => WHERE columna REGEXP 'regexp'
+
+indicar la cantidad de filas que se necesitan => query LIMIT cantidad_filas;
+  - también se puede indicar desde que registro retornar (paginación) => query LIMIT comienzo, cantidad_filas;
+
+realizar un contador para las cantidades de filas que tenga columnas que no sean null => COUNT(columna)
+
+realizar una sumatoria de una columna => SUM(columna)
+
+obtener el máximo valor de los registros => MAX(columna)
+
+obtener el minimo valor de los registros => MIN(columna)
+
+obtener el promedio de la columna => AVG(columna)
+
+al realizar consultas que manejen funciones que realicen una agrupación de las columnas => query GROUP BY columna;
+
+realizar un filtro a un grupo de datos => query HAVING condicion;
+
+unir conjuntos de datos => query UNION query; los dos conjuntos de datos deben tener la misma cantidad de columnas
+
+evitar usar el ON columna = columna cuando se tiene el mismo nombre de columna => query JOIN tabla USING(columna)
+
+producto cartesiano entre dos tablas => SELECT tabla_a.columna, tabla_b.columna FROM tabla_a CROSS JOIN tabla_b;, es una multiplicación cartesiana
+  sirve también para insertar => INSERT INTO tabla (columnas, ..) query cross join;
+
+vistas => son formas de visualizar datos y pueden ser tratados como tablas
+  - crear vista => CREATE VIEW nombre_vista_vw query;
+  - para visualizar las vistas => SHOW TABLES;
+  - eliminar vista => DROP VIEW nombre_vista_vw;
+  - editar una vista => CREATE OR REPLACE resto;
+
+procedures =>
+  - crear procedure => CREATE PROCEDURE nombre_procedure(parametros, ...) BEGIN todo el procedimiento; END//
+    se tiene que cambiar el delimiter para que no termine con el ;
+  - se pueden ver los procedure en => mysql.proc
+  - llamar procedure => CALL nombre_procedure(parametros, ..);
+  - eliminar procedure => DROP PROCEDURE nombre_procedure;
+  - para modificar retornando el valor de una variable => CREATE PROCEDURE(OUT parametro TIPO, ...), el OUT nos permite poder retornar el valor modificando la variable
+  - condicionar dentro del procedure => IF condiciones AND|OR condiciones .. THEN si cumple; ELSE si es contrario; END IF; o también ELSEIF condiciones
+  - un case statement => CASE WHEN condicion THEN funcionalidad; ELSE funcionalidad; END CASE;
+  - realizar iteraciones:
+    - WHILE condicion DO funcionalidad; END WHILE;
+    - REPEAT funcinalidad; UNTIL condicion END REPEAT;, es como un do while
+  a diferencia de las funciones los procedures no retornan valores
+
+ordenar al azar => query ORDER BY RAND();
+
+transacciones: es un agrupación de instrucciones, tiene 3 estados, antes, durante (momento donde se puede revertir la transacción) y después de la transacción
+  - indicar todos los queries que siguen serán parte de una transacción => START TRANSACTION;
+  - terminar la transacción => COMMIT;
+  - retroceder a una parte donde la transacción no tuvo error => ROLLBACK;
+    normalmente como las transacciones son usadas dentro de procedures para tratar los errores antes de declarar la transacción dentro del procedure:
+      DECLARE EXIT HANDLER FOR SQLEXCEPTION
+      BEGIN
+        ROLLBACK;
+      END;
+
+listar los usuarios => SELECT user FROM mysql.user;
+
+eliminar usuarios => DROP USER nombre_usuario;
+
+motores de almacenamiento => es el encargado de almacenar, gestionar y recuperar toda la información de una tabla como MyISAM e InnoDB, nos ayuda a garantizar una mejor performancia en nuestras aplicaciones
+  MyISAN es el motor por defecto de MySQL es bueno para la recuperación de información, aunque la mayor desventaja cae en la atomicidad (no se asegura que se cumplan los procesos)
+    y confiabilidad de los datos
+  InnoDB la mayor ventaja es la seguridad de las operaciones, nos permite la ejecución de transacciones
+  - listar todos los motores de almacenamiento disponibles => SHOW ENGINES;
+  - cambiar por defecto el motor:
+    - por defecto, configurar el archivo my.cnf => [mysqld] default-storage-engine = innodb
+    - dentro de la sección => SET storage_engine=INNODB;
+  - utilizar una tabla con determinado motor => creacion tabla ENGINE=motor;
+
+cursor => mecanismo el cual nos permite procesar fila por fila el resultado de una consulta, solo pueden ser usados
+
+crear un respaldo => sudo mysqldump base_de_datos > archivo.sql
+  - para realizar en múltiples base de datos => sudo mysqldump --databases bd bd bd > archivo.sql
+  - para tablas => sudo mysqldump tabla tabla ... > archivo.sql
+
+trigger => conjunto de sentencias sql que se ejecutan de forma automática cuando ocurre algún evento de tipo modificación en una tabla (datos almacenados INSERT, UPDATE, DELETE)
+  un trigger no puede existir si no está asociada a una tabla
+  existen dos partes para la modificación donde se lanzarán los triggers BEFORE [tipo modificación] y AFTER [tipo modificación]
+  - crear un trigger =>
+    CREATE TRIGGER nombre_trigger
+    AFTER|BEFORE [tipo modificacion] ON tabla
+    FOR EACH ROW                                => indica que se hará en cada fila afectada
+    BEGIN
+      funcionalidad;                            => se puede acceder al valor de la fila afectada con NEW.columna (en INSERT|UPDATE), OLD.columna (en DELETE|UPDATE)
+    END
+  - poder ver los triggers => SHOW TRIGGERS;
+  - eliminar un trigger => DROP TRIGGER base_datos.nombre_trigger;

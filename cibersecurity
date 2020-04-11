@@ -1,0 +1,649 @@
+// EN HONEYPOT
+
+ejecutar los dionaea =>
+    primera terminal:
+        cd /opt/dionaea/bin/ => entrar a la carpeta
+        ./dionaea -l all,-debug -L '*'
+
+    en otra terminal:
+        cd /honeydrive/DionaeaFR/ => entrar en la carpeta de la interface
+        python manage.py collecstatic => responder con "yes"
+        python manage.py runserver [direccion]:puerto
+
+// REDES
+
+LAN => red pequeña como la de una casa u oficina
+WAN => redes que interconectan países o ciudades
+MAN => redes que ocupan el tamaño de una urbanización
+
+topología en redes: nos ayuda a identificar como los nodos están conectados
+
+    topología de bus: es el más usado en tipos de redes LAN, los nodos están conectados en un mismo medio que transporta la información
+        ventaja: la red es fácil de comprender y puede crecer sin cambios bruscos a la red
+        desventaja: el tráfico de los nodos pueden ser visto por los otros y a medida que crece la red afectará el rendimiento
+
+    topología de anillo: cada nodo tiene una sola conexión de entrada y una de salida, garantiza el envío de la información pero puede llegar a ser lenta porque pasa por cada nodo intermedio siendo posible que si un nodo falle, todos los demás también
+
+    topología de estrella: todos los nodos están conectados a un punto central, así nos permite garantizar el funcionamiento de la red, permite agregar nuevos nodos mientras que el nodo central lo permita, pero en caso deje de funcionar el nodo central, toda la red también
+
+    topología de malla: todos los nodos están conectados entre sí, permitiendo el poder actuar como servidor y como cliente, es la forma óptima de mantener la conexión entre dispositivos en una red ya que se reduce a uno la cantidad de diapositivos por los que debe viajar la información y en caso uno falle, puede ser enviado por otro nodo
+
+    topología de árbol: contamos con varios dispositivos intermedios que permiten que otros nodos se conecten
+
+ISP: Internal Service Provider
+
+redes convergentes: transportan múltiples servicios a través de la misma red
+
+protocolos definen:
+    codificación del mensaje
+    formato y encapsulamiento del mensaje
+    tamaño del mensaje
+    sincronización
+    opciones de entrega
+
+telnet: Telecommunication Network => protocolo de red que permite comunicarse en modo de texto a otra máquina de manera que podemos controlarla de forma remota, pero no es seguro y el tráfico viaja sin estar cifrado (usa puerto 23, mejor configurarlo en otro puerto por seguridad)
+
+SSH: Secure Shell => permite a los usuarios modificar y controlar sus servidores remotos a través de internet, se creo con el objetivo de reemplazar telnet utilizando técnicas criptográficas
+  y además proporciona un mecanismo para autenticar al usuario remoto, transferir entradas desde el cliente al host y retransmitir la salida de vuelta al cliente (usa puerto 22, mejor configurarlo
+  en otro puerto por seguridad)
+
+suit de protocolos: es un conjunto de protocolos que garantizan que las diferentes capas y servicios llegue de un lugar a otro, de manera confiable y segura (TCP y UDP)
+
+modelos de referencia de capas:
+    física => medios por los que se transportan las señales que llevan los mensajes
+    enlace de datos => los equipos en los que se hace el direccionamiento físico
+    red => direccionamiento lógico
+    transporte => conexión extremo a extremo y garantiza la fiabilidad de los datos (asegura que el mensaje se envie y haya sido recibido)
+    sesión => mantiene abierta la comunicación entre los dispositivos de red
+    presentación => representación de los datos, tipos de archivos, etc
+    aplicacion => que acceden a información desde Internet (la capa que se ve como usuario final)
+
+TCP/IP:
+    Física + Enlace de datos (OSI):
+        ARP => protocolo que permite hacer las asignaciones físicas y direcciones lógicas en el modelo OSI (capa de enlace de datos en capa lógica)
+        Ethernet =>  protocolo que permite definir los estándares con los medios cableados y la señalización de la capa de red
+        Controladores de NIC => definición de algoritmos que llevan las instrucciones a la máquina para recibir y enviar datos a través de la tarjeta de acceso a Internet del dispositivo
+
+    Capa de Red (OSI):
+        IP => protocolo de Internet encargado de la asignación de las direcciones lógicas a los dispositivos, recibe los segmentos de la capa de transporte y los direcciona a través de la red
+        NAT => Network Address Translation, protocolo que hace las traducciones de direcciones IP privadas en direcciones IP públicas únicas globalmente, permite a los routers mandar mensajes a través de
+               internet
+        ICMP => es un protocolo de apoyo al IP donde muestra los mensajes y notificaciones de error, su labor es únicamente informar sobre el error sin ejecutar acción alguna
+
+    Capa de sesión + Capa de presentación + Capa de aplicación (OSI):
+        DNS => Domain Name System es el protocolo encargado de hacer la traducción de direcciones IP en textos que podamos leer
+        DHCP => protocolo encargado se asignar direcciones IP en forma dinámica a los dispositivos
+        SMTP => en un protocolo de envío de correo
+        POP => junto a IMAP, es un protocolo encargado de la recepción de mensajes en el dispositivo destino, permite a usuarios con conexión a internet lenta descargar su correo electrónico mientras tienen conexión
+        IMAP => protocolo de recuperación de correo, necesita siempre tener conexión y el servidor genera copias de seguridad para garantizar que el mail sigue disponible
+        FTP/TFTP => protocolo de transferencia de archivos
+        HTTP/HTTPS => protocolo de conjunto de reglas que definen la forma en que son enviados los mensajes para el intercambio de de texto a través de la red
+
+segmentación de mensajes => tomar un mensaje muy grande y dividirlo en mensajes más pequeños
+
+multiplexación => combinación de dos o más canales de información en un solo medio de transición
+
+PDU => Protocol Data Unit es una unidad que permite identificar la información a medida que es transmitida a través de las capas de red, es rápida pero no garantiza que se cumplan las transferencias
+    aplicaciones típicas => volP, music streaming
+
+TCP => es lento pero garantiza que se cumplirán las transferencias
+    aplicaciones típicas => email, web browsing
+
+switch => es un dispositivo que nos permite realizar conexiones físicas entre hosts, se encarga de filtrar y direccionar los paquetes a través de la red LAN
+
+NIC => Network Interface Card, es una tarjeta de red que se conecta con la tarjeta madre del dispositivo y le proporciona puertos y toda la parte física de circuitos y algoritmos que tiene
+
+ancho de banda => capacidad máxima que tiene un medio para transportar datos
+
+rendimiento => es la tasa real de datos que fueron transmitidos
+
+capacidad de transferencia útil => cantidad de datos útiles que pueden ser enviados por internet
+
+capa física:
+    funciones:
+        - controlar los componentes físicos
+        - codificar/decodificar los datos
+        - señalización
+            cable de cobre => lleva impulsos eléctricos
+            cable de fibra óptica => lleva impulsos de luz, siendo 1 y 0
+            inalámbrico => viaja por ondas electromagnéticas
+
+capa enlace de datos:
+    funciones:
+        - gestión del canal => la capa usa protocolos que ayuda a identificar por cuantos canales irán los datos
+        - segmentación de la trama => la capa usa protocolos para reconocer el tamaño de la trama y segmentarlo si es muy grande (no superar los 1518B)
+        - control de errores => descarta cuando hay errores indicando que se debe enviar de nuevo la data
+        - control de flujo
+        - recuperación de fallos => realiza una reconstrucción de los datos
+    MAC => capa de acceso al medio físico, es una dirección que únicamente identifica las tarjetas de red del dispositivo (NIC)
+        MAC Spoofing => es un ataque a las direcciones MAC que consiste en una suplantación de la identidad, evasión de filtros MAC, accesos a servicios no contratados
+    LLC => capa de comunicación con la capa de red
+
+procesamiento de tramas: al inicial el dispositivo la dirección IP se copia en la memoria RAM
+
+unicast: es un evio uno a uno, siendo el envío de datos de un emisor a un receptor
+multicast: es un envío de transmisión uno a muchos, envía los datos a múltiples destinos simultaneamente (grupo específico)
+broadcast: es un envío de uno a todos simultaneamente
+
+protocolo de resolución de direcciones (ARP) => funciones
+    resuelve direcciones IP y direcciones MAC dentro de una red LAN, cada host tiene una tabla de caché ARP
+    mantiene actualizada esta tabla, hace una solicitud y envía un paquete a todos los hosts conectados a la LAN
+
+access point (AP) => encargado de realizar el enlace entre las redes cableadas y las redes inalámbricas, nos permite crear redes LAN haciendo uso de ondas de radio
+
+capa de red:
+    funciones:
+        - hacer el direccionamiento de paquetes => se le asigna la dirección IP de origen y de destino
+        - encapsulamiento de los paquetes => router recibe una trama, desencapsula, ve la dirección y vuelve a encapsular el paquete
+        - enrutamiento => determinar el siguiente salto (dirección del paquete)
+        - desencapsulamiento de los paquetes => abre la trama para saber las direcciones
+
+Time To Live (TTL) => es la cantidad máxima de saltos por los que debe pasar un mensajes hasta que es rechazado
+
+máscara de red => nos permite identificar facilmente la porción de la dirección IP que se ha asignado a la identificación de la red y la porción que se ha asignado a los hosts
+
+procesamiento de tramas => para que haya comunicación de capa 2 (red local, necesario tener IP y la máscara de subred) y capa 3 (direferentes redes la dirección IP, máscara subred y gateway)
+
+puerta de enlace predeterminada o default gateway => es la ruta por defecto que se le asigna a un equipo que tiene como función enviar cualquier paquete del que no conozca por cuál interfaz enviarlo y no esté definido en las rutas del equipo
+
+enrutamiento => consiste en encontrar un camino que conecte una red con otra, a través de los routers
+
+direccionamiento => se refiere a la forma en que se asignan las direcciones IP a los diferentes dispositivos
+
+direccion IP => es un identificador lógico de las interfaces de red de los dispositivos que utilizan protocolo IP para la comunicación
+    IPv4 => 32 bits
+    IPv6 => 128 bits
+
+dirección de red => porción de hosts donde todos los bits en CERO
+
+dirección de broadcast => porción de hosts con todos los bits en UNO
+
+rango asignable => rango de direcciones para los dispositivos
+
+subredes => cuando una red es muy grande, conviene dividirla en subredes porque hace la red más manejable, administrativamente y se puede controlar el tráfico entre diferentes subredes
+
+capa de transporte => se encarga de segmentar los datos, realizar un seguimiento de las conversaciones individuales, identificar las aplicaciones de acuerdo con el puerto
+
+
+// CIBERSEGURIDAD
+
+activos => es cualquier dato, dispositivo o componente del entorno que apoya actividades relacionadas con la información
+
+amenaza => circunstancia que tiene el potencial de causar daños o perdidas
+
+ataque => acción organizada con intención de causar daños o problemas a un sistema informático o red
+
+control => acción que se implementa para evitar la materialización de un riesgo
+
+impacto => efecto económico, operativo o reputacional causado por la materialización del riesgo
+
+riesgo => evento o condición incierta que, si se produce, tiene un efecto positivo o negativo en los objetivos de un proyecto
+
+vulnerabilidad => debilidad del sistema informático que puede ser utilizada para causar daño
+
+principios de seguridad informática =>
+    - mínimo privilegio => se deben otorgar los permisos estrictamente necesarios para efectuar las acciones que se requiran, ni más ni menos de lo solicitado
+    - eslabón más débil => la seguridad de un sistema es tan fuerte como su parte más débil, el atacante primero analiza cuál es el punto más débil del sistema y concentra sus esfuerzos en ese lugar
+    - proporcionalidad => las medidas de seguridad estarán en correspondencia con la importancia de lo que se protege y con el nivel de riesgo existente
+    - dinamismo => la seguridad informática no es un producto, es un proceso. no se termina con la implementación de los medios tecnológicos, se requiere permanente monitoreo y mantenimiento
+    - participación universal => es necesario contar con una participación activa de los colaboradores internos para apoyar al sistema de seguridad establecido
+
+aspectos de seguridad en las capas =>
+    capa física =>
+        mecánicos => medio de transmisión, canal de comunicaciones, fibra óptica, enlace dedicado
+        eléctricos => potencia, regulación de frecuencia
+    capa de enlace =>
+        control de direcciones del hardware
+        auditoria de configuración de bridge o switch
+        análisis de tráficos y colisiones
+        detección de sniffers
+        evaluación de puntos de acceso wifi
+        evaluación de dispositivos bluetooth
+    capa de red =>
+        auditorias en router
+        auditorias de trafico ICMP
+        auditoria ARP
+        auditoria de direccionamiento IP
+
+modelo TCP/IP
+    capa de acceso de red => establecemos reglas de envío, sería similar a la capa física y capa de enlace de datos
+    capa de internet => se encarga de la salida del paquete de datos, sería similar a la capa de red
+    capa de transporte => direccionamiento y mejor ruta, se encarga de llevar un mejor flujo de datos, sería similar a la capa de transporte
+    capa de aplicación => interactua con el usuario por medio de protocolos STMP, FTP, Telnet, etc. sería similar a la capa de sesion, presentación y aplicacion
+
+payload => es la carga que estamos enviando (no necesariamente un malware) y cuando lo hacemos tenemos que seleccionar un protocolo, varía dependiendo del IP y de la capa
+
+banner => es la cabecera de la información que se envia despues de que se inicializa una conexión TCP
+
+XMAS => es un paquete híbrido de nmap que nos permite usar las banderas TCP para identificar puertos abiertos, esta técnica consiste en enviar un segmento TCP al puerto deseado del dispositivo de forma que valide si las banderas FIN, URG y PSH están activos
+
+paquete NULL => nos permite atravesar ciertas configuraciones firewalls y determinar que servicios están funcionando en determinadas IPs
+
+banner grabbing => consiste en obtener el banner de respuesta de un servicio, es decir, obtener información acerca de un sistema sobre la red y los servicios que esta corriendo sobre sus puertos, como versiones de software usado, puertos, sistemas operativos, entre otros, para posteriormente buscar vulnerabilidades y explotarlas
+
+wireshark => es una herramienta que nos ayuda a posicionarnos en medio de una red para analizar su tráfico, detectar vulnerabilidades y capturar datos donde viajan las contraseñas de acceso a otros equipos
+
+telnet [direccion] => para intentar tener acceso en otra máquina
+
+ftp [direccion] => para manejar archivos en otra red
+
+firewall => dispositivo de seguridad que maneja el tráfico de red y decide si permite o bloquea tráfico específico en función de un conjunto de reglas
+
+honeypot => sistemas que simulan ser equipos vulnerables y que son perceptibles de ser atacados
+
+antivirus => es un programa que tiene el propósito de detectar software malicioso que pueda perjudicar el sistema de un equipo
+
+antispam => filtrar correos electrónicos y evita que los usuarios esten expuestos a los riesgos asociados con el uso del recurso
+
+vpn => virtual private network, protege nuestro tráfico de red cuando nos conectamos a otros dispositivos, no garantiza el tráfico en un tunel no pueda ser visto
+
+ips => intrusion prevention system, es parte básica de una infraestructura de seguridad, realizará una revisión de todo el tráfico que está fluyendo y detectar cuales de ellos pueden ser de un intruso, gracias a un conjunto de acciones predefinidas
+    - red => protegen segmentos enteros de la red o zonas a las que tienen acceso
+    - host => se limitan a proteger a un solo equipo
+
+ifconfig => para consultar las redes
+    nombre_red down => para dar de baja a la red
+    nombre_red up => para activar la red
+    nombre_red direccion_red netmask direccion_mascara_red => para asignar una dirección y mascara de red a una red
+
+hacking => explotar vulnerabilidades del sistema y poner en peligro los controles de seguridad para obtener acceso no autorizado o inapropiado a los recursos del sistema
+
+contra del metasploit => msfadmin
+
+fases de hacking =>
+  1. recolección de información => también conocidad como footprinting(huella), es la fase preparatoria en la que un atacante buscar reunir información sobre un objetivo antes de lanzar un ataque
+    tipos =>
+      - pasivo => recolecta información no directamente y no obteniendo información puntual de la infraestructura, sino a través de cosas públicas
+      - activo => identificando el funcionamiento, personas de la compañía que se pueden vulnerar
+    pasos =>
+      - encontrar URL's
+      - búsqueda de detalles
+      - buscar nombres y datos en el sitio
+      - extraer archivos del sitio
+      - buscar noticias del objetivo
+      - buscar datos personales
+      - rastreo de e-mails
+
+  2. escaneo y enumeración => fase del pre-ataque cuando el atacante escanea la red del objetivo basándose en la información recopilada durante el footprinting
+    tipos =>
+      - puertos => búsqueda de puertos en estado escucha "listener"
+      - red => búsqueda de equipos activos
+      - vulnerabilidades => debilidades en los sistema con que son susceptibles del ataque
+
+  3. ganando acceso => se refiere al punto donde el atacante tiene acceso al sistema operativo o aplicaciones en la computadora o red, el atacante puede escalar en privilegios para obtener el control total del sistema
+    niveles de acceso =>
+      - aplicación
+      - sistema operativo
+      - red
+
+  4. manteniendo acceso => fase donde el atacante intenta retener su "propiedad" en el sistema, los atacantes pueden manipular datos, aplicaciones y configuraciones en las propiedades del sistema, los atacantes usan el sistema comprometido para lanzar nuevos ataques
+
+  5. limpiando huellas => las intenciones del atacante incluyen continuar con el acceso al sistema de la víctima, permanecer desapercibido y no ser detectado, borrar las pruebas que puedan conducir a un enjuiciamiento
+
+FOCA => es un software para analizar los metadatos de archivos, redes, dominios
+
+email tracking => es una técnica que nos permite rastrear nuestros correos electrónicos enviados para obtener información (hora, localización geográfica, datos del navegador y el sistema operativo), en cuando es leído o abierto por el destinatario
+  - ReadNotify => nos permite realizar un seguimiento a nuestros emails
+
+incidente de seguridad => un evento o serie de eventos inesperados o no deseados que tienen una probabilidad significativa de comprometer las operaciones comerciales y amenazan la seguridad de la información
+  respuesta ante incidente =>
+    - fase 1: preparación =>
+      - estimar necesidades => colaboradores que van a gestionar los incidentes, documentación de los sistemas y redes que se usan en la empresa, centros de respuesta ante incidentes de organismos externos en cual apoyarnos
+      - establecer procedimientos => definir una política de gestión de incidentes, acciones a seguir en caso se presente una ocurrencia, monitoreo y clasificación de las incidencias que tengan mayor probabilidad de ocurrir
+      temas comúnes a tratar en esta fase => gestión de parches de seguridad, aseguramiento de plataforma, prevención de malware, sensibilización y entramiento de usuarios
+
+    - fase 2: detección y análisis =>
+      - indicadores => ponen en manifiesto que un incidente ha ocurrido o puede estar ocurriendo
+      - precursores => indican que un incidente tiene posibilidades de ocurrir en el futuro
+      monitoreo de performance de la infraestructurad de TI =>
+        - alertas en sistemas de seguridad
+        - caídas de servidores
+        - reportes de usuarios
+        - software antivirus dando informes
+        - otros funcionamientos fuera de lo normal del sistema
+
+    - fase 3: identificación => identificar el tipo de incidente ocurrido y si ha ocurrido más de uno, priorizarlos dependiendo de su gravedad
+
+    - fase 4: notificación => pasa por las acciones de reportar, notificar y registrar el incidente
+
+    - fase 5: clasificación y priorización => una vez detectado un incidente se clasifican los atributos
+      atributos:
+        - tipo de amenaza
+        - origen de amenaza
+        - categoría de seguridad o criticidad de los sistemas afectados
+        - el perfil de los usuarios afectados
+        - el número y tipología de los sistemas afectados
+      categorías más comunes:
+        - accesos no autorizados a la información
+        - fuga de información confidenciañl
+        - interrupción de operaciones
+        - fallas de hardware
+        - ataques informáticos
+
+    - fase 6: contención, resolución y recuperación => es importante para la entidad implementar una estrategia que permita tomar decisiones oportunamente para evitar la propagación del incidente y así disminuir los daños a los recursos de TI y la pérdidad de la confindencialidad, integridad y disponibilidad de la información
+      - contención => esta actividad busca la detección del incidente con el fin de que no se propague y pueda generar más daños a la información o a la arquitectura TI
+      - resolución => después que el incidente ha sido contenido, se debe erradicar y eliminar cualquier rastro dejado por el incidente como código malicioso
+      - recuperación => el administrador de TI debe restablecer la funcionalidad de los sistemas o servicios afectados
+
+    - fase 7: acciones posteriores al cierre => el cierre de un incidente de seguridad y el fin de su gestión debe incluir un conjunto de evidencias que acrediten:
+      - las acciones que se han realizado
+      - los procesos que se han ejecutado
+      - todas las personas que han estado involucradas
+
+malware => es un software malicioso que daña o deshabilita los sistemas informáticos y otorga un control limitado o total de los sistemas al creador del malware con el propósito de robo o fraude
+  tipos:
+    - troyanos => se presenta a un usuario como un programa aparentemente legítimo, pero que, al ejecutarlo, le brinda al atacante acceso remoto del equipo infectado
+    - backdoor => se introduce en el equipo y establece una puerta trasera a través de la cual es posible controlar el sistema afectado sin conocimiento del usuario
+    - ransomware => permite bloquear un dispositivo desde una ubicación remota y encriptar los archivos quitando el acceso a la información y datos almacenados
+    - gusanos => pueden replicarse a sí mismo en los equipos o a través de redes de computadoras sin que te des cuenta de que el equipo está infectado
+    - spyware => recopila información de un equipo y después transmite esa información a un entidad externa sin el consentimiento del propietario de la información
+    - botnet => es una red de equipos que han sido afectados por malware y se ejecutan de manera autónoma y automática
+    - crypter => tipo de software que puede encriptar y manipular malware, para que sea más difícil de detectar mediante programas de seguridad
+    - virus => software que tiene como objetivo alterar el funcionamiento normal de cualquier tipo de dispositivo informático
+    - macro virus => es un script que es ejecutado cuando un documento sea abierto
+    - stealth virus => es un virus que esconde las modificaciones, también intenta engañar al antivirus interceptando las peticiones que hace el sistema operativo y dándole información falsa
+    - polymorphic virus => produce copias variadas de si mismo, un virus de este tipo puede tener diferentes paths que no tengan nada que ver unos con los otros, lo cual lo hace dificil detectar
+    - self-garbling virus => pueden llegar a cambiar su propio código internamente para engañar y romper las muestras de la base de datos del antivirus
+    - rootkit => es un tipo de software que permite un acceso de privilegio continuo a un ordenador que mantiene su presencia activamente oculta
+
+  contramedidas:
+    1. instalar un software antivirus
+    2. generar política antivirus
+    3. mantener actualizado el software de antivirus
+    4. evitar abrir archivos de remitentes desconocidos
+    5. mantener con regularidad backups de la información
+    6. programar escaneos regulares para todos los dispositivos
+    7. no abrir dispositivos o programas sin analizarlos por el antivirus
+    8. no utilizar software pirata
+
+ingenieria social => arte de convencer a las personas para que revelen información confidencial, los objetivos comúnes de la ingeniería social incluyen personal de mesa de ayuda, agentes de soporte técnico
+  fases de un ataque:
+    1. obtener información => identificar el objetivo de la realización
+    2. seleccionar la víctima => atacar a la persona que está relacionada al objetivo
+    3. desarrollar relación => entablar amistad con la víctima
+    4. explotar la relación => lograr obtener la información del objetivo
+  tipos de ataques:
+    - basada en seres humanos y relaciones interpersonales => suplantación, disfraz,
+      en persona (shoulder surfing => tratar de espiar la contraseña de los usuarios, dumpster diving => buscar en la basura de la compañía, en búsqueda de papeles con información)
+    - basada en sistemas => ventanas de pop-up (publicidad), archivos adjuntos (esteganografía => técnica que permite ocultar mensajes dentro de imagenes), sitios web (phishing)
+  contramedidas:
+    1. definición de políticas de password => cambiar en un determinado periodo la contraseña
+    2. políticas de seguridad física => solo personal autorizado pueden acceder
+    3. entrenamiento a empleados
+    4. clasificación de información
+    5. definición de lineamientos operacionales
+    6. doble factor de autenticación
+    7. instalación de software antivirus
+    8. terminación adecuada de relaciones laborales => si un funcionario se va de la empresa, no debe tener acceso
+
+estandares internacionales de seguridad =>
+  COBIT (control objetives for information and related technologies) => es un marco de referencias de ISACA, lo componen cinco dominios distribuidos en una serie de procesos y en unos objetivos de control, gestionar seguridad hace parte de uno de los que es alinear, planear y organizar
+  ITIL (information technology infraestructure library) => está distribuido en cinco fases  (mejora continua, estrategia, diseño, transición, operación), acá también podemos extraer buenas prácticas importantes que nos permitirán organizar nuestra información relacionada a la seguridad
+  OWASP (open web application security project) => es un proyecto que revisa los riesgos que existen en las aplicaciones web
+  CIS (critical security controls) => entrega veinte controles básicos que deberían ser cumplidos en una organización cuando hablamos de seguridad según esta metodología
+  NIST (national institute of standards and technology) => es un framerwork enfocado a seguridad desarrollado por el gobierno de Estados Unidos, define cinco fases para implementar: identificar, proteger, detectar, cómo responder y cómo recuperar
+  ISO27001 => enfocada al tema de la seguridad de la información con dieciocho objetivos de control
+
+// PENTESTING
+
+pentesting => acceso legal y autorizado a sistemas de información, con el objetivo de hacerlos más seguros, a través de herramientas para la identificación y explotación de vulnerabilidades
+
+fases de pentesting =>
+  1. reconocimiento:
+    - definir nuestros objetivos
+    - recolectar los datos relevantes
+    - identificar información clave sobre nuestros objetivos
+    - aquí se pueden identificar vulnerabilidades
+  2. escaneo
+    - escaneo para diferentes protocolos
+    - identificación de vulnerabilidades
+    - análisis de potenciales riesgos
+  3. explotación
+    - acceder a sistemas vulnerables
+    - obtener privilegios
+    - obtener información o accesos relevantes
+    - tenemos que darle un valor agregado al cliente
+  4. post explotación
+    - mantener o conservar el acceso o privilegios
+    - generar nuevos accesos
+
+pivoting => volver a realizar las fases del pentesting por cada sección de la web
+
+PTES (penetration testing execution standard) =>
+  - interacción previa => esta fase hace referencia a la preparación previa al inicio del proceso de pentesting, teniendo en cuenta los siguientes factores como horario en el que se harán las pruebas, cantidad de direcciones IP a probar y pruebas sobre equipos que deben estar disponibles
+  - recolección de información => recopilar toda la información posible sobre los objetivos que serán probados durante el pentesting
+  - modelo de amenazas => con el fin de hacer más eficiente el proceso completo, a partir del contexto del cliente, cuáles son los riesgos y las amenazas más probables a la que está expuesto, y los bienes o activos que más debería proteger
+  - análisis de vulnerabilidades => identificar los posibles fallos de seguridad que pueden ser aprovechados por un atacante
+  - explotación => ganar acceso a algún sistema o dispositivo aprovechando las fallas de seguridad encontradas, una particularidad de esta fase es que las estrategias, técnicas o fallas aprovechadas pueden variar dependiendo del sistema que sea analizado
+  - post-explotación => mantener acceso y continuar avanzando dentro del entorno
+  - reporte => elaboración de un reporte a partir de la información recolectada, las fallas identificadas y explotadas, y la información sensible obtenida
+
+ver interfaces de red => ls /sys/class/net/
+
+configurar interfaces de red => nano /etc/network/interfaces
+  auto nombre_interface => auto indica que al iniciar la máquina se cargará la red
+  allow-hotplug nombre_interface => allow-hotplug es igual que auto pero involucra al kernel/udev
+  iface nombre_interface inet tipo_conexion address direccion_ip netmask mascara_red => indica que tipo de conexión usará la interfaz (static, dhcp), y que dirección y máscara de red se usarán
+
+interface loopback => es una interfaz de red virtual que representa a la máquina virtual
+
+mostrar las rutas configuradas en la máquina => ip route show
+
+agregar una nueva ruta => ip route add direccion_ip_intermedia/netmask via direccion_ip dev nombre_red, para agregarla permanentemente usar un 'up' antes que todo el comando
+  la via tiene que estar en la misma subred
+
+comprobar si se ha activado el enrutamiento => cat /proc/sys/net/ipv4/ip_forward
+
+hacer permanente la activación del enrutamiento => descomentando en el archivo /etc/sysctl.conf, la linea net.ipv4.ip_forward=1
+
+HTTrack => es una herramienta que permite crear una copia de un sitio web, descargarla y tener una plantilla HTML del sitio, útil para hacer ataques de phishing porque permite falsificar y copiar la página web, y para un pentester sirve porque permite obtener información sobre las posible brechas de seguridad y a partir de estas aplicar las correciones necesarias
+  -O [ruta_directorio] => indicamos la ruta destino donde se guardará la página
+
+reconocimento =>
+  - pasivo => obtener información mediante fuentes públicas, donde no vamos a interactuar directamente con los servidores
+  - activo => interactuamos directamente con el objetivo, dependiendo de como fue el reconocimiento pasivo
+
+whois => es una base de datos que contiene nombres de información de resolución DNS, el protocolo DNS asocia a un nombre de dominio a una(s) direccion(es) IP
+  whois [direccion_web]
+
+netcraft => es una compañia de ciberseguridad informática que realiza auditorias y presta servicios de consultoria, poseen una herramienta pública que permite analizar rápidamente servidores y subdominios para identificar qué versiones de sistemas está utilizando y así identificar vulnerabilidades
+
+recon-ng => es un suite que se compone de varios módulos y que permite recolectar información a partir de dominios, direcciones IP y sitios web
+  recon-ng => para inicializar el suite
+    marketplace install all => para instalar todos los módulos
+    modules load nombre_modulo => para cargar un módulo
+      módulos:
+        - recon/domains-hosts/hackertarget => nos permite ver todos los dominios
+        - recon/domains-vulnerabilities/xsse => para hacer un escaneo de vulnerabilidades XSS
+      options list => una lista de todas las opciones del módulo
+      options set nombre_opcion nuevo_valor => para asignar un valor a la opción del módulo
+      run => para ejecutar el módulo
+
+UDP => User Datagram Protocol no está orientado a la conexión, solo está enviando información constantement
+TCP => Transmission Control Protocol está orientado a la conexión, busca mantener la conexión estable y que no se pierda la información durante el intercambio
+
+puertos comunes =>
+  - 20 => transferencia de FTP
+  - 21 => control de FTP
+  - 22 => SSH
+  - 23 => telnet
+  - 25 => SMTP
+  - 53 => DNS
+  - 80 => HTTP
+  - 137 - 139 => NetBios
+  - 443 => HTTPS
+  - 445 => SMB
+  - 1433 => MSSQL
+  - 3306 => MySQL
+  - 3389 => RDP
+  - 5800 => VNC sobre HTTP
+  - 5900 => VNC
+
+fping => nos permite reconocer los puertos de una red intermedia
+  fping -a => para mostrar los sistemas
+  fping -g direccion_intermedia/mascara => genera una lista de las IP's dentro de la red
+
+openvas => tiene una base de datos extensa con una colección de vulnerabilidades de muchos sistemas o aplicaciones conocidas, openvas escanea el objetivo a atacar y luego compara con su propia base de datos para identificar posibles vulnerabilidades que estén disponibles
+  openvasmd --create-user nombre_usuario => para crear un usuario con una contraseña aleatoria
+  openvas-start => para iniciar el servicio de openvas
+
+nikto => nos permite hacer un análisis e identificar las debilidades que puedan existir en los servicios web que estan corriendo en un servidor
+  nikto -h direccion => hara el analisis del puerto identificando las vulnerabilidades
+
+metasploitable => es un framework para desarrollo y prueba de exploits que aprovecha diferentes vulnerabilidades, utiliza una gran base de datos donde encuentras payloads y exploits que puedas usar dependiendo de las debilidades encontradas
+  núcleo =>
+    - módulo Core => es la API básica de metasploitable, continene el proceso principal de ejecución y la definición general del programa
+    - módulo Base => es una API de segundo nivel, proporciona recursos para que los diferentes módulos, herramientas y paquetes puedan acceder a los procesos del Core
+    - módulo REX => realiza las operaciones entre los módulos que se comunican con el módulo Base, entre las operaciones que se realiza se encuentra el armado de paquetes con los payloads requeridos, administración de URLs y enlaces y operaciones con diferentes protocolos soportados
+  módulos => son los paquetes que existen en la base de datos y que se pueden conectar a la librería Base para agregar alguna funcionalidad a la operación
+    - exploits => recurso de código diseñado para aprovechar alguna vulnerabilidad conocida en un sistema
+    - payloads => es el código adicional del exploit que se quiere ejecutar en el objetivo una vez aprovechada la vulnerabilidad
+    - encoder => contienen recursos que permiten ofuscar o encubrir el código para que no sea identificado como malicioso por sistemas antivirus o firewall
+    - módulos NOP => permiten agregar cadenas de caracteres en blanco o '0's en el contenido de un payload, típicamente usado para ataques de desborde de pila, donde el payload debe tener un tamaño exacto para que la pila apunte exactamente a la posición donde está el código que se desea ejecutar
+    - módulos auxiliares => otras herramientas y recursos que pueden ser requeridos para cargar un exploit o un payload
+  interfaces =>
+    - console / CLI
+    - interfaces gráficas
+    - interfaces web
+    - armitage
+  msfconsole => para entrar a la consola de metasploitable
+  search nombre_vulnerabilidad => para buscar los modulos para esas vulnerabilidades
+  use nombre_modulo => para usar el modulo
+    multi/handler => permite establecer diferentes tipos de conexiones para abrir puertos para escuchar los payloads de las máquinas explotadas
+    show options => para ver las opciones de configuración
+    set nombre_opcion valor => para configurar una opcion del modulo
+    run => para que se ejecute el modulo
+  msfvenom => es un módulo para crear un archivo ejecutable
+    -p nombre_modulo => para saber que archivo ejecutar
+    -f nombre_formato => para indicar el tipo de formato
+    -o path_file/name_file => para indicar en donde y como se guardará el archivo
+
+spidering => nos permite identificar a través de todos los enlaces los recursos que hacen parte del sitio web alojado en un servidor, con la herramienta BURPSUITE se puede realizar spidering y hacer captura de tráfico similar a wireshark pero a nivel de servicio http y https
+
+DVWA => Damn Vulnerable Web Application es una herramienta para aprender y probar diferentes tipos de ataque
+
+meterpreter => es un intérprete de consola que permite establecer sesiones remotas, en sentido directo (máquina kali -> máquina vulnerable) o al inverso (máquina vulnerable -> máquina kali)
+
+shellter => oculta el archivo para que sea más complicado encontrarlo por un antivirus o firewall
+
+// PARROT SECURITY
+
+cuando se genere un error con pantalla negra y no cargue la interfaz se debe cambiar en las líneas el "quite splash" por "nomodeset"
+
+
+//
+
+nmap => ejecuta los servicios (1000 puertos) más comunes para ver si se encuentran abiertos
+  normalmente envia con el protocolo ICMP para verificar que la dirección está dando una respuesta
+  [direccion] => solamente la dirección IP hasta el punto que se conozca y se agrega el * para realizar un scaneo de todas las direcciones
+  para indicar rango de direcciones => ejemplo: 192.168.20.menor-mayor => cambiando menor y mayor por el rango de puertos
+  -s [direccion] => seleccionar diferentes tipos de protocolos a utilizar
+    -sP [direccion] => escaneo mediante protocolo TCP (prueba los 1000 puertos comunes)
+    -sU [direccion] => escaneo mediante protocolo UDP (prueba en todos los puertos)
+    -sS [direccion] => para scanear cuantos dispositivos están conectados a la dirección IP
+    -sn [direccion] => para realizar unicamente la fase de reconocimiento
+    -sN [direccion] => para seleccionar de escaneo el paquete NULL
+    -sX [direccion] => para realizar un escaneo mediante XMAS
+
+  - HOST RECOVERY:
+    -n/-R => ignorar el DNS
+
+  - SCRIPT SCAN:
+    -sC [direccion] => equivalente a --script=default, algunos de los scripts se consideran instrusivos por lo que no se podrán ejecutar a menos que se tenga el permiso
+
+  - SERVICE/VERSION DETECTION:
+    -sV [direccion] => abre los puertos para determinar el servicio/version
+
+  - OUTPUT:
+    -oA nombre_archivo => son almacenados todos los resultados de nmap en los formatos xml, nmap, gnmap
+    -v [direccion] => incrementa el nivel de verbosidad (-vv para mayor verbosidad)
+  -O [direccion] => habilita detección de OS
+  - SCAN TECHNIQUES:
+    -p => para hacer una revision en los puertos
+      -p- => todos los puertos
+      -pNUMERO_PUERTO => para un puerto en especifico
+      -pMENOR-MAYOR => para indicar un rango de puertos
+  -Pn => para no utilizar la fase de reconocimiento de nmap
+  -iL archivo.txt => escaneo de la lista de puertos en el archivo (significa input list)
+  --script => para ejecutar un script de nmap
+    --script banner [direccion] => para ejecutar el script banner para banner grabbing
+    --script vuln [direccion] => realizar un primer análisis de vulnerabilidades
+
+searchsploit => es una herramienta de linea de comandos que nos permite que permite llevar una copia de Exploit Database para poder utilizar sin internet => searchsploit nombre_app
+  indicar las fechas para saber que versiones son afectadas con los exploits => searchsploit nombre_app -x path
+
+desactivar la verificación SSL al clonar un repositorio => git -c http.sslVerify=false clone repositorio
+
+tratar con base64:
+  - para realizar un codificación => base64 argumento
+  - para realizar un decodificación => base64 -d argumento
+
+ssh client => es un programa para entrar dentro de una máquina remota y ejecutar comandos
+  - indicar el puerto => ssh -pPUERTO usuario@direccion
+  - indicar indentity file => ssh -i file
+  - indicar conexion TCP con el puerto o socket => ssh -L direccion_enlace:port:host:host_port|direccion_enlace:port:remote_socket|local_socket:host:hostport|local_socket:remote_socket
+
+generar una key ssh => ssh-keygen
+
+crear una manera mas rapida de realizar ssh mediante configuración =>
+  - crear un archivo ~/.ssh/config =>
+    Host nombre_que_pondremos_al_host
+      Hostname direccion_del_host
+      User nombre_usuario
+      Port numero_de_puerto
+      IndentityFile direccion_de_la_key_generada
+  una vez realizado esto se podra mandar así => ssh nombre_que_le_dimos_al_host
+
+hashcat => herramienta para la recuperación de contraseñas
+  - mostrar un ejemplo de hash para cada hash-mode => hashcat --example-hashes
+  antes de cualquier cosa se necesita localizar los archivos => locate rockyou en directorio (wordlist/)  y locate *.rule (en directorio rules/)
+  - indicar el tipo de hash => hashcat -m tipo_hash archivo_con_hash path_rockyou
+  - agregar un conjunto de reglas al wordlist => hashcat -m tipo_hash archivo_con_hash path_rockyou -r path_rules/archivo_rule
+
+ver desencriptados secretos y otros tipos de datos no deseados => gitleaks, se instala mediante go
+  proceso de instalacion:
+    - sudo apt install golang
+    - mkdir -p ~/go/{pkg,bin,src}
+    - vi ~/.profile => export GOPATH="$HOME/go" export GOBIN="$GOPATH/bin" export PATH="$PATH:$GOBIN"
+    - source ~/.profile
+    - go -v -u github.com/zricethezav/gitleaks
+
+  funcionalidad => gitleaks options.. --repo-path=repository_path
+    - que se indique todo la información disponible => gitleaks -v --repo-path=repository_path
+
+buscar dentro de los repositorios (commits) por secretos => trufflehog, se instala mediante pip
+  - trufflehog file://path
+
+imprimar las impresiones del paquete por la red => tcpdump icmp
+  - no convertir las direcciones a nombres => -n
+  - especifica la interfaz a capturar => -i <interfaz>
+
+herramienta para TCP/IP => nc [options] hostname ports
+  - escuchar las entradas a un puerto => -l
+  - verbose => -v
+  - solamente ips no dns => -n
+  - el puerto que se escuchará => -p puerto
+
+configurar los outputs del terminal => stty
+  - output todos los settings de una forma leible para humanos => -a
+  - no imprimir caracteres innecesarios por ejemplo al moverse de derecha a izquierda => raw -echo
+  - indicar el numero de columnas y filas que se usaran para la impresion => stty rows cantidad_filas cols cantidad_columnas
+
+gobuster => es una herramienta para fuerza bruta
+  - usar directorio/archivo para indicar el modo de fuerza bruta => gobuster dir
+    - indicar la url => gobuster dir -u url
+    - indicar el wordlist => gobuster dir -u url -w /usr/share/wordlists/archivo.txt
+    - indicar la extensión => gobuster dir -u url -ẃ /usr/share/wordlists/archivo.txt -x extension
+    - output de los resultados => gobuster dir -u url -w /usr/share/wordlists/archivo.txt -x extension -o salida.out
+
+investigar sockets => ss
+  - mostrar solo los sockets escuchando => ss -l
+  - mostrar los tcp sockets => ss -t
+  - mostrar solo numericamente => ss -n
+  - mostrar el proceso que esta usando socket => -p
+
+foxyproxy => extension de firefox que nos permite un mejor manejo de los switch de los proxies
+
+exiftool => es para leer los metadatos de las imagenes
+
+billion laughs attack => es un tipo de ataque DoS que consiste en crear 10 entidades que cada una tenga almacenada los 10 veces la entidad anterior

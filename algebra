@@ -1,0 +1,8 @@
+subespacio generado => de v y w es el conjunto de todas sus combinaciones lineales
+  a(v) + b(w), donde a y b varían en los números reales
+
+base de un espacio vectorial => es un conjunto de vectores linealmente independientes que generan todo el espacio
+
+transformaciones lineales => son una forma de transformar el espacio en donde las líneas de la cuadrícula permanezcan paralelas y equidistantes
+
+

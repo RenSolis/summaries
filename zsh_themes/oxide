@@ -1,0 +1,63 @@
+# Oxide theme for Zsh
+#
+# Author: Diki Ananta <diki1aap@gmail.com>
+# Repository: https://github.com/dikiaap/dotfiles
+# License: MIT
+
+# Prompt:
+# %F => Color codes
+# %f => Reset color
+# %~ => Current path
+# %(x.true.false) => Specifies a ternary expression
+#   ! => True if the shell is running with root privileges
+#   ? => True if the exit status of the last command was success
+#
+# Git:
+# %a => Current action (rebase/merge)
+# %b => Current branch
+# %c => Staged changes
+# %u => Unstaged changes
+#
+# Terminal:
+# \n => Newline/Line Feed (LF)
+
+setopt PROMPT_SUBST
+
+autoload -U add-zsh-hook
+autoload -Uz vcs_info
+
+# Use True color (24-bit) if available.
+if [[ "${terminfo[colors]}" -ge 256 ]]; then
+    oxide_turquoise="%F{73}"
+# Oxide theme for Zsh
+#
+# Author: Diki Ananta <diki1aap@gmail.com>
+# Repository: https://github.com/dikiaap/dotfiles
+# License: MIT
+
+# Prompt:
+# %F => Color codes
+# %f => Reset color
+# %~ => Current path
+# %(x.true.false) => Specifies a ternary expression
+#   ! => True if the shell is running with root privileges
+#   ? => True if the exit status of the last command was success
+#
+# Git:
+# %a => Current action (rebase/merge)
+# %b => Current branch
+# %c => Staged changes
+# %u => Unstaged changes
+#
+# Terminal:
+# \n => Newline/Line Feed (LF)
+
+setopt PROMPT_SUBST
+
+autoload -U add-zsh-hook
+autoload -Uz vcs_info
+
+# Use True color (24-bit) if available.
+if [[ "${terminfo[colors]}" -ge 256 ]]; then
+    oxide_turquoise="%F{73}"
+

@@ -1,0 +1,591 @@
+kernel: es la conexión entre el SO y el hardware
+
+'man hier': para listar los directorios
+
+csh: C Shell es un interprete de comandos de Unix
+
+rc: no es tipicamente usando en distribuciones Linux, pero es usado en BSD (derivado de Linux)
+rc.local: es usado para habilitar la ejecución de comandos adicionales al iniciarse sin tener que agregar symlinks (indica un acceso a un directorio)
+rc.sysinit: es especifico de Red Hat y se ejecuta como uno de los primeros scripts, a diferencia de rc.local que se ejecuta más tarde
+
+vmlinux: archivo ejecutable enlazado estáticamente y que contiene el núcleo Linux
+
+crear grupo y usuario => sudo groupadd -g valor nombre_grupo
+
+eliminar grupo => groupdel nombre_grupo
+
+crear usuario => sudo useradd nombre_usuario
+
+eliminar usuario => sudo userdel nombre_usuario
+
+cambiar contraseña 'sudo passwd nombre_usuario'
+
+ping [direccion] => para ver si nos manda respuesta la direccion IP
+
+escribir en un archivo el STDOUT sin importar si es correcto o un error => comando >& nombre_archivo
+
+ver los usuarios => cat /etc/passwd
+
+ver los grupos => cat /etc/group
+
+buscar palabras en un archivo => grep busqueda nombre_archivo
+  - grep -i => para eliminar el case-sensitive
+  - grep -n => para indicar la línea de donde se encontró
+  - grep -c => para mostrar la cantidad de lineas que contienen la palabra parecida
+  - grep -v => para mostrar todas las líneas que no tienen esta palabra
+
+// UBUNTU
+
+instalar las herramientas para redes => 'sudo apt-get install net-tools'
+
+cambiar keyboard to spanish => loadkeys es
+
+// BASH SCRIPTING
+
+ver todos los shells disponibles => cat /etc/shells
+
+para ver el bash actual => which bash
+
+agregar texto dentro de un archivo => cat < archivo
+
+concatenar mas texto dentro de un archivo => cat << archivo
+
+comentar múltiples lineas => : ' lineas '
+
+comparaciones =>
+  - para poder usar los shortcuts es entre [] sino para usar los normales (())
+  - dependiendo de la cantidad de condicionales se agrega []
+  - en lugar de usar && se puede usar -a
+  - en lugar de usar || se puede uasr -o
+  - comparaciones de números
+    - numero -eq numero2 => comprobar si los números son iguales
+    - numero -ge numero2 => comprobar si el primer número es mayor o igual al segundo
+    - numero -gt numero2 => comprobar si el primer numero es mayor al segundo
+    - numero -le numero2 => comprobar si el primer numero es menor o igual al segundo
+    - numero -lt numero2 => comprobar si el primer numero es menor al segundo
+    - numero -ne numero2 => comprobar si el primer numero es diferente al segundo
+
+case statement =>
+  case $variable in
+    "VALUE" )
+      lineas de código ;;
+
+todos las keywords para terminar es la palabra al revés
+
+crear un rango => {inicial..final..incremento}
+
+crear for condition => for in {rango} ó for (( como un for normal ))
+
+args=("$@") =>  es una forma de pedir cuantos argumentos sean necesarios
+
+ver la cantidad de argumentos => $#
+
+case string =>
+  - ${variable^} => capitalize
+  - ${variable^^} => upcase
+
+realizar operaciones => expr operacion
+
+verificar si existe el directorio => -d "$direct_name"
+
+verificar si existe el archivo => -f "$file_name"
+
+crear un menú seleccionable => select variable in VALUE VALUE VALUE ..
+                               do
+                                 comandos
+                               done
+para leer cada cierto tiempo => read -t cantidad
+
+comprobar que el tiempo de espera ha terminado => $? = 0
+
+para debuguear => bash -x archivo_ejecutable
+
+CENTOS
+
+para poder ver el DNS => /etc/resolv.conf
+
+configurar la IP a estática => dentro del archivo de ip /etc/sysconfig/network-scripts/nombre-archivo
+  - cambiando el tipo => BOOTPROTO=static
+  - IPADDR=ip => cambiar el IP
+  - NETMAKS=255.255.255.0 => cambiar la máscara de red
+  - GATEWAY=punto-salida => cambiar el punto de salida de la ip
+  - DNS1=valor => cambiar el valor de la DNS con el valor de /etc/resolv.conf
+
+modificar DNS => /etc/named.conf
+
+configurar bind => /usr/share/doc/bind-9.9.4/sample/etc/named.rfc1912.zones
+  - cuando se modifica también se deben crear los archivos correspondientes los cuales contendrán los registros de recursos (entradas para resolver los nombres)
+    estos archivos son directos e indirectos:
+      - /usr/share/doc/bind-9.9.4/sample/etc/named.localhost hacia => /var/named/upao.directa
+      - /usr/share/doc/bind-9.9.4/sample/etc/named.loopback hacia => /var/named/upao.indirecta
+  - comprobar que el named ha sido cambiado => named-checkzone name_dns /var/named/upao.directa
+  - verificar si la sintaxis esta bien => named-checkconf /etc/named.conf
+  - verificar si esta funcionando la conexion DNS => dig name_dns DNS
+
+
+
+
+
+
+//
+
+para los sistemas UNIX => todo es un archivo
+
+terminales por entorno de desarrollo => KDE usa konsole y GNOME usa gnome-terminal
+
+command history => es la forma en como se tiene almacenado los comandos anteriores comprobandose
+
+mostrar la fecha y tiempo actual => date
+
+mostrar el calendario del mes actual => cal
+
+mostrar el espacio libre de los discos => df
+
+mostrar la memoria libre => free
+
+cambiar de directorio => cd directorio
+  - último directorio trabajado => cd -
+  - usar directorio físico en lugar de symbolic links => cd -P directorio
+  - obligar a seguir los symbolic links => cd -L directorio
+
+cada comando maneja opciones y argumentos => comando -options arguments
+  - las opciones cambian el comando y los argumentos son manejados por el comando
+
+listar los archivos y directorios de uno o más directorios => ls directorio directorio ...
+  - mostrar todos los archivos (ocultos) y los directorios => ls -a directorio o ls --all directorio
+  - mostrar un formato largo => ls -l directorio
+  - mostrar detalles sobre el directorio => ls -dl directorio o ls -l --directory directorio
+  - mostrar con un slash los directorios para diferenciarlos de los archivos => ls -F directorio o ls --classify directorio
+  - mostrar los tamaños de los archivos en un formato leible para la personas => ls -lh directorio o ls -l --human-readable directorio
+  - ordenar por la fecha de modificación => ls -t directorio
+  - ordenar por el tamaño del archivo => ls -S directorio
+  - ordenar los directorios al revés => ls --reverse directorio
+  - mostrar los inode numbers para reconocer si son los mismos archivos en un hard link => ls -i directorio
+  campos en el listado de archivos y directorios:
+    - en la primera parte el primer valor que te dan es para reconocer si es archivo o directorio => - (archivo) d (directorio) l (symbolic link) y los demas caracteres son de permisos
+    - en la segunda parte muestra el número de links duros del archivo
+    - en la tercera parte muestra el nombre del propietario
+    - en la cuarta parte muestra el nombre del grupo al que pertenece
+    - en la quinta parte muestra el tamaño del archivo/directorio
+    - en la sexta parte muestra la última modificación que se hizo
+    - el la última parte muestra el nombre del archivo
+
+determinar el tipo de archivo => file nombre_archivo|directorio, puede ser usado en cualquier tipo porque para Linux todo es un archivo
+
+todos los archivos son manejados como texto => al mapearse los caracteres uno a uno a numeros
+
+pagers => programas que permiten ver archivos de texto largos en un manejador pagina por pagina
+
+ver el archivo con un manejador => less archivo
+
+linux filesystem hierarchy standard:
+  - / => el directorio root donde todo comienza
+  - /bin => contiene programas binarios que son necesarios para el sistema para boot y run
+  - /boot => contiene el kernel de Linux, imagenes iniciales de RAM
+    - /boot/grub/grub.conf => es usado para configurar el boot loader
+    - /boot/vmlinuz => el kernel de Linux
+  - /dev => contiene los device nodes, los dispositivos también son manejados como archivos
+  - /etc => contiene todos los archivos de configuración del sistema, además contiene los shell scripts que inician cada uno de los servicios del sistema cuando se hace boot
+    - /etc/crontab => archivo que define cuando se ejecutarán los jobs automatizados
+    - /etc/fstab => tabla de dispositivos de almacenamiento y sus puntos de montaje asociados
+    - /etc/passwd => una lista de las cuentas de usuarios
+  - /home => es un directorio que tienen todos los usuarios por defecto que nos permite proteger el sistema de actividades errantes del usuario
+  - /lib => contiene archivos compartidos usados por los programas core del sistema
+  - /lost+found => es un directorio para la recuperación parcial de un evento corrupto del filesystem, solamente habrá algo cuando pase algo realmente malo en el sistema
+  - /media => en sistemas Linux modernos es el directorio que contendrá los puntos de montajes de media removibles, que son montados automáticamente al insertarse
+  - /mnt => para sistemas Linux antiguos es el directorio que contendrá los puntos de montajes de media removibles que han sido montados manualmente
+  - /opt => es un directorio para instalar software adicional, productos de software comerciales
+  - /proc => es un sistema de archivos virtual mantenido por el kernel de Linux
+  - /root => es el directorio home para la cuenta root
+  - /sbin => contiene binarios del sistema, que son programas que realizan tareas vitales del sistema que son generalmente reservados para el superusuario
+  - /tmp => almacena información temporal de programas del sistema, cada vez que se el sistema es rebooted se limpia
+  - /usr => es el directorio base para los directorios que contienen todos los programas y archivos de soporte usados por el usuario regular
+    - /usr/bin => contiene los programas ejecutables instalados en la distribución Linux
+    - /usr/lib => contiene archivos compartidos para los programas en /usr/bin
+    - /usr/local => programas que no estan incluidos en la distribución pero su uso está destinado para todo el sistema
+    - /usr/sbin => contiene muchos programas de administración del sistema
+    - /usr/share => contiene toda los datos compartidos usados en programas de /usr/bin, incluye cosas como archivos de configuración por defecto, iconos, etc
+      - /usr/share/doc => contiene la documentación de la mayoría de paquetes instalados
+  - /var => se lamacena data estática como base de datos, spool files, correo de usuario, etc
+    - /var/log => contiene los logs files de varias actividades del sistema
+
+symbolic link => son multiples nombres referenciando a un archivo, nos permite hacer cambios de versiones en los archivos evitandonos tener que cambiar el nombre donde se este utilizando, version moderna
+
+hard link => nos permite tener múltiples nombres en el archivo (igual a symbolic link) version antigua, cuando creamos un hard link estamos creando una entrada adicional al directorio para el archivo
+  limitaciones:
+    - no se puede referenciar al link si es que no existe en el mismo sitema de archivos (referencia a la misma particion)
+    - no se puede referenciar un directorio
+  cuando se elimina el archivo base se mantienen los contenidos de los archivos links
+
+tratar con symbolic|hard links:
+  - crear hard link => ln archivo link
+  - crear symbolic link => ln -s archivo link
+
+copiar archivos o directorios => cp base destino
+  - copiar o actualizar el archivo o directorio => cp -u base destino o cp --update base destino
+  - hacer un clone del archivo o directorio => cp -a base destino o cp --archive base destino
+  - usar un prompt para indicar si sobreescribir o no un archivo => cp -i base destino o cp --interactive base destino
+  - recursivamente copiar directorios y sus archivos => cp -r base destino o cp --recursive base destino
+  - mostrar mensajes informativos de como se realiza el copiado => cp -v base destino o cp --verbose base destino
+
+mover|cambiar nombre de  archivos o directorios => mv base destino
+  - mostrar un prompt para cuando se mueve un archivo que ya existe en el destino => mv -i base destino o mv --interactive base destino
+  - actualizar el destino => mv -u base destino o mv --update base destino
+  - mostrar mensajes informativos cuando se realiza => mv -v base destino o mv --verbose base destino
+
+remover archivos o directorios => rm archivo
+  - usar un prompt para confirmar si se desea eliminar o no => rm -i archivo o rm --interactive archivo
+  - eliminar directorios de manera recursiva => rm -r directorio o rm --recursive directorio
+  - ignorar los archivos no existentes y al prompt => rm -f archivo o rm --force archivo
+  - mostrar mensajes informativos de la eliminación => rm -v archivo o rm --verbose archivo
+
+modificar los hosts => en el archivo /etc/hosts
+
+inode number => contiene los metadatos de un archivo, siendo la forma en como el sistema operativo sabe donde está un archivo y qué archivo es
+
+manejar las particiones => fdisk /dev/sda
+
+ver la formación de las particiones => lsblk
+
+formatear particiones =>
+  - a ext4 => mkfs.ext4 /dev/particion
+  - para swap =>
+    - configurar para swap = mkswap /dev/particion
+    - habilitar archivos para pagination y swapping => swapon /dev/particion
+
+montar una particion => mount /dev/particion /mnt/directorio
+
+instalar el paquete base (contiene los paquetes necesario para usar el sistema, librerías C, Bash Shell, etc.) para arch linux => pacstrap /mnt base base-devel
+
+generar un fstab file para definir como las particiones, block devices o archivos remotos del sistema son montados dentro del filesystem => genfstab -U /mnt >> /mnt/etc/fstab
+
+cambiar el root dentro del nuevo sistema para el proceso actual ejecutandose y el proceso hijo => arch-chroot /mnt
+
+configurar la zona horaria:
+  - crear un symbolic link que se usará al iniciar el sistema => ln -sf /usr/share/<zoneinfo>/<Region>/<City> /etc/localtime
+  - configurar el hardware clock => hwclock --systohc --utc
+
+configurar el idioma:
+  - descomentar el idioma que se usará en /etc/locale.gen => vi /etc/locale.gen
+  - setear el locale =>
+    locale-gen
+    echo LANG=es_PE.UTF-8 > /etc/locale.conf
+    export LANG=es_PE.UTF-8
+
+fstab => se encuentra comúnmente en el directorio /etc/ como parte de la configuración del sistema, en este fichero se indica como montar cada dispositivo y qué configuración utilizar
+
+executable program => son los lenguajes de programacion que se pueden realizar scripts y todos son encontrados en /usr/bin
+
+shell builtins => son comandos internamente soportados por bash
+
+shell function => son pequeños shell scripts incorporados dentro del entorno
+
+output las primeras lineas de un archivo => head file
+  - indicar el número de lineas => head -n cantidad file
+
+output las ultimas lineas de un archivo => tail file
+  - indicar el número de lineas => tail -n cantidad file
+  - monitorear los cambios del archivo => tail -f file
+
+atrapar mediante el pipeline la entrada => comando | tee archivo | continua...
+
+regresar a un proceso suspendido => fg
+
+tipos de comandos =>
+  - programa ejecutable => son todos los archivos que se encuentran en /usr/bin, que han sido escritors en un scripting language
+  - shell builtins => son comandos creados por el shell (comandos básicos)
+  - shell functions => son comandos creados por personalización
+  - alias => es un comando que nos permite llamar de otra manera un comando
+
+reconocer el tipo de comando => type comando
+
+una lista de opciones time zone => <%= time_zone_select(objecto, 'time_zone', TZInfo::Timezone.all.sort) %>
+
+TZInfo::Timezone => es una librería para que nos maneje los time_zon
+
+apt-file => buscador de apt paquetes utiles dentro del sistema
+  - hacer un fetch por los archivos contenidos en apt-sources => apt-file update
+  - buscar por archivos en paquetes => apt-file search paquete
+
+say => convertir texto en audio usando GNUstep speech engine
+
+festival => convertir texto en audio
+  con este paquete viene instalado text2wave => convertidor de texto a .wav files
+    - guardar como .wav file => text2wave -o archivo.wav
+
+encontrar el directorio del ejecutable => which programa_executable
+
+ver descripcion de los shell bultins => help shell_builtin
+
+ver información útil del comando => comando --help
+
+crear directorio => mkdir directorio
+  - crear un directorio sin error de que no existan los padres => mkdir -p directorio/..../
+
+mostrar una página de manual => man command
+  - especificar la section del manual => man section command
+  - poder ver todas las secciones de un comando => apropos command o tambien con man -k command
+
+obtener descripciones de las secciones de un comando => whatis command
+
+mostrar mediante info pages la información sobre un comando, es una forma diferente para manejar => info command
+
+ver las documentaciones de los programas instalados => /usr/share/doc/
+
+se manejan los std mediante file descriptors => file descriptor 1 es stdout y file descriptor 2 es stderr
+
+redireccionando standard output =>
+  - a un archivo sobreescribiendolo => entrada > archivo
+  - a un archivo añadiendo => entrada >> archivo
+  - esperar la entrada a través del teclado => > archivo
+
+redireccionando standard error =>
+  - a un archivo => entrada 2> archivo
+
+redireccionando stderr y stout =>
+  - forma tradicional => entrada > archivo 2>&1
+  - nueva forma => entrada &> archivo
+
+archivo /dev/null => el sistema lo llama bit bucket que es donde acepta entradas y no hace nada con ellas
+
+imprimir una palabra o bytes de lineas de texto => wc
+  - imprimir la cantidad de bytes => wc -c valor
+
+reportar u omitir lineas repetidas =>
+  - eliminar todos las lineas repetidas => ls archivo archivo | uniq
+  - mostrar solamente las lineas repetidas => ls archivo archivo | uniq -d
+
+imprimir en la pantalla => echo, todos los valores que tienen una funcionalidad son expansions
+  - pathname expansion, mostrar todos los archivos de la carpeta actual con wildcards => echo wildcard
+  - tilde expansion => echo ~nombre_usuario, el nombre_usuario es opcional, sino se utilizará al usuario actual
+  - arithmetic expansion => echo $((operacion aritmetica))
+  - brace expansion => es como un interador de todo el contenido del echo texto_{valor1, valor2, valor3} donde se imprimiria como texto_valor1 texto_valor2 texto_valor3
+    también se puede utilizar con rangos => echo valor_{1..2} o valor_{A..Z}, se puede de menor a mayor en números y caracteres
+  - parameter expansion => para mostrar los valores de las variables de entorno
+  - command substitution => poner los comandos dentro de un comando
+    comando $(comando | comando |...)
+  - double quotes => nos permiten poder escribir nombres largos para archivos que tienen espacios en blancos, también quita los saltos de línea en el output
+    - una forma de escapar de las expansions en double quotes es con un \
+  - single quotes => nos permite escapar de todo tipo de de expansions
+
+mostrar todas las variables de entorno => printenv
+
+indicar que el programa espere => sleep tiempo_segundos
+
+command line editing => bash usa la librería Readline
+  - los términos que usa esta librería =>
+    - killing = cutting
+    - yanking = pasting
+  - cursor movement commands =>
+    - mover el cursor al inicio de la linea => CTRL + A
+    - mover el cursor al final de la linea => CTRL + E
+    - mover el cursor un caracter a la derecha => CTRL + F
+    - mover el cursor un caracter a la izquierda => CTRL + B
+    - mover el cursor una palabra a la derecha => ALT + F
+    - mover el cursor una palabra a la izquierda => ALT + B
+    - limpiar la console => CTRL + L
+  - text editing comandos =>
+    - eliminar a la derecha => CTRL + D
+    - cambiar la letra anterior con la actual del cursor => CTRL + T
+    - cambiar la palabra anterior con la actual del cursor => ALT + T
+    - convertir la palabra que sigue en lowercase => ALT + L
+    - convertir la palabra que sigue en uppercase => ALT + U
+
+history => bash guarda los ultimos 500 comandos usados
+  - indicar que linea del history usar comando => !linea
+  - commandos =>
+    - mover al comando previo => CTRL + P
+    - mover al comando posterior => CTRL + N
+    - mover al primer comando => ALT + <
+    - mover al ultimo comando => ALT + >
+    - buscar en el history => CTRL + R
+
+los hosts que se agreguen en /etc/hosts serán puestos como https
+
+permissions =>
+  - mostrar la identidad del usuario actual => id
+  - archivo que tiene las cuentas de usuario => /etc/passwd
+  - archivo que tiene los grupos => /etc/group
+  - cuando se crea un grupo o usuario los archivos anteriores cambian como en /etc/shadow que tiene las contraseñas
+  - la práctica moderna de Linux para los grupos y usuarios es que un usuario solo pertenezca a un grupo y ese grupo tenga el mismo nombre que el usuario para facilitar la asignación
+  - atributos del archivo => se separan en 10 caracteres
+    - 1 caracter => indica el tipo del archivo
+      - archivo regular => -
+      - directorio => d
+      - symbolic link, tiene valores de atributo del archivo al azar porque solo indica donde está el archivo con los permisos => l
+      - character special file, se refiere a un device que maneja un flujo de bytes como un modem o un terminal => c
+      - block special file, device que manejen bloques de datos como disco duro o cd-rom drive  => b
+  - los restantes son atributos de permisos =>
+    - del 2 al 4 => permisos del propietario
+    - del 5 al 7 => permisos del grupo
+    - del 7 al 9 => permisos mundiales
+    - atributos de permisos =>
+      - r =>
+        - archivo => permite abrir y leer el archivo
+        - directorio => permite listar el contenido del directorio
+      - w =>
+        - archivo => permite escribir o truncar el archivo, pero esto no permite que el archivo sea renombrado o eliminado
+        - diretorio => permite a los archivos dentro del directorio puedan ser creados, eliminados y renombrados
+      - x =>
+        - archivo => permite que el archivo sea tratado como programa de ejecución (script)
+        - directorio => permite que se ingrese al directorio (cd)
+  - cambiar permisos del archivo => chmod, tiene dos formas distintas de hacer el cambio: representación octal numérica y representación symbolic
+    - permisos de archivos en binario y octal
+      octal     binario     modo archivo
+      0         000         ---
+      1         001         --x
+      2         010         -w-
+      3         011         -wx
+      4         100         r--
+      5         101         r-x
+      6         110         rw-
+      7         111         rwx
+    - representación symbolic
+      - representación del usuario (owner) => u
+      - representación del grupo => g
+      - representación del world => o
+      - representación de todos => a, también se puede omitir el uso y el sistema interpretara que es para todos
+      - agregar permisos al archivo => (u|g|o|a)+(r|w|x)
+      - eliminar permisos al archivo  => (u|g|o|a)-(r|w|x)
+      - poner los permisos tal cual se indican => (u|g|o|a)=(r|w|x), eliminara y agregara los permisos para tenerlo igual
+      - multiples especificaciones pueden ser separadas por comas => permiso, permiso
+   - controlar los permisos por defecto cuando se crea un archivo => umask valor
+   - permisos especiales =>
+     - sticky bit => conmumente usado para directorios nos dan la forma en que solo el owner y el superusuario
+      chmod 1775 archivo_o_directorio o chmod +t archivo_o_directorio
+    - bit SUID => el que ejecute va a tener los mismos permisos que el que creó el archivo, con cuidado porque puede acarrear problemas de seguridad
+      chmod 4775 archivo o chmod u+s archivo
+    - bit SGID => el que ejecute va a tener los mismos permisos que el grupo, util cuando se quiere configurar un directorio para colaborar con diferentes usuarios,
+                  el archivo que cree el usuario tendra los permisos del grupo que pertenece el directorio y no del grupo del usuario
+      chmod 2555 archivo_o_directorio o chmod g+s archivo_o_directorio
+  - ejecutar un shell con un diferente usuario y grupo id's => su nombre_usuario
+    - iniciar sesión con usuario diferente => su-l nombre_usuario, con el usuario root 'su -'
+    - ejecutar comando en el new shell => su -c 'comando', siempre tiene que estar el comando entre ''
+  - ejecutar comandos como otro usuario => sudo comando
+    - cambiar los permisos específicos de usuarios particulares configurando => /etc/sudoers
+  - la diferencia entre su y sudo => sudo no inicia un nuevo shell ni carga un entorno de otro usuario
+    - listar los permisos del usuario => sudo -l
+  - cambiar el propietario y grupo del archivo o directorio => chown
+    - cambiar el archivo a un usuario determinado => chown user archivo
+    - cambiar el archivo a un grupo determinado => chown :grupo archivo
+    - cambiar el archivo a un usuario y grupo determinado => chown user:group archivo
+    - cambiar el archivo a un usuario con su grupo por defecto en login => chown user: archivo
+  - en versiones antiguas de Linux para poder cambiar el grupo del archivo => chgrp group archivo
+  - cambiar contraseña de usuario => passwd user, usa strong password por lo cual valida que no sea muy corta, similar a la anterior o una palabra de diccionario
+    - agregar al usuario es únicamente si tienes privilegios sino únicamente => passwd, que cambiará tu propia contraseña
+
+procesos =>
+  - listar los procesos => ps
+    - listar todos los procesos independientemente de la terminal en que se encuentre => ps x
+    - listar todos los procesos con más detalles independientemente de la terminal => ps aux
+    - estados de los procesos =>
+      - ejecutandos o listo para empezar => R (running)
+      - el proceso no esta corriendo y está a la espera de un evento => S (sleep)
+      - el proceso está esperando una I/O como un disco duro => D (uninterruptible sleep)
+      - el proceso ha sido detenido => T (stopped)
+      - proceso difunto o 'zombie', es un proceso hijo finalizado pero que el padre no ha limpiado => Z
+      - proceso de alta prioridad, es posible darle más importancia al agregarle al proceso más tiempo, esta propiedad del proceso se llama amabilidad, pero se dice que es
+        menos agradable porque toma más tiempo de la CPU, dejando menos para todos los demás => <
+      - un proceso de baja prioridad (buen proceso) obtendrá tiempo del procesador una vez que se terminen los procesos de alta prioridad => N
+  - listar los procesos de manera dinámica (continuamente actualizandose), ordenandose por la actividad del CPU => top
+  - listar los jobs que han sido lanzados desde la terminal, se verán los procesos background lanzados por la terminal => jobs
+  - poner en background el proceso => comando &, el output del comando nos indica el PID
+    - si el proceso ya existe => bg %job_number
+  - retornar un proceso al foreground => fg %job_number
+  - poner en pausa un proceso => CTRL + Z, cuando se esta ejecutando el proceso lo cual manda una señal llamada TSTP (terminal stop)
+  - terminar un proceso en foreground => CTRL + C, envia una señal llamada INT (interrupt)
+  - terminar procesos mandando señales => kill [-signal] PID o kill %job_number, cuando no se especifica el signa toma el valor TERM
+    - HUP (hang up), cuando se cierra una terminal y los procesos en foreground terminan => 1
+    - INT (interrupt), termina el programa, tiene la misma funcionalidad que CTRL + C => 2
+    - KILL (kill), sería el último recurso para terminar un proceso porque lo realiza directamente desde el kernel => 9
+    - TERM (terminate), es el valor por defecto, termina el proceso => 15
+    - CONT (continue), restaura el proceso después de una señal de STOP => 18
+    - STOP (stop), detiene el proceso sin terminarlo => 19
+  - eliminar multiples proceso => killall [-u user] [-signal] name|PID
+  - mostrar una lista de los procesos ordenados de padre-hijos => pstree
+  - mostrar un snapshot de los recursos del sistema como memoria, swap, y disk I/O => vmstat
+    - indicar el tiempo (en segundos) de actualización de los recursos => vmstat tiempo
+  - programa gráfico que muestra un grafo con la carga del sistema => xload
+  - mostrar un grafo en la terminal donde se muestre la carga del sistema => tload
+
+ventajas de lanzar un programa gráfico desde la consola =>
+  - el programa no está listada como opciones en el menú
+  - podemos ver los errores que lanza el programa en la consola
+
+tmux => es un mutiplexor de terminal que permite dividir la consola
+  - instalar => sudo apt-get install tmux
+  - crear una nueva session con su nombre => tmux new -s nombre_consola
+  - hacer un split vertical => CTRL + B %
+  - hacer un split horizontal => CTRL + B "
+  - eliminar panel actual => CTRL + B X
+
+solucionar error input/output usb =>
+  - instalar librería => sudo apt-get install dosfstools
+  - desmontar el usb => sudo umount /dev/sdb1
+  - reparar usb => sudo dosfsck -t -a -w /dev/sdb1
+
+diferencias entre apt & apt-get =>
+  apt-get =>
+    - solamente actualiza los repositorios no da mayor información
+  apt =>
+    - da información adicional cuando se realizan actualizaciones
+    - mejores opciones para el manejo de repositorios
+  - recomendación => usar apt en lugar de apt-get
+
+==================================================================================================================================================================
+ENVIRONMENT
+
+environment variables => son todas las variables que no son creadas por el bash
+  - DISPLAY => el nombre de la pantalla si se está ejecutando una interfaz gráfica
+  - EDITOR => nombre del programa que se usará como editor de texto
+  - SHELL => el nombre del shell program
+  - HOME => el pathname del directorio home
+  - LANG => define el conjunto de caracteres y orden de colación del lenguaje
+  - OLD_PWD => el directorio de trabajo previo
+    - en Zorin OS => OLDPWD
+  - PAGER => nombre del programa usado para paginar los output
+  - PATH => la lista de directorios en los que se busca cuando pones el nombre de un programa ejecutable, separados por :
+    - se indica en los diferentes startup files
+  - PS1 => define el contenido del shell prompt
+  - PWD => directorio actual de trabajo
+  - TERM => el nombre del tipo de terminal
+  - TZ => especifíca el time zone
+  - USER => nombre del usuario actual
+
+shell variables => son bits de datos colocados por bash, también guarda aliases y shell functions
+
+mostrar los environment variables => printenv, también se puede mostrar el valor directamente de una variable printenv VARIABLE
+
+mostrar todas las variables => set
+
+alias => es un comando que podemos definir nosotros mismos
+  - crear un alias => alias nombre_alias='comandos'
+  - eliminar alias => unalias nombre_alias
+
+ver todos los alias creados => alias
+
+startup files =>
+  - login shell session => es el prompt solicita nuestro usuario y contraseña
+    - script de configuración que aplica a todos los usuarios => /etc/profile
+    - script de configuración personal, se usa para extender o sobreescribir las configuraciones globales => ~/.bash_profile, para definir las environment variables usar este archivo
+    - si no es encuentra .bash_profile, se lee el siguiente archivo => ~/.bash_login
+    - si no se encuentra .bash_profile ni .bash_login, se lee el siguente archivo => ~/.profile
+  - non-login shell session => normalmente cuando iniciamos una sesion de terminal en la GUI
+    - script de configuración que se aplica a todos los usuarios => /etc/.bash.bashrc
+    - script de configuración personal por usuarios => ~/.bashrc, para todas las configuraciones que no tengan que ver con las environment variables
+  - los non-login startup files heredan el environment de los login shell startup files
+
+indicar que la variable será usado en los procesos del shell actual => export VARIABLE
+
+==================================================================================================================================================================
+BASH
+
+comentarios => #
+if compound command =>
+  if [ condicion ]; then
+    funcionalidad
+  fi
+
+comprobar si existe archivo => -f nombre_archivo
+
+leer archivo => . nombre_archivo

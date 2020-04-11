@@ -1,0 +1,125 @@
+'psql -U user db_name' para usar el cli
+
+ver todas las base de datos '\l'
+
+crear una base de datos 'CREATE DATABASE db_name;'
+
+conectarse a base de datos '\c db_name'
+
+datatypes:
+    INT: para numéricos,
+    VARCHAR: para caracteres variables
+    DATE: fecha con day, mes y año
+    BIGSERIAL: un numérico largo y que se autoincrementa, creando una secuencia
+
+para ver la descripción de la tabla o tablas
+    '\d' para ver todas las tablas
+    '\d table_name' para ver los campos de la tabla
+    '\dtipo' se reemplaza tipo con 't' por tabla, 's' por secuencia y los demás tipos
+
+date 'year-month-day': para obtener la fecha y almacenarla
+
+insertar data:
+    INSERT INTO table_name (campos, ..)
+    VALUES (valores);
+
+se pueden realizar comparaciones simples: 'SELECT val = val;'
+
+'SELECT * FROM table_name OFFSET number_rows LIMIT number_rows' el offset indica cuantas columnas van a ser ignoradas y el limit cuantas van a ser seleccionadas
+
+"LIMIT" tiene una variación que es más un estándar SQL: 'FETCH FIRST number_rows ROW ONLY'
+
+"LIKE 'caracteres'" para identificar cuantos caracteres deben pasar para realizar la comparación, _ indica cuantas caracteres
+
+"ILIKE 'caracteres'" es igual a LIKE pero ignorando el case
+
+'MAX(columna)' devuelve el valor máximo de la columna
+
+'MIN(columna)' devuelve el valor mínimo de la columna
+
+'AVG(columna)' devuelve el valor promedio de la columna
+
+'ROUND(columna, opcional_número_de_decimales)' devuelve el valor redondeandolo
+
+'SUM(columna)' devuelve el total de todos las filas
+
+'COALESCE(columna, columna u otro valor si es null)' se puede colocar que valor devolverá cuando la columna no tenga asignado ningun valor, y recibe muchos parametros
+
+'NULLIF(valor que se da, valor esperado)' devuelve null si el valor que se da es igual al que se espera obtener
+
+'NOW()' devuelve la fecha actual en timestamp
+
+'NOW()::DATE' devuelve solamente la fecha
+
+'NOW()::TIME' devuelve las horas, minutos, segundos y milisegundos de la fecha actual
+
+"interval 'valor'" es usado para hacer operaciones con fechas, cambiando el valor por la cantidad de tiempo exmpl: interval '1 hour'
+
+'EXTRACT(TIPO FROM columna)' extraer solamente una parte de una fecha, se cambiaría el tipo por YEAR, MONTH, DAY, HOUR, DOW(day of week) y otros
+
+'AGE(fecha actual, columna)' es una función que nos devuelve en texto la cantidad de tiempo que hay entre las dos fechas que le damos
+
+para editar una tabla 'ALTER TABLE table_name action;'
+
+eliminar constraints en un table 'ALTER TABLE table_name DROP CONSTRAINT name_of_constraint;'
+
+'DELETE FROM table_name opcional(WHERE condition);' para eliminar los elementos dentro de la tabla o condicionar qué elementos eliminar
+
+'ALTER TABLE table_name ADD PRIMARY KEY (columna);' para hacer un PK de una columna
+
+'ALTER TABLE table_name ADD CONSTRAINT name_of_key_unique UNIQUE (columnas);' para agregar el unique
+
+'ALTER TABLE table_name ADD CONSTRAINT name_of_key_check CHECK (columna = valor, ..);' para realizar condiciones al intentar insertar data en la tabla
+
+'UPDATE table_name SET columna = valor;' para actualizar un valor de columna
+
+'INSERT INTO table_name (columnas,...) VALUES (valores) ON CONFLICT (columna_unica_o_con_constraint) DO NOTHING;' para que no salten errores por los constraints
+
+'INSERT INTO table_name (columnas,...) VALUES (valores) ON CONFLICT (columna_unica_o_con_constraint) DO UPDATE SET columna = EXCLUDED.columna_valor;' actualiza la columna con el valor dado
+
+BIGINT es utilizado para FK porque BIGSERIAL es utilizado para secuencias
+
+'colum_name BIGINT REFERENCES table_name_tabla_externa (columna_tabla_externa)' PARA CREAR UN FK
+
+"\copy (query) TO 'path/file.csv' DELIMITER ',' CSV HEADER;" para realizar una copia de los resultados de un query en un archivo
+
+'SELECT nextval('secuencia_key'::regClass);' incrementa el valor de la secuencia
+
+'ALTER SEQUENCE sequence_name RESTART WITH number;' reinicia la sucuencia
+
+'SELECT * FROM pg_available_extensions;' para obtener todas las extensiones disponibles
+
+'CREATE EXTENSION IF NOT EXISTS 'nombre_extension';' para crear la extension
+
+'... JOIN table_name USING (column_id);' se usa USING cuando la FK y el id de la otra tabla tienen el mismo nombre
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

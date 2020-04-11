@@ -1,0 +1,170 @@
+para poder utilizar laravel en zsh: export PATH="$HOME/.composer/vendor/bin:$PATH"
+
+generar un scaffold de inicio de sesión completo: php artisan make:auth
+
+convertir los js y css en un solo archivo: 'npm run dev' con webpack realiza la conversión de los archivos
+
+los errores de drivers son ocasionados cuando se tiene una diferente versión de la database con respecto a la versión de PHP
+
+consulta con sintaxis SQL 'object->whereRaw('consulta')'
+
+validar que el atributo sea único: 'unique:tabla'
+
+manejar datetime con Carbon:
+
+    'composer install nesbot/carbon' en la terminal para realizar la instalación
+
+    Composer::now(); obtendremos la fecha actual, y con Composer::now()->subDays(días_anteriores); indicados en cuántos dias anteriores será la fecha que nos devolverá
+
+    para cambiar el formato '$fecha->format('formato');'
+
+    para empezar el día con 00 horas '$date->startOfDay();'
+
+acceder al index en blade '@foreach($collection as $index => $value)'
+
+relación de pertenencia 'return $this->belongsTo(Model::class);'
+
+relación de tener un objeto 'return $this->hasOne(Model::class);'
+
+guardar un objeto instanciado en la base de datos 'object->save();'
+
+cuando se imprime un valor nulo en la vista, laravel lo considera como un string vacio
+
+cambiar el valor que se devuelve si es nulo 'value ?? otro_valor'
+
+'objeto->push();' guardará toda la instancia del modelo incluyendo los cambios realizados en las relaciones
+
+para pasar variables fuera de la función usar 'function(parametros) use (lista_de_variables) {}'
+
+{{ csrf_field() }} dentro del form nos evita cualquier problema referidos a CSRF attack
+
+'php artisan storage:link' cambia la ruta donde almacenamos las imagenes
+
+para configurar el tamaño de las imagenes usar el paquete
+
+model binding: cuando el parametro de la ruta (route, controller) se llama exactamente como el modelo
+
+'php artisan make:policy' nos ayuda a crear un helper para autorización de métodos
+
+'@can('método', modelo) @endcan' es la forma de utilizar el policy dentro de la vista
+
+'array_merge(array1, array2, ...)' une todos los arrays, y el último valor del array sobreescribirá todos los repetidos
+
+'relation->toggle(id)' nos permite facilitar el agregar o remover en una relacion de muchos a muchos
+
+'laravel/telescope' es una librería que hace un seguimiento a nuestra aplicación
+
+'now()' nos devuelve la fecha actual
+
+'Cache::remember('nombre del key', duración, closure con lo que se guardará)' para utilizar cache dentro de la app
+
+retornar el enviroment 'App::environment();'
+
+para usar el código qr dentro de un pdf: '<img src="data:image/png;base64, {{ base64_encode(QrCode::format('tipo_file')->generate(data)) }} ">'
+
+recuperar el idioma actual 'Lang::locale();'
+
+vagrant: es una máquina virtual que contiene todo el software necesario para utilizar Laravel
+
+'php artisan config:cache' para actualizar la configuración de laravel con los últimos cambios realizados
+
+generar un uuid:
+    webpatser/laravel-uuid: es una librería de laravel que contiene la generación de uuid's
+    'Uuid::generate()->string;' con esto podremos generar un Uuid y convertirlo en string
+
+para no usar dos funciones iguales en los controladores, utilizar servicios
+
+SwiftMailer => es una librería con drivers para SMTP, Mailgun, SparkPost, Amazon SES y sendemail, que nos permite enviar correos mediante local o en la nube
+
+para crear rutas temporales:
+  - en la ruta temporal => Route::tipo('url', funcion)->name('ruta')->middleware('signed'), el método name es importante porque se pasará a la función que crea la ruta temporal, y el middleware signed es por si se intenta cambiar el valor de la ruta y esta no ha sido asignada
+  - en el método que dará enlace a esa ruta temporal => Route::tipo('url', funcion),
+    - dentro de la función se debe crear la url pero antes se debe usar => use Illuminate\Support\Facades\URL;
+    - ahora se crea la ruta temporal => $url = URL::temporarySignedRoute(nombre_ruta, tiempo, variables);
+
+para crear un observer => php artisan make:observer NombreObserver
+  - añadirle el modelo => -m Modelo
+
+para que funcione el observer creado => en el archivo AppServiceProvice.php, en el método boot => Modelo::observer(Observer::class);
+
+crear un slug => use Illuminate\Support\Str; después de importar para crear Str::slug(valor, 'separador'); el valor es un string y el separador es como se reemplazarán los espacios en blanco
+
+para usar un factory en el seeder => factory('path al modelo')->times(cantidad_creaciones)->create();
+
+para crear un controlador => php artisan make:controller NameController
+  - indicar de que es tipo recurso => -r
+  - indicar que modelo se utilizará => -m Modelo
+
+crear una ruta que cambie por el valor => route('path a vista', [parametros])
+
+para utilizar otro atributo para poder usarlo como la ruta (slug) => en el modelo correspondiente; public function getRouteNameKey() { return 'atributo'; }
+
+crear un id único => \uniqid();
+
+paquete para poder usar google cloud en nuestra aplicación => composer require superbalist/flysystem-google-storage
+
+crear rules personalizadas => php artisan make:rule, y se podrá utilizar importando y creando una nueva instancia en el FormRequest
+
+crear una rule dentro del FormRequest:
+  - cargar la librería => use Illuminate\Validation\Factory as ValidationFactory;
+  - crear un constructor que reciba un objeto de la librería => public function __construct(ValidationFactory $validationFactory) { crear regla }
+  - para crear la rule dentro del constructor => $validationFactory->extend('nombre_rule', function($attribute, $value, $parameters) { validacion });
+  - usarlo en la función rules => atributo => 'nombre_rule:parameters', los parametros son opcionales
+
+facades => proporcionan una interfaz de métodos estáticos para las clases
+
+crear una clase facade:
+  - dentro de la carpeta app/:
+    - importar la clase Facade => use Illuminate\Support\Facades\Facade;
+    - que la clase herede => class MyClase extends Facade { protected static function getFacadeAccessor() { return "NombreClaseConLosMetodos" }  }
+    - en el AppServiceProvider registrar la clase que se enlazará con la clase Facade =>
+      $this->app->bind('NombreClaseConLosMetodos', closure que retorne una instancia de la clase);
+    - usar el Facade => use App\PersonalizadoFacade; PersonalizadoFacade::métodoDeLaClaseConLosMétodos();
+
+crear una directiva blade:
+  - dentro del AppServiceProvider:
+    - utilizar la clase => use Illuminate\Support\Facade\Blade
+    - en la función boot => Blade::directive('nombre_directiva', function() { return "<html>|<?php?>" }), se puede usar html tags o código php
+    - utilizar directiva => @nombre_directiva en nuestro archivos blade
+
+implementar macro => es una funcionalidad que se le agrega a las clases core de Laravel
+  - utilizar la clase => Illuminate\Support\Traits\Macroable;
+  - clases cuales puedes implementar => Http\Request, Http\Response, Support\Collection, Support\Str, Routing\Router, Routing\UrlGenerator, Cache\Repository,
+                                        Filesystem\Filesystem, Support\Arr, Validation\Rule
+  - luego la clase debe implementarlo => use Macroable; dentro de la clase
+  - dentro del AppServiceProvider:
+    - agregar la clase que se utiliza, y en el método boot => ClaseUtilizada::macro('nombre_macro', closure que realizará el macro);
+    es una mala práctica llenar de métodos a la función boot
+    - se crea un directorio dentro app que se llamará Mixins => almacenará los mixin de las clases NombreClaseMixin.php, dentro de la clase se crearán los métodos
+    - cambiar dentro del método boot y utilizar => NombreClase::mixin(new NombreClaseMixin);
+
+view composer => forma de compartir variables con vistas de forma explícita
+  - utilizar la librería dentro del AppServiceProvider => use Illuminate\Support\Facades\View;
+  - dentro del boot de AppServiceProvider => View::composer('vista'|['vista', ..], path de la clase que tendrá los datos);
+  - dentro de la clase que tendrá los datos para la view composer se importa la interfaz => use Illuminate\Contracts\View\View;
+  - dentro de la clase crear el método compose => public function compose(View $view) { $view->with('nombre_que_se_pondra_a_la_variable', variable con los valores); }
+
+mutadores o accesos => son métodos que se ejecutan cuando tratamos de acceder o modificar una propiedad del modelo
+  - al obtener el atributo => public function getAtributoAttribute($value) { return $value; }, donde se cambia Atributo por el nombre del atributo que se quiere crear o utilizar
+  - al cambiar el atributo => public function setAtributoAttribute($value) { $this->attributes['atributo'] = funcionalidad para el $value; },
+
+esperar el procesamiento de los jobs => php artisan queue:work
+
+supervisor => es un sistema cliente/servidor que nos permite monitorear y controlar el número de procesos en sistemas operativos UNIX (jobs)
+  - instalar supervisor => apt-get install supervisor
+  - configuración básica de supervisor, crear un archivo con el nombre que se desee archivo.conf dentro del /etc/supervisor/conf.d/  =>
+    [program:nombre_archivo]
+    process_name=%(program_name)s_%(process_num)02d               => aquí se indica cual es el nombre del proceso agregando el número de proceso a este
+    command=php path_proyecto/artisan queue:work                  => comando que se ejecutará si el servicio falla o se reinicia
+    autostart=true
+    autorestart=true
+    user=renzo
+  - que el supervisor vuelva a leer los archivos de configuración => sudo supervisorctl reread
+  - que el supervisor agregue el nuevo proceso al grupo => sudo supervisorctl update
+  - iniciar el proceso => sudo supervisorctl start nombre_archivo:*
+
+acceder a las variables de entorno => config('nombre de la variable', valor por defecto)
+
+pasar valores a una vista =>
+  - compact('variable', 'variable', ...)
+  - view()->with('variable', variable) o multiples view()->with([ 'variable' => variable, ...])

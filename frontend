@@ -1,0 +1,259 @@
+El selector ::first-letter, funciona perfectamente para el tag p y maneja unicamente la primera letra del texto
+
+usar sass con webpack:
+    style-loader: para poder utilizar estilos en el dom con el tag <style>
+    css-loader: para cargar estilos de css e injectarlos en la página
+    sass-loader: transformar sass a css
+
+webpack module:
+    rules: son reglas que nos permiten especificar extensiones de webpack que procesan archivos
+        test: donde tenemos que poner en forma de regex la extension que usaremos
+        use: indica los loaders que vamos a usar
+
+webpack crea el archivo que va a ser utilizado en el navegador en la memoria virtual del computador (RAM) que una vez terminada su ejecución se eliminará
+
+entry: es el archivo base que se utilizará webpack
+
+output: la salida del archivo cuando se convierte a código compatible para el navegador
+    publicPath: especifica la base path de todos los assets dentro de la aplicación
+    path: el path donde estará el archivo
+    filename: nombre del archivo que tendrá el código convertido
+
+'plugins: []' todos los plugins que se agreguen dentro del array
+
+webpack debe tener una configuración distinta para cada entorno (dev, test, prod)
+
+combinar dos configuraciones webpack 'const merge = require('webpack-merge') => merge(configuracion, { configuraciones })'
+
+webpack para producción: para utilizar en un archivo externo las hojas de estilo con respecto a bundle.js
+    una modulo llamada: 'extract-text-webpack-plugin' (obsoleto)
+
+'<meta name="viewport" content="width=device-width, initial-scale=1">' es la manera en ajustar nuestra página a dispositivos móviles
+
+'<figure></figure>' es el contenedor de tags multimedia
+
+'<figcaption></figcaption>' es un subtítulo de los tags multimedia
+
+'position: fixed' no funciona si el contenedor padre tiene transform o alguna animación
+
+'::before y ::after' son dos pseudo-elements que hacen referencia al contenido dentro del tag
+    'content: valor;' es utilizado por defecto dentro del selector para usarlo, lo normal es solo darle un ''
+
+'&:event::before', editar el before con un evento
+
+grid:
+    'display: grid' iniciar modo grid
+    'grid-template-columns: valor, valor, ..' modifica el ancho de cada columna
+        'repeat(cantidad, valor)' es una función de grid que nos repite las veces necesarias por el valor que se le ha dado
+        '1fr' una fracción de lo que está disponible de espacio
+    'grid-template-rows: valor, valor, ..' modifica el ancho de cada fila
+    'grid-column: inital_valor / end_valor' indicamos la columna de inicio y fin
+        'grid-column-start: valor' indicar en que columna empieza a mostrarse el contenido
+        'grid-column-end: valor' indicar en que columna se termina el contenido
+        'span valor': indicar que se extienda al ancho del valor dado
+    'grid-template-areas: "valor, valor, valor, ..."' se indica como va a estar estructurada las areas del grid
+        'grid-area: valor' se le asigna el valor dado en el grid-template-areas
+  - realizar un overlaping => grid-column: 1 / 2 para los dos elementos porque grid por defecto piensa que uno se mueve ocupando una nueva fila
+
+para crear variables en sass '$variable: valor;'
+
+mixins en sass: es para crear un bloque de codigo que es muy utilizado en varias partes
+    '@mixin nombre { valores }' => para usarlo '@include nombre;'
+
+Sass functions
+
+rgba($variable_color, opacidad): podemos indicar la opacidad de un color sin necesidad de indicar los valores rgb
+
+'attr(atributo)' acceder al valor de un attr para el content
+
+'open-quote' y 'close-quote' son para cerrar con comillas los textos para el content
+
+'background-size: cover' indica que el navegador elija como recortar la imagen (ancho o alto)
+
+'background-position: center' para centrar la imagen del background
+
+con webpack server para reconocer el url dado en un background se debe indicar la carpeta '/public/pathto/file' para acceder
+
+parallax: el fondo se mueve de una manera diferente al contenido
+
+'counter-reset: nombre' para iniciar un contador en 0 y dandole un nombre propio
+
+'counter-increment: nombre' el nombre dado lo incrementa en 1
+
+'content: counter(nombre)' devuelve el valor del counter (usado dentro del content)
+
+':nth-of-type(number)' selecciona uno de los elementos
+
+':last-of-type' el último elemento
+
+'centrar after o before' al estar en position absolute, ponerlo en 50% left o right y hacer un transform: translateX(-50%) para moverlo negaticamente
+
+':not(selector)' para usar en todos los atributos que no tengan el selector dentro
+
+'element > element' => es para indicar al elemento hijo
+
+'element ~ element' => es para indicar todos los elementos seguidos de elemento subyacente
+
+'scroll-behavior: value' es para controlar el movimiento cuando se haga scroll, 'smooth' => movimiento suave
+
+funciones de transform:
+	- mover el valor de la escala únicamente afectará en una animación el alto y ancho del elemento => scale(valor_porcentaje)
+	- mover el elemento en una dirección z => translateZ(valor_en_px)
+	- determinar la distancia entre el plano z y el usuario para dar perspectiva en 3D => perspective(valor_en_px)
+	- volver infito la animación => animacion_funcionalidad infinite
+
+especificar como se renderiza los elementos nesteados en un espacio 3D => transform-style: valor
+	- flat => específica que los elementos nesteados no conservarán su posición 3D
+	- preserved-3d => los elementos nesteados conservarán su posición 3D
+
+determinar si poner visible la cara posterior de un elemento visible frente al usuario => backface-visibility: visible|hidden;
+
+adaptar css grid para adaptarse al contenido 'grid-template-columns: repeat(cantidad, minmax(min, max))'
+    en cantidad se indica la cantidad de columnas que se usarán
+        auto-fit: llena las columnas disponibles al expandirlas para que ocupen cualquier espacio disponible
+        auto-fill: llena la fila con la cantidad de columnas que pueda llenar, por lo tanto crea columnas implicitas porque trata de llenar la fila
+
+minmax(min, max): define un rango de tamaño mayor o igual que min y menor o igual a max (se emplea en css grid)
+
+calc(): una función que nos permite hacer operaciones entre diferentes medidas de unidad
+
+mix-blend-mode: indica como el color del contenido cambiar por el que tiene detrás y con el fondo del elemento (quien debe tener la propiedad es quien pasa por encima del contenido para cambiar el color)
+    se indica el background que maneja el fondo del elemento
+
+'font-smoothing: valor' => es para ver temas de renderización de las fuentes, siendo antialiased el valor más utilizado
+
+:nth-child(cantidadn (+ o -) cantidad) => El n es un contador aplicado a multiplicar a la cantidad que se le asigno, ejm: (1n +1), contaría (1*0)+1, (1*1)+1
+
+@media (prefers-color-scheme: color) => es la forma en como modificar nuestros colores para un modo dark o light
+
+background-attachment => cuando se usa una imagen como background, este estilo determina si la imagen será fija dentro de la pantalla o se desplazará junto al bloque contenedor
+
+user-select: none => para quitar las interacciones de seleccion del usuario (texto)
+
+pointer-events: none => para evitar los eventos del pointer
+
+clip-path: valor => sirve para indicar una porción del elemento se muestre definiendo una región de recorte
+
+input[type="slider"]::-webkit-slider-thumb => es un pseudo-elemento que representa el selector dentro del slider que el usuario puede mover, para cambiar el color del trazado es el box-shadow
+
+es importante manejar los focus dentro de la página:
+  - en firefox se crea un bordado por defecto y para eliminarlo => ::-moz-focus-inner { border: 0; }
+
+los mixins son utilizados para resumir parte y cosas simples, en caso se quiera utilizar varias partes se debe usar un embrace placeholder =>
+  - crear un embrace placeholder:
+    %nombre_embrace_placeholder
+      atributos: valores
+  - usar el embrace placeholder: @extend nombre_embrace_placeholder
+
+usar funciones para realizar calculos =>
+  - @function nombre_funcion ($parametros)
+      @return calculo
+
+filter => define los efectos visuales como blur y saturacion, a menudo es más común usarlo con imagenes
+  - cuando se utiliza el invert se puede colocar todos los colores dentro del contenedor de un color que se pueda ver => filter: invert(valor), 1 se refiere al cambio y 0 normal
+  - poner un degradado para el elemento => filter: blur(valor)
+
+selector para indicar todos los elementos que estan al mismo nivel del elemento de referencia => elemento ~ todos_los_elementos
+
+-webkit-text-stroke => para indicar los bordes del texto
+
+overflow => es una propiedad que especifica el recorte del contenido
+  - visible => valor por defecto, el contenido no es recortado
+  - hidden => el contenido es recortado y no se muestran barras de navegación
+  - scroll => el contenido es recortado y se usan las barras de navegación
+
+medidas para el responsive según código bootstrap: 1200px 992px 768px
+
+no tener que utilizar un alto en un contenedor => contenedor::after { content: ''; display: block; clear: both; }
+
+@supports es una bloque que nos ayuda a comprobar como interactuar si se tiene soporte para particular propiedad y valor
+  @supports (propiedad: valor) {
+    declaraciones clases
+  }
+  - también se pueden utilizar operadores como or o and para utilizar otras propiedades y valores
+
+centrar de manera vertical => line-height: alto total;
+
+modificar como se ve la seleccion de un texto => elemento::selection { características }
+para indicar para todos la seleccion => ::selection { background: valor; color: valor; }
+
+rotar la matiz de un elemento y su contenido => hue-rotate(valor)
+
+usar background para la letra => -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+
+box-shadow => los valores que indica el box-shadow, box-shadow: ejeX ejeY desenfoque(blur) extension_sombra(opcional) color_sombra;
+
+text-shadow => los valores para las sombras del texto text-shadow: ejeX ejeY blur color_sombra;
+
+para agregar los íconos de font awesome => en el pseudo-elemento
+  content: 'valor icono'
+  font-family: FontAwesome
+
+cuando a un li de una lista lo colocas en display: inline-block desaparece automaticamente la viñeta
+
+:root => representa al html de manera de pseudo-clase y además se puede utilizar para declarar las CSS variables
+  - utilizar las variables declaradas => var(--variable)
+
+cambiar el scrollbar de la página para chrome (-webkit) =>
+  - el scroll ancho => body::-webkit-scrollbar { valores }
+  - el scroll fondo => body::-webkit-scrollbar-track { valores }
+  - el scroll mismo => body::-webkit-scrollbar-thumb { valores }
+
+manejar svg =>
+  - viewBox es un atributo dentro de la etiqueta que indica las caracteristicas de posicion tamaño del svg
+  - contenido del path => fill: transparent|#color;
+  - ancho del stroke => stroke-width: valor;
+  - color del stroke => stroke: #color;
+  - representar la forma en que estará representado las lineas y espacios => stroke-dasharray: valor;
+  - definir el desplazamiento en la representación de la matriz de guiones => stroke-dashoffset: valor;
+
+pseudo-class :focus-within => activa el evento de focus para el elemento y cuando se hace focus a un elemento hijo
+
+tabindex="valor" => indica si un elemento puede ser enfocado y participa en la navegación secuencial del teclado
+  - valor negativo => el elemento debe ser enfocado pero no participa en la navegación secuencial del teclado
+  - valor 0 => debe ser enfocado y accesible a traves de la navegación secuencial del teclado
+  - valor positivo => el elemento debe recoger el foco y alcanzable por la navegación secuencial del teclado, dependiendo del valor se dará el orden
+
+ver de preview la imagen que se sube =>
+  - obtener el file del evento => event.target.files[0]
+  - crear una URL => URL.createObjectURL(file)
+  - agregar en el contenedor la url
+
+:target { estilos } => es una forma en como interactuar con el id mediante un fragmento del URL
+
+datalist => es un tag que nos permite agregar un autocomplete al input, manejado a traves de option tag dentro de este
+  - en el input => list="id-datalist"
+
+at-rules => son sentencias CSS que indican como debe comportarse
+  - restringir el uso del CSS por url => @document tipo_function(valor)
+    - la url exacta => url(valor)
+    - el prefijo de la url => url-prefix(valor)
+    - el dominio => domain(valor)
+    - mediante regexp => regexp(valor)
+    - restringir el uso en firefox => @moz-document tipo_function(valor), fue diseñado para evitar el CSS injection
+
+indicar que un elemento sera draggable => <elemento draggable="true">
+
+animaciones => animation: nombre duracion timing-function delay iteration-count direction fill-mode;
+  timing-function => curva de velocidad de la animación (animation-timing-function: valor;)
+    - rápido al inicio y lento al final => ease-out
+    - lento al inicio y rápido al final => ease-in
+    - lento al inicio, rápido en el medio y lento en el final => ease-in-out
+    - parecido a ease-in-out pero comienza más rápido de lo que termina => ease
+    - mismo tiempo desde que empieza hasta que termina => linear
+    - definir propios valores con cubic-bezier function => cubic-bezier(x1, y1, x2, y2), para efectos de movimientos horizontales cubic-bezier(0.86, 0, 0.7, 1)
+  fill-mode => especifica el estilo del elemento cuando la animación no está sucediendo (animation-fill-mode: valor;)
+    - elemento retiene el último estilo que se le coloco en ek keyframe => forwards
+  direction => define la dirección que tomará la animación (animation-direction: valor;)
+    - keyframe se ejecuta del 0% al 100% => normal
+    - keyframe se ejecuta del 100% al 0% => reverse
+
+obtener el color actual del elemento para utilizar en pseudo-elementos (before y after) => propiedad: currentColor;
+
+editar el siguiente elemento => elemento + siguiente_element { propiedades }, únicamente se aplicará al siguiente elemento
+
+input:valid => es una pseudo-clase que representa cualquier input que se haya validado satisfactoriamente
+
+input:invalid => es una pseudo-clase que representa cualquier input que no cumpla con la validación
+
+

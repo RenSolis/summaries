@@ -1,0 +1,1406 @@
+activar el cache en env development: con el comando 'rails dev:cache'
+
+escribiendo en el cache: Rails.cache.write('nombre_para_guardar', 'valor')
+
+leer datos en el cache: Rails.cache.read('nombre_guardado')
+
+hacer rollback hsata la primera migración: rails db:migrate VERSION=0
+
+BCrypt:
+  - Rails reconoce que atributos son utilizados para encriptar incluyendo 'has_secure_password' en el modelo y que el atributo termine con '*_digest'
+
+para crear la app de rails con otra base de datos 'rails new nombre --database=nombre_bd' como postgresql
+
+http_basic_authenticate_with name: 'nombre', password: 'contraseña', es utilizado como un callback para agregarle permisos a métodos del controller
+
+channel_prefix: es usado si existen varios canales con nombres iguales para que no colisionen por estar usando el mismo servicio de Redis para múltiples aplicaciones
+
+identified_by (atributo): es un identificador de conexión que es usado para una específica conexión después, todo lo que es marcado como identificador se creará automáticamente un delegate con el mismo
+                          nombre de cualquier instancia de canal creada fuera de la conexión
+
+stream_for: de esta forma Rails genera automáticamente el nombre del stream por el objeto dado
+
+stream_from: nosotros definimos manualmente el nombre del stream
+
+para ver las versiones de rails disponibles: 'gem list rails --local'
+
+rails new -T nombre_app: nos evita que se creen archivos de test
+
+rails _version_ new nombre_app =>  para indicar la versión que se utilizará para la app
+
+rails new nombre_app --pre: nos iniciará un proyecto con la última versión beta en rails
+
+shoulda matchers: elimina una gran cantidad de líneas de código porque podemos simplificar las formas de como escribir los tests
+
+factory bot: nos permite crear modelos preconfigurados (información de pruebas o 'falsa') para nuestros tests
+
+database cleaner: nos proporciona estrategias para la limpieza de la base de datos utilizada en el testing
+
+N+1 query: hacen que tu consulta sea más lenta porque consulta también las tablas que están relacionadas
+
+object.includes(:atributo): utiliza el @association_cache y con esto se guardan los valores en el cache para no tener que realizar un load cuando se piden atributos de la asociación nuevamente
+
+'request.headers' para acceder a los headers
+
+letter_opener gem: es una gema que nos permite ver los correos en el navegador
+    añadir en development.rb
+        config.action_mailer.devilery_method = :letter_opener
+
+'date_trunc(tipo, valor_fecha), = ?' es una función de postgres que nos devolverá los objetos de la fecha, se reemplaza el tipo con hora, día o mes
+
+modificar un valor de una fecha:
+    para una hora fija debido a ActiveSupport
+        DateTime.now.midnight nos devolverá el día a las 00 horas
+        DateTime.now.beginning_of_day nos devolverá el día a las 00 horas
+				DateTime.now.end_of_day nos devolverá el día a las 23:59:59 horas
+    'change' es un método que recibe de parámetro un hash con hour:, min: y sec:
+
+'.many?' comprobar si contiene más de un elemento
+
+google_visualr: es una gema que nos permite crear gráficos estadísticos con Google Chart API
+
+google_visualr cambiar el formato de fecha:
+    creamos un objeto de GoogleVisualr::DateFormat.new(opciones)
+        opciones es un hash que recibe un pattern: donde el valor será el formato de la fecha que se desea
+        objetoDateFormat = GoogleVisualr::DateFormat.new({ pattern: 'formato_fecha' })
+    al objeto creado lo pasas al método format del objeto GoogleVisualr::DataTable.new
+        tabla = GoogleVisualr::DataTable.new
+        tabla.format(objetoDateFormat)
+
+imprimir html tag en vista:
+    <%= <html>.html_safe %>: con el método .html_safe, modifica el string y lo vuelve html_safe (sólo se usa en helpers y modelos)
+    <%= raw "<html>" %>: con el helper , es equivalente a .html_safe.to_s (sólo se usa en controllers y vistas)
+    para translations: puedes usar las anteriores o terminar la translation con _html, Rails deduce que es un HTML y lo imprime como tal
+
+monitoriar cambios en el modelo:
+    objeto.changed? nos devuelve un boolean si hemos cambiado algún atributo dentro del objeto
+    objeto.changes nos devuelve un hash con los cambios que se realizaron los atributos
+    objeto.nombreAtributo_changed? nos devuelve un boolean si modificamos el atributo
+    objeto.nombreAtributo_was nos devuelve el valor anterior del atributo
+
+eliminando en cascada: agregando en la asociación 'dependent:'
+    :destroy ejecuta los callbacks al eliminar los elementos asociados con el id
+    :destroy_all elimina directamente de la base de datos los elementos asociados con el id
+
+gema para máquinas de estados: acts_as_state_machine, gem 'aasm' o state machine, gem 'state_machine'
+    a los eventos que contienen las transiciones, cuando son ejecutadas no son guardadas, por eso se le agrega el ! al final para que se guarden los cambios en la base de datos
+
+gem aasm:
+    incluir el módulo AASM para poder utilizarlo en el modelo, e indicar que columna será utilizada como máquinas de estados
+    realizar validaciones: con el método guard después de indicar el nombre del evento
+    'may_nombreEvento?' verifica si se puede realizar el evento
+
+restar tiempo: restar dos Time se devuelve en segundos
+
+evitar error de método con objeto nulo: objeto.try(:metodo)
+
+request:
+    formats: devuelve el formato con el que el servidor responde
+    variant: especifica el tipo de dispositivo físico, es normalmente vacío porque no se ofrece información
+
+cuando se realizan asociaciones polimórficas Rails llena crea el campo (association_name)_type
+
+cambiar el nombre de la tabla => self.table_name = 'nuevo_nombre_tabla_plural'
+	si se cambia el nombre de la tabla entonces también debería manejarse con ese nombre en el fixture que tiene:
+		- dentro del fixture => set_fixture_class nuevo_nombre_tabla_plural: Modelo
+														fixtures :nuevo_nombre_tabla
+
+sobreescribir la columna primary key => self.primary_key = 'columna_id'
+
+actualizar un conjunto grande de datos => Modelo.update_all(columna: valor)
+
+eliminar por búsqueda => Model.destroy_by(columna: valor)
+
+'bundle exec rake assets:precompile' para compilar los assets
+
+bootstrap on Rails 6: https://gorails.com/forum/install-bootstrap-with-webpack-with-rails-6-beta
+
+manejar enum en modelo
+    el valor en la migracion es entero
+    en el modelo 'enum atributo: [:contenido ...]' => indicando que atributos serán manejados
+    asignar o buscar por el contenido: 'atributo: :contenido', 'atributo: "contenido"', 'atributo: integer_index'
+    a la par crea scopes para usar en la búsqueda por su contenido 'Class.contenido'
+    cuando se tiene un objeto del modelo, se puede consultar si tiene tal contenido con '.contenido?' y se puede cambiar a otro contenido con '.contenido!'
+
+'time_ago_in_words(time)' es un método de ruby para calcular de manera legible el tiempo entre el dado y el actual
+
+'form.collection_select(:atributo, colección, :value_del_select, :texto_que_muestra, options: {  })' =>  es para crear una colección de select tag
+    options:
+        { include_blank: 'texto' } => es el texto que se mostrará por default
+        { class: 'class' } => son las clases que tendra el select tag
+
+archivos javascript:
+    carpeta app/assets/javascript => para cosas simples, detalles pequeños como jQuery, eventos, etc
+    carpeta app/javascript/ => todo lo relacionado con webpacker
+
+en la carpeta bin se encuentran todos los ejecutables de rails
+    ./bin/yarn => para usar yarn para instalar modulos
+
+gem 'rack-mini-profiler' => recolecta los datos de nuestra aplicación y los muestra (debe ser posicionado debajo de las gemas de BD)
+    se puede agregar:
+        gem 'flamegraph' => se puede ver en que parte del stack de ejecución de Ruby se invierte más tiempo
+        gem 'stackprof' => hace el llamado al stack profiler de Ruby
+    si se necesita asegurar que el inicializer ocurra despues de todas las otras gemas o si se necesita ejecutar algún código antes de que se requiera la gema, usar 'required: false' despues de su gem, en caso contrario hará que se cargue de inmediato y un intento de reinicializarlo generará una excepción, después de colocar false, agregar el inicializer 'rails rack_profiler:install'
+
+usar pg como base de datos
+    en la instalación => 'rails new name_app --database=postgresql'
+    en la configuración 'config/database.yml' configurara el adapter: postgresql, enconding: unicode, username y password
+
+añadir bootstrap en rails 6:
+    yarn add bootstrap@4.3.1 jquery popper.js
+    configurar config/webpack/environment.js
+        const webpack = require('webpack')
+        environment.plugins.append('Provide', new webpack.ProvidePlugin({
+            $: 'jquery',
+            jQuery: 'jquery',
+            Popper: [ 'popper.js', 'default' ]
+        })
+    en app/javascript/application.js
+        import 'bootstrap'
+        import 'path_de_tu_archivo'
+    en el archivo creado
+        @import '~bootstrap/scss/bootstrap'
+
+para realizar herencia y reconocer que hijo es usar un string type que Rails reconocerá e indicará el elemento
+
+se puede utilizar los helpers creados en la console, utilizando 'helper' como objeto
+
+helper.number_to_currency(valor) => devuelve el valor con la moneda por defecto
+
+helper.number_to_percentage(valor, precision: valor) => nos convertir en porcentaje nuestro valor, indicando cuantos decimales tendrá
+
+object.presence_in(array) => devuelve el objeto si ha sido encontrado en el array sino false, es una forma más rapida de utilizar include?
+
+usar un between dentro del where de un modelo es más rapido introduciendo un range => Model.where(column: range)
+
+limpiar los log files => rails log:clear
+
+hacer debug sin detener el programa => Rails.logger.info "string"
+
+migraciones:
+  validaciones:
+    - null => para indicar si se permite ingresar null al campo
+    - foreign_key => para indicar si es una FK
+
+descomentar el archivo cors.rb para poder evitar el cors cuando se utilice para frontend e indicar el origen
+
+hacer join dentro de dos modelos => Model.joins(:model_plural)
+
+para realizar la misma funcionalidad que un scope para diferentes objetos existe un ActiveRecord#merge => Model.joins(:model_plural).merge(Model.scope)
+
+instalar boostrap en rails 5:
+  gem bootstrap-sass => es una libreria ligera para poder usar bootstrap
+  cambiar el archivo paincipal de los styles => app/assets/stylesheets/application.scss e importar los archivos @import "bootstrap";
+  añadir la librería de JS => app/assets/javascript/application.js la línea //= require bootstrap, justo después de turbolinks
+
+usar devise en rails 5:
+  - para instalar los paquetes de devise => gem 'devise'
+  - instalar devise dentro de la aplicacion => railg g devise:install
+  - agregar la configuración de desarrollo del mailer => config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  - crear un usuario de devise => rails g devise User
+  - sobreescribir los controllers =>
+    - en config/routes.rb => devise_for :users, controller: { controlador_devise: 'controlador_override' }
+    - en el controlador que sobreescribirá => class NombreController < Devise::ControllerEnDevise; metodos (params) que sobreescribirá; end
+  - callback para verificar la autenticación del usuario en controlador => before_action :authenticate_user!
+
+  - evitar session hajacking => utilizar la gema 'devise_ssl_session_verifiable'
+
+usar bulma => gem 'bulma-rails'
+  - cambiar la extensión del application.css a application.scss e importa => import "bulma";
+
+crear un mailer => rails g mailer nombre_mailer, se creará un archivo y una carpeta en app/views/ donde se podran crear las vistas que se enviarán de los correos, .html.erb y .text.erb
+
+para poder ver un archivo dentro de nuestro entorno de desarrollo => gem 'letter_opener'
+  - en la carpeta config/environments/development.rb, donde cambiaremos y añadiremos =>
+    - cambiamos las opciones por defecto del action_mailer => config.action_mailer.default_url_options = { host: 'localhost:3000' }
+    - para poder abrir los emails => config.action_mailer.delivery_method = :letter_opener
+
+usar la gema better errors para poder darle un seguimiento a los errores que se puedan tener, pero siempre en modo de desarollo o test, nunca en producción porque se puede dar información valiosa de la estructura del programa
+
+binding_of_caller => es una gema que nos permite poder ingresar código donde se genero un error, es como un byebug pero para errores se activa
+
+guard-livereload => es una gema que nos permite refrescar el servidor cuando se hagan cambios en el frontend
+
+simple_form_for:
+  - usar la gema => gem 'simple_form'
+  - hacer la instalación => rails g simple_form:install
+	- cuando el submit no posee como segundo argumento un texto entonces coloca el texto por defecto cuando cree que está actualizando o cuando se crea un nuevo post
+  - traducciones:
+    - traducir las opciones que se crean en el formulario => idioma: simple_form: options: modelo: enum: opcion: traduccion
+  - utilizar una coleccion de múltiples checkboxes => f.input :atributo, as: :check_boxes
+
+realizar una iteración mediante un partial:
+ <%= render 'nombre_partial', collection: coleccion %>
+ opcionalmente se puede agregar un as: :variable para reconocerlo dentro del partial como se llama cada valor de la coleccion
+
+rutas nesteadas:
+	para obtener todos los elementos de una coleccion => on: :collection
+	para obtener todos los valores de unicamente un elemento => on: :member
+
+evitar que se cree una columna id => dentro de la migración de creación agregar, create_table :table, { id: false } do |t|
+
+crear un índice => add_index :table, :atributo ó [:atributo, :atributo]
+
+utilizar bigint en lugar de las llaves foráneas que genera rails para poder así tenga una mayor capacidad de almacenamiento del número (no olvidar crear el index)
+
+para insertar múltiples valores a una tabla => primero almacenar los valores creados en un array y luego ya insertarlos en la tabla, así directamente se hará la cantidad
+	- Model.insert_all(array)
+
+eliminar todas los elementos que tenga de id al elemento que se eliminará => relacion :modelo, dependent: :delete_all
+
+obtener información de la aplicación => app
+
+para no se quiere generar errores al crear una relación nueva para un modelo => relation :table, optional: true
+
+agregar nested form:
+	- en el modelo que tendrá el nested form => accepts_nested_attributes_for :model_plural, allow_destroy: true, reject_if: :all_blank
+	- en el formulario => f.fields_for ó f.simple_fields_for :model_plural do |builder|; <%= render 'model_singular', f: builder %>; end, se renderiza un partial para realizar multiples renders de ese partial
+	- botón para eliminar un partial => <%= f.input_field :_destroy, as: :hidden %> y crear un link para reemplazarlo <%= link_to 'Delete', '#', class: 'remove_record' %>
+	- para los parametros permitidos => model_plural_attributes: [:atributo, ..a]
+	- link para agregar el nested form =>
+		def link_to_add_rows(name (nombre_link), f (objeto_form), association (simbolo_de_asociacion), **args)
+			new_object = f.object.send(:association).klass.new
+			id = new_object.object_id
+			fields = f.simple_fields_for(association, new_object, child_index: id) do |builder|
+				render(association.to_s.singularize, f: builder)
+			end
+			link_to(name, '#', class: 'add_fields ' + args[:class], data: { id: id, fields: fields.gsub("\n", '') })
+		end
+	- javascript funcionalidad para los links
+		agregar nested_form nuevo:
+			$('form').on('click', '.add_fields', function(event) {
+				var regexp, time
+				time = new Date().getTime()
+				regexp = new RegExp($(this).data('id'), 'g')
+				$('.fields').append($(this).data('fields').replace(regexp, time))
+				return event.preventDefault()
+			})
+		eliminar nested_form:
+			$('form').on('click', '.remove_record', function(event) {
+				$(this).prev('input[type=hidden]').val('1')
+				$(this).closest('tr').hide()
+				return event.preventDefault()
+			})
+
+utilizar multiples comandos de rails => rails db:{migrate,seed}
+
+Active Support métodos:
+	- pluralizar string en inglés => string.pluralize
+	- singularizar string en inglés => string.singularize
+	- convertir los strings de forma más legible para las personas => string.humanize
+	- convertir un string en formato título => string.titleize
+
+agregar tiempo de la actual => 3.tiempo.from_now
+
+para sumar todos los elementos de un array => array.sum
+
+manejar estados en Rails:
+	- instalar la gema => gem 'state_machine'
+	- empezar el state_machine => state_machine :atributo_asignado, initial: :estado_inicial do; eventos_transiciones; end
+		- agregar evento => event :nombre_evento do; funcionalidad; end
+			- agregar transicion => transition estado: :otro_estado
+	- verificar si se puede realizar un evento => objecto.can_evento?
+	- realizar callbacks a las funciones:
+		- after_transition estado: [:otro_estado, ..], do: :metodo
+	- realizar un método cuando se haga el cambio de estado => state :nombre_estado do; funcionalidad; end
+
+cambiar el valor de una columna => change_column :tabla, :columna, :tipo, constraints: :valor, ...
+
+para manejar las posiciones en listas => gem 'acts_as_list'
+	- indicar que modelos utilizarán la gema => acts_as_list, dentro de los modelos
+
+librería de sass mixins y functions para hacerlo más eficiente => gem 'bourbon'
+
+acceder a los servidores memcached para mejorar performancia del cliente => gem 'dalli'
+
+librería de facebook para poder soportar la Graph API => gem 'koala'
+
+manejar bloqueos, permitir y acelerar las consultas basado en las propiedades del request => gem 'rack-attack'
+
+una forma simple de estandarizar la forma de crear service objects (comandos) => gem 'simple_command'
+
+para poder utilizar rangos con fechas en el método where => Modelo.where(columna: incial..final)
+
+obtener inicio de semana => DateTime.now.at_beginning_of_week, sería el lunes a las 00 horas
+
+obtener fin de la semana => DateTime.now.at_end_of_week, sería el domingo a las 23:59 horas
+
+obtener los nombres de las columnas de un modelo => Modelo.column_names
+
+obtener los atributos de un objeto => objeto.attributes
+
+utilizar un tipo de formato para responder en el controller via link => ruta_path(format: :csv)
+
+exportar CSV:
+  - requerir la librería en config/application.rb => require 'csv'
+  - responder con el formato CSV => format.csv { send_data @objetos.to_csv }
+  - crear un método al modelo =>
+      def self.to_csv(fields = column_names, options = {})
+        CSV.generate(options) do |csv|
+          csv << fields
+          all.each do |objeto|
+            csv << objeto.attributes.values_at(*fields)
+          end
+        end
+      end
+
+importar CSV:
+  - requerir la librería en config/application.rb => require 'csv'
+  - crear un método en el modelo =>
+      def self.import(file)
+        CSV.foreach(file.path, headers: true) do |row|
+          objeto_hash = row.to_hash
+          objeto = find_or_create_by!(columna: objeto_hash['columna'])
+          objeto.update_attributes(objeto_hash)
+        end
+      end
+
+generar un path a un archivo => File.join(Rails.root, 'archivo'), es necesario cuando un archivo no es creado dentro del root de archivos sino en una subcarpeta
+
+renderizar archivos para descargarlos => format.csv { send_data attachment, filename: 'nombre_archivo' }
+
+usar traducciones para los atributos:
+  - agregar en el local yml => idioma: activerecord: modelo: atributo: valor
+  - para poder utilizar la traducción => Modelo.human_attribute_name(columna)
+
+obtener el primer usuario o instancia uno => Modelo.where(consulta).first_or_initialize
+
+asignar nuevos atributos al objeto (almacenado o no) => objeto.assign_attributes(columna: valor, ...)
+
+convertir un array en diferentes argumentos para un método => método(*array)
+
+verificar si el objeto ya ha sido guardado en la BD => objeto.new_record?
+
+incrementar un valor Number de una columna => objeto.increment(:columna, cantidad_opcional), opcionalmente se muestra la cantidad por cuanto aumentar aunque por defecto es uno
+  - tiene una versión bang que actualiza directamente => objeto.increment!(:columna, cantidad_opcional)
+  - directamente desde el modelo => Modelo.increment_counter(:columna, id_objeto)
+
+decrementar un valor Number de una columna => objeto.decrement(:columna, cantidad_opcional), opcionalmente se muestra la cantidad por cuanto disminuir aunque por defecto es uno
+  - tiene una versión bang que actualiza directamente => objeto.decrement!(:columna, cantidad_opcional)
+  - directamente desde el modelo => Modelo.decrement_counter(:columna, id_objeto)
+
+no usar las validaciones cuando se guarde => objeto.save(validate: false)
+
+cambiar el valor de un atributo boolean => objeto.toggle(:atributo)
+  - tiene una versión bang que cambia directamente el atributo => objeto.toggle!(:atributo)
+
+actualizar múltiples columnas Number => Modelo.update_counters(id_objeto|[id_objeto, ..], atributo: cantidad, atributo: cantidad, ...), la cantidad puede ser negativa o positiva
+
+actualizar automaticamente el update_at u otro atributo con el tiempo actual => objeto.touch, actualiza el updated_at y objeto.touch(:atributo) actualiza el atributo con la fecha actual
+
+validaciones:
+  - verificar si un checkbox ha sido confirmado => acceptance: true
+    - cambiar el mensaje => acceptance: { message: 'mensaje personalizado' }
+    - cambiar el tipo de valores que serán aceptados (por defecto es que no sea nil) => acceptance: { accept: [valor, valor, ..] }
+  - validar la asociación => validates_associated :relacion, no se deben hacer en los dos modelos porque sino uno se llama al otro y genera un loop infinito
+  - crear un atributo para confirmar el valor => confirmation: true, lo crea como atributo_confirmation
+    tambien una vez que se agrega el atributo luego se puede validar el valor
+    - también se puede para que no afecte las mayúsculas o minúsculas => confirmation: { case_sensitive: false }
+  - excluir que valores no deben estar => exclusion: { in: %w[valor ..], message: "%{value} resto mensaje opcional" }, también se puede usar within en lugar de in (es lo mismo)
+  - validar el formato con un regexp => format: { with: /regexp/, message: 'mensaje opcional' }
+    - se puede indicar como no debería ser el atributo => format: { without: /regexp/ }
+  - que elementos deben estar incluidos => inclusion: { in: %w[valor ..] }, se puede usar también within
+  - validar la cantidad de caracteres => length: { tipo: valor }
+    - indicar que no sea menor a => minimum: valor
+    - indicar el máximo posible => maximum: valor
+    - entre cuales valores => in: valor..valor
+    - que sea igual a => is: valor
+    personalizar los mensajes => wrong_length: 'mensaje', too_long: 'mensaje', too_short: 'mensaje'
+  - validar los números => numericality: { validaciones }
+    - validar que solamente sea un entero no un flotante => only_integer: valor
+    - mayor a un número => greater_than: valor
+    - mayor o igual a un número => greater_than_or_equal_to: valor
+    - menor a un número => less_than: valor
+    - menor o igual a un número => less_than_or_equal_to: valor
+    - igual a un número => equal_to: valor
+    - que no debe ser igual => other_than: valor
+    - para números impares => odd: valor
+    - para números pares => even: valor
+  - validar que exista un valor => presence: valor
+  - validar una relación de que existe => relation, inverse_of :modelo_del_archivo_actual
+  - validar de manera contraria la presencia => absence: valor, a diferencia de presence este se pone el valor contrario
+  - validar de que el valor sea único => uniqueness: valor
+    - limitar por uno o mas atributos => scope: :atributo
+    - diferenciar entre mayúsculas y minúsculas => case_sensitive: valor
+  - permitir que se puedan tener valores nil => allow_nil: valor
+  - permitir que se pueden tener valores nil y strings vacios => allow_blank: valor
+
+manejar mensajes personalizados para las validaciones => los mensajes aceptan tanto strings como procs
+  - en el mensaje se pueden acceder a 3 valores => %{model} %{attribute} %{value}
+  - el proc maneja dos atributos, el primero contiene el objeto que esta siendo validado y el segundo los 3 valores del mensaje =>
+    message: -> (object, data) { data[:attribute], data[:model], data[:value] }
+
+condicionar las validaciones => validates validacion, if|unless: :método?|Proc.new { |object| condicional }
+  - condicional en grupo => with_options if|unless: :méthod? do |object|; object.validates validacion...; end
+  - combinar condicionales => validates validacion ..., if: [Proc, :metodo, ...], unless: [Proc, :metodo]
+
+indicar cuando debe ocurrir la validación => validates validacion.., on: :create|update
+
+lanzar una validación estricta (ActiveModel::StrictValidationFailed) => validates :atributo, tipo_validacion: { strict: valor } o validates :atributo, validaciones, strict: valor
+
+crear un validador en una clase separada (helper validator) =>
+  - en app/models/validators =>
+    class ModeloValidator < ActiveModel::Validator
+      def validate(record); validacion y record.errors[:key_para_el_error] << "mensage" para agregar el error; end
+    end
+  - dentro del modelo => validates_with ModeloValidator
+  también se pueden pasar opciones de a que campos del modelo se le aplicará
+    - en la clase que valida, en el metodo validate => options[:key_usada_para_agrupar_los_campos]
+    - en el modelo => validates_with ModeloValidator, key_usada_para_agrupar_los_campos: [:atributo, :atributo, ....]
+  si la validación es lo suficientemente compleja y se quiera usar variables de instancia =>
+    - en la clase que valida =>
+      class ModeloValidator < ActiveModel::Validator
+        def initialize(objeto); @objeto = objeto; end
+        def validate; validar con metodos privados, etc y se pondría todo en @objeto.errors[] ; end
+      end
+    - en el modelo => validate do |objeto_modelo|; ModeloValidator.new(objeto_modelo).validate; end
+
+crear un validator para cada uno de los atributos que tengan una validación (helper validator) =>
+  - en app/models/validators =>
+      class ModeloValidator < ActiveModel::EachValidator
+        def validate_each(record, attribute, value); condiciones; end
+      end
+
+métodos para validar => validate :método, :método, ... y luego definir el método y condicionales que seguirá para cumplirse
+
+trabajando con errores =>
+  - obteners todos los errores => objeto.errors, es una instancia de ActiveModel::Errors
+    - indicar un atributo dentro del objeto errors mostrarán los mensajes que tiene => objeto.errors[:atributo]
+    - añadir un nuevo error al objeto errors => objeto.errors.add(:atributo, 'mensaje')
+    - devolver todos los mensajes en un hash => objeto.errors.messages
+    - devolver todos los mensajes en un array => objeto.errors.full_messages
+    - devolver un array con todos los atributos con un array que contiene un hash con sus errores => objeto.errors.details
+    - agregar un error cuando no está relacionado a ningun atributo del objeto => objeto.errors[:base] << 'mensaje'
+    - limpiar el objeto de errores => objeto.errors.clear
+
+validar en conjunto varios atributos (helper validator) =>
+  validates_each :atributo, :atributo do |record, attr, value|
+    record.errors.add(attr, 'mensaje') if value -condicion-
+  end
+
+modificar el formato del error del mensaje:
+  - version < 6 => idioma: errors: format: "%{attribute} %{message}"
+  - version >= 6 => idioma: activerecord: errors: models: nombre_modelo: format: "%{attribute} %{message}"
+  la diferencia es que ahora en la versión 6 puedes formatos personalizados por modelo
+
+indicar traducciones para errores por atributo => idioma: activerecord: errors: models: nombre_modelo: attributes: atributo: format: "%{attribute} %{message}"
+
+mostrar un mensaje de error de un atributo del objeto => objeto.errors.full_message(:atributo, texto_error)
+
+agregar dentro de las vistas una forma de reconocer los elementos del dom => dom_id(modelo_objeto) nos mostraría un modelo_id y en caso de que sea uno nuevo lo pone como new_modelo
+  - agregar un prefijo al dom_id => dom_id(objeto_modelo, :prefijo) dandonos un prefijo_modelo_id
+
+decorators => nos permiten poder tener una forma de utilizar código en la vista como un helper sin tener el problema de que se coloquen en el modelo
+  - crear una carpeta decorators que nos permita usar los decorators en application.rb => config.autoload_paths += %w( #{config.root}/app/decorators )
+
+eliminar todas las etiquetas html y comentarios dentro de un texto => helper.strip_tags(string)
+
+ver el formato del request => request.format
+
+agrupar por determinado atributo => Modelo.query.group_by(&:atributo)
+
+internationalization:
+  - la configuración, dentro del config/application.rb:
+    config.i18n.available_locales = [:idioma, ...]
+    config.i18n.default_locale = :idioma
+  - configurar las rutas:
+    scope "(:locale)", locale: /#{I18n.available_locales.join("|")}/ do
+      rutas
+    end
+  - metodo para el cambio de idioma, en app/controllers/application_controller.rb, como métodos privados
+    def set_locale; I18n.locale = params[:locale] || I18n.default_locale; end
+    def default_url_options(options = {}); { locale: I18n.local }.merge options
+  - link para cambiar de idioma => <%= link_to 'cambio', locale :idioma %>
+  - se puede manejar de distintas maneras los scopes => t('scope.traduccion') o t :traduccion, scope: :valor_scope
+  - traducir el nombre del modelo => Modelo.model_name.human, la traducción estaría en idioma: model: nombre_modelo: traducción
+
+manejar traducciones que ya no se usan y que no se asignaron => gem install i18n-tasks
+  un problema con la gema es con el i18n-tasks unused porque nos muestra las traducciones que no se está utilizando pero las traducciones de active_record, dates no las detecta
+
+remover columna => remove_column :tabla, :columna
+
+crear una columna array => add_column :tabla, :columna, :tipo, array: true
+
+reiniciar la secuencia del primary key de una tabla => ActiveRecord::Base.connection.reset_pk_sequence!('nombre_tabla')
+
+usar redis =>
+  - agregar en el Gemfile => gem 'redis-rails'
+  - en config/environments/development.rb =>
+    - cambiar el valor el cache store => config.cache_store = :redis_store, { host: 'localhost', port: 6379, db: numero_bd, password(opcional): valor, namespace(opcional): valor }
+  - en las vistas usar => <% cache 'nombre-del-cache', expires_in: tiempo(ejemplo => Time.now.beginning_of_hour + 1.hour) do %> contenido vista <% end %>
+
+manejar multiples aplicaiones con url personalizadas en local => gem prax
+
+registra acciones por acción o manualmente por modelo => con la gema impressionist
+  - instalar la gema => gem 'impressionist'
+  - generar las migraciones de la tabla de impressionist => rails g impressionist
+  - en el controlador => impressionist(@objeto)
+  - dentro del modelo que se utilizará el impressionist para agregar las relaciones => is_impressionable
+  - en otra vista el usar objeto.impressionist_count se pondrá un contador con las veces que se utilizo en el controlador
+
+implementación recaptcha => gem 'recaptcha'
+  - agregar las variables de entorno => RECAPTCHA_SITE_KEY y RECAPTCHA_SECRET_KEY
+  - agregar dentro de la vista => <%= recaptcha_tags options %>, las opciones que se pueden colocar son entre tema, tamaño, etc.
+    - para invisible recaptcha => <%= invisible_recaptcha_tags options %>
+  - verificar que se cumplió el recaptcha y en caso que no agregar el error al objeto => verify_recaptcha(model: objeto)
+
+gem thin => es un pequeño y rápido servidor web de Ruby
+
+gem whenever => es una gema para poder crear y hacer deploy de cron jobs
+
+preparar actioncable para production =>
+  - cambiar puma por thin => gem 'thin'
+  - añadir la configuración del faye websocket en cable/config.ru => Faye::Websocket.load_adapter('thin')
+  - cambiar el ejecutable en bin/cable => bundle exec thin start -C config/cable.yml
+  - crear el archivo en config/cable.yml =>
+    ---
+    chdir: la ruta del proyecto
+    environment: production
+    port: cualquier puerto menos el de puma si es que no se cambio el link de la websockets en los archivos JS
+    timeout: 30 tiempo para acabar la conexión
+    log: log/thin.log donde se encuentra el logfile
+    pid: tmp/pids/thin.pid donde se encuentra el pid de thin
+    max_conns: numero maximo de conexiones
+    max_persistent_conns: numero de conexiones exitosas
+    require: []
+    wait: 30 tiempo de espera
+    threadpool_size: 4
+    servers: 1
+    daemonize: si se ejecuta en el background
+    ssl: valor
+    ssl-disable-verify: si existe verificacion ssl
+    ssl_key_file: ssl/ssl.key
+    ssl_cert_file: ssl/ssl.crt
+    rackup: cable/config.ru donde llama al iniciado de la aplicacion
+  - para que se inicie actioncable cada vez que se hace reboot a la aplicación => instalar la gema whenever
+  - crear el archivo config/schedule.rb =>
+    every :reboot do
+      `bin\cable`
+    end
+
+redireccionar rutas http a https en config/production.rb => config.force_ssl = true
+  se pueden utilizar directamente de manera global pero siempre estará pidiendo que la cookie sea segura, también se puede utilizar en el controlador, pero unicamente afectara ese controlador
+
+usar travis-ci =>
+  - subir el proyecto a github y añadirlo en travis-ci.org
+  - crear el archivo .travis.yml =>
+    travis: indicar distribución, ej: trusty (ubuntu 14.04)
+
+utilizar webpacker para poder utilizar frameworks JS:
+  - agregar la gema => gem 'webpacker'
+  - realizar la instalación de los archivos con webpacker => rails webpacker:install
+  - instalar determinado framework => rails webpacker:framework
+  - agregar en el head de la aplicación:
+    - los estilos => stylesheet_pack_tag 'nombre_archivo', media: 'all', 'data-turbolinks-track': 'reload
+    - el javascript => <%= javascript_pack_tag 'nombre_archivo %>'
+
+user webpacker con vue =>
+  - rails new nombre_proyecto --webpacker=vue
+  - agregar en el layout =>
+    <%= javascript_pack_tag 'application' %>
+    <%= stylesheet_pack_tag 'application' %>
+  - en el javascript/packs/application.js => import 'archivo', para importar el archivo js que trata al componente
+  - para comprobar el elemento en el archivo que trata al componente =>
+    import Vue from 'vue/dist/vue.esm' // usar este archivo en el dist porque posee empaquetadores modernos
+    document.addEventListener('DOMContentLoaded', function() {
+      var el = document.querySelector('#id')
+      if (el != undefined) {
+        // Crear instancia de vue
+      }
+    })
+  - yarn add vue-turbolinks => para manejar turbolinks con vuejs
+  - yarn add vue-resource => una forma de hacer HTTP requests y manejar los response
+  - para poder utilizar los formularios sin problemas, antes de crear la instancia de vue =>
+    Vue.http.headers.common['X-CSRF-Token'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+
+usar react =>
+  - empezar el proyecto con adaptado para react directamente => rails new nombre_proyecto --webpack=react
+
+  - version 5 de Rails para levantar react =>
+    - versión webpacker => '3.2.2'
+    - package.json =>
+          "@rails/webpacker": "^3.2.1",
+          "babel-preset-react": "^6.24.1",
+          "bootstrap": "^3.3.7",
+          "create-react-class": "^15.6.2",
+          "jquery": "^2.1.4",
+          "jquery-ujs": "^1.0.4",
+          "prop-types": "^15.6.0",
+          "react": "^15.3.2",
+          "react-bootstrap": "^0.30.3",
+          "react-dom": "^15.3.2",
+          "react_ujs": "^2.4.3"
+
+  - con la gema react-rails => gem 'react-rails'
+    - tener los archivos para poder usar react => rails g react:install
+    - generar un componente => rails g react:component NombreComponente prop:tipo_prop ...
+    - poder usar un componente de React en la vista => <%= react_component("NombreComponente", { prop: valor, .. }) %>
+    - package.json =>
+        "@rails/webpacker": "^3.2.0",
+        "coffeescript": "1.12.7",
+        "moment": "^2.20.1",
+        "moment-timezone": "^0.5.14",
+        "stimulus": "^0.9.0"
+
+usar stimulus =>
+  - empezar el proyecto con webpack => rails new nombre_proyecto --webpack
+  - agregar stimulus => yarn add stimulus
+  - iniciar stimulus en app/javascript/packs/application.js =>
+    import { Application } from 'stimulus'
+    import { autoload } from 'stimulus/webpack-helpers'
+    const application = Application.start()
+    const context = require.context('./controllers', true, /\.js$/)
+    autoload(application, context)
+
+retornar un json por el controlador => render json: valor
+  - se puede agregar un status: :valor
+
+callbacks =>
+  - saltear un método en un controller => skip_before_action :method
+
+método callback para verificar si se cumple el CSRF => callback :verify_authenticity_token
+
+resetar todas las sessions, limpiandolas de todos los objetos e inicializando una nueva session => reset_session
+
+usar active_storage => es una interfaz para subir archivos directamente a la nube, recuperarlos y mostrar el contenido, progreso y barra de progreso
+  - crear la migración para poder utilizar active_storage => rails active_storage:install
+  - configurar el archivo config/storage.yml donde colocaremos el cloud que usaremos
+    - para amazon =>
+      amazon:
+        service: S3
+        access_key_id: key_value
+        secret_access_key: secret_key_value
+        region: us-east-1
+        bucket: nombre_bucket
+        endpoint: si se tiene una url con host de minio
+        force_path_style: usar el bucket despues del dominio
+  - en los archivos de configuración config/development.rb editar la linea => config.active_storage.service = :servicio, como esta puesto en storage.yml
+  - indicar que atributos van a ser subidos mediante el active storage, agregar en el modelo => has_one_attached :atributo
+  si sale error de bucket, crear mediante minIO
+  - descomentar y agregar en config/initializers/content_security_policy.rb =>
+    - policy.default_src :self, :https, 'dominioMinio'
+    - policy.img_src :self, :https, 'dominioMinio'
+  - verificar si el usuario tiene adjunta una imagen en el atributo => objeto.atributo.attached?
+  - ver el tipo de la imagen => objeto.atributo.content_type
+  - crear imagen => <%= image_tag url_for(objeto.atributo) %>
+  - verificar que sea el archivo una imagen => objeto.atributo.image?
+  - redimensionar una imagen, necesitamos la gem 'image_magick' => objeto.atributo.variant(resize: tamaño)
+  - habilitar las funciones JS en app/assets/javascript/application.js => //= require activestorage
+  - subir directamente la imagen a la nube, en el input agregar => direct_upload: true
+  - subir multiples imagenes => en el modelo has_many_attached :columna, y en el form, multiple: true
+  - remover una imagen => objeto.atributo.purge
+  - remover de manera async con active job => objeto.atributo.purge_later
+
+usar active_storage para streaming videos =>
+  - instalar stimulus => webpacker:install:stimulus
+  - instalar la módulo que usaremos => yarn add video.js
+  - añadir atributo que será añadido para subirse => has_one_attached :video
+  - crear el tag video en la vista, utilizando stimulus =>
+    <%= content_tag :div, data: { controller: 'video' } do %>
+      <%= content_tag :video, class: 'video-js', data: { target: 'video.player' } do %>
+        <%= tag :source, src: stream_episode_path(@objeto.video), type: @objeto.video.content_type %>
+      <% end %>
+    <% end %>
+  - crear un archivo video_controller.js =>
+    import { Controller } from 'stimulus'
+    import videojs from 'video.js'
+    import 'video.js/dist/video-js.css'
+    export default class extends Controller {
+      static targets = ['player']
+      connect() {}
+      initialize() {
+        let videoPlayer = videojs(this.playerTarget, {
+          controls: true,
+          playbackRates: [0.5, 1, 2],
+          autoplay: true,
+          fluid: true
+        })
+        videoPlayer.addClass('video-js')
+        videoPlayer.addClass('vjs-big-play-centered')
+      }
+      disconnect() {}
+    }
+  - crear un controlador despues de asignar su ruta =>
+    class StreamEpisodesController < ApplicationController
+      def show
+        episode = Episode.find(params[:id])
+        if episode.video.attached?
+          redirect_to url_for(episode.video), content_type: episode.video.content_type
+        else
+          redirect_to url
+        end
+      end
+    end
+
+indicar si al instalar una gema será requerida en el bundler o no => gem nombre_gem, require: valor, puede ser false indicando que no será requerido en el bundler o usar un 'nombre' para requerir con este
+  nombre en el archivo que se requiera
+
+usar s3 =>
+  - instalar la gema => gem 'aws-sdk-s3'
+
+crear una url a partir de los parametros dados => url_for(parametros...)
+
+stripe =>
+  - instalar la gema => gem 'stripe'
+  - guardas las key y secret key => stripe_public_key y stripe_secret_key
+  - crear un initializer para stripe => Stripe.api_key = Rails.application.secrets.stripe_private_key
+
+sidekiq:
+  - usar la gema => gem 'sidekiq'
+  - indicarle a Active Job que utilizará de adaptador de colas, en config/application.rb => config.active_job.queue_adapter = :sidekiq
+    - no es necesario utilizar sidekiq en entorno de desarrollo => config.active_job.queue_adapter = Rails.env.production? ? :sidekiq : :async
+  - crear un initializer sidekiq.rb =>
+    Sidekiq.configure_server do |config|
+      config.redis =  { url: 'redis//localhost:6379/0' }
+		end
+    Sidekiq.configure_client do |config|
+      config.redis =  { url: 'redis//localhost:6379/0' }
+    end
+  - generar un job => rails g job nombre_job
+  - dentro del job en el método perform se realiza toda la lógica que se necesita
+  - llamar al job => NombreJob.perform_later
+  - utilizar sidekiq web, en config/routes.rb =>
+    require 'sidekiq/web'
+    mount Sidekiq::Web => '/sidekiq'
+
+pedir un valor de un atributo sin que salga error por ser nil => objecto.try(:atributo)
+
+poder ejecutar un bundle install con una version diferente (desactualizada) => bundle _version_ install
+
+utilizar carrierwave => gem 'carrierwave'
+  - generar el archivo de subida => rails g uploader NombreUploader
+  - en el archivo uploader =>
+    - descomentar el include del module de minimagick => include CarrierWave::MiniMagick
+    - indicar que extensiones se podrán subir => def extension_whitelist; %w(extension extension); end
+    - indicar la version que se utilizará de la imagen =>
+      version :nombre do
+        process resize_to_fit: [alto, ancho] # son enteros en pixeles el alto y ancho
+      end
+  - se debe generar el atributo donde se guardará el archivo en el modelo =>
+    - para SQLite => rails g migration add_atributo_to_model atributo:string
+    - para PostgreSQL o MySQL => rails g migration add_atributo_to_model atributo:json
+  - en el modelo indicar el atributo que se utilizará para la subida de imagenes =>
+    mount_uploader :atributo, NombreUploader
+  - utilizar url con la versión del upload => model.atributo_url(:version)
+
+utilizar refile con minimagick =>
+  - requerir las gemas =>
+    gem 'refile', require: 'refile/rails', git: 'https://github.com/pgericson/refile.git', branch: 'stupid-hack-sinatra-version'
+    gem 'refile-mini_magick'
+  - generar la migración para añadir las características de la imagen =>
+    rails g migration add_model_image_to_model profile_image_id:string profile_image_filename:string profile_image_size:string profile_image_content_type:string
+  - instalar localmente imagemagick => apt-get install imagemagick
+  - indicar que atributo es el que tendrá la caracteristicas => attachment :atributo, type: :image, el type causa una validacion de que sea una imagen y la migración debe tener un _id:string
+  - en el formulario se utiliza => f.attachment_field :atributo
+
+asignar atributos => @objeto.assign_attributes(parametros)
+
+indicar que no es necesaria la asociación => belongs_to :asociacion, nullify: valor
+
+callbacks =>
+  - se puede usar callbacks mediante métodos o por un bloque => callback do: funcionalidad; end o callback :metodo
+  - se puede limitar por el ciclo de vida del objeto => callback :metodo, on: [:create, :update]
+  - callbacks al crear un objeto =>
+    - before_validation
+    - after_validation
+    - before_save
+    - around_save
+    - before_create
+    - around_create
+    - after_create
+    - after_save
+    - after_commit/after_rollback
+  - callbacks al actualizar un objeto =>
+    - before_validation
+    - after_validation
+    - before_save
+    - around_save
+    - before_update
+    - around_update
+    - after_update
+    - after_save
+    - after_commit/after_rollback
+  - eliminando un objeto =>
+    - before_destroy, debe utilizarse antes de ser eliminadas por dependent: :destroy de la asociación
+    - around_destroy
+    - after_destroy
+    - after_commit/after_rollback
+  - after_save se ejecuta al crear y actualizar un objeto
+  - after_initialize => es un callback que se ejecuta cuando se instancie un objeto de active record (cuando es new o cuando es cargado de la bd)
+  - after_find => es un callback cuando se ha cargado un record de la bd, se ejecuta antes que el after_initialize
+  - after_touch => es un callback que se ejecuta cuando se hace touch al objeto, también se puede usar agregando el touch: true en un belongs_to, y afectara a los dos modelos
+  - podemos usar clases para callbacks => callback CallbackClass.new
+  - after_commit => se realiza una vez completada la transaction
+    - after_create_commit
+    - after_update_commit
+    - after_destroy_commit
+    - after_save_commit (crear, actualizar)
+  - after_rollback => cuando falla la transaction o consulta
+
+realizar una transaction => Modelo.transaction do; consultas; end
+
+crear una parte para el admin => activeadmin
+  - agregar las gemas necesarias => 'activeadmin', 'devise', 'inherited_resources', github: 'active_admin/inherited_resources'
+  - instalar activeadmin => rails g active_admin:install
+  - agregar un nuevo recurso al admin => rails g active_admin:resource nombre_resource
+  - agregar rutas que se ejecuten parte del codigo => member_action :nombre_ruta, method: :metodo do; funciones; end
+    - agregar un link a esa ruta => action_item :nombre_action, only: :rutas, do; link_to '', ruta ; end
+  - agregar los scopes => scope :all, scope :creado
+  - modificar el formulario => form |f| do; inputs e input a indicar; end
+  - indicar que la fila es seleccionable => selectable_column
+  - para poder manejar los valores de del filtrado usar un before_filter only: :metodo do; params; end donde los params nos daran los valores del filtrado
+  - cambiar el scope por defecto del index =>
+    controller do
+      def scoped_collection
+        Modelo.scope
+      end
+    end
+  - crear excel => config.xls_builder.column('Nombre columna') do |objeto|; acceder a atributo; end
+  - cambiar los links por defecto =>
+    column "" do |resource|
+      links = ''.html_safe
+      links += link_to 'Ver', admin_resource_path(resource), class: 'member_link show_link' # cambiar todos los resources por el objeto, también se pueden crear links para editar y eliminar
+      links
+    end
+
+actualizar la version =>
+  - empezar con los tests (comprobar su correcto funcionamiento)
+  - actualizar las gemas
+  - configuraciones
+  - volver a revisar todo el código y funcionalidad
+  - a través de git diff es una buena manera para ver el proyecto y diferencias en las bases
+  - analizar de código => gem 'simplecov', require: false, group: :test, para generar un reporte cada vez que se ejecute los tests
+  - cambiar la versión de rails en el gemfile
+  - actualizar la versión de rails => rake rails:update (versiones anteriores a la 4.2) o rails app:update
+
+- ver las estadisticas de la aplicación de rails => rails stats
+
+volver un string estilo parametro => string.parameterize
+
+infinite scrolling =>
+  - usar la gema => gem 'will_paginate'
+  - en el controlador ordenarlo por paginas => Modelo.paginate(page: params[:page], per_page: cantidad)
+  - en la vista agregar => <%= will_paginate @objetos %>
+  - crear un archivo coffeescript =>
+    $ ->
+      if $('.pagination').length
+        $(window).scroll ->
+          url = $('.pagination .next_page').attr('href')
+          if url && $(window).scrollTop() > $(document).height() - $(window).height() - 50
+            $('.pagination').text('Loading more objects')
+            $.getScript(url)
+        $(window).scroll()
+  - luego del metodo que se usa del controlador crear un js.erb =>
+      $('#id').append('<%= j render @objetos %>')
+      <% if @objetos.next_page %>
+        $('.pagination').replaceWith('<%= j will_paginate(@products) %>')
+      <% else %>
+        $('.pagination').remove()
+      <% end %>
+
+indicar el prefix de la ruta => scope module: :modulo do; rutas; end
+
+manejar GlobalID =>
+  - utilizar global id en los links => objeto.to_global_id
+  - utilizar global id signed para mayor seguridad => objeto.to_sgid(expires_in: tiempo)
+  - buscar el objeto por el global id => GlobalID::Locator.locate(global_id)
+  - buscar el objeto por el signed global id => GlobalID::Locator.locate_signed(global_id_signed)
+
+ver los time zones => rails time:zones:valor
+  - todos los horarios => rails time:zones:all
+  - solo de us => rails time:zones:us
+  - de modo local => rails time:zones:local
+
+crear un selector para seleccionar time zones => form.time_zone_select :columna
+
+cambiar el timezone de los atributos fecha =>
+  - directamente a una columna => objeto.columna_fecha.in_time_zone('valor timezone')
+  - dentro del application_controller.rb si queremos que sea automatico el cambio =>
+    around_action :metodo, if: :current_user
+    private
+    def metodo(&block)
+      Time.use_zone(current_user.time_zone, &block)
+    end
+
+validar que el valor de la columna time_zone tenga los valores adecuados => validates_inclusion_of :time_zone, in: ActiveSupport::TimeZone.all.map(&:name)
+
+manejar el time_zone de forma correcta =>
+  - cambiar el time_zone por default => Time.zone = 'valor'
+  - usar el time_zone en Time => Time.current
+  - usar el time_zone en Date => Date.current
+  - convertir un string al time_zone => Time.zone.parse(string_fecha)
+
+una alternativa para Dependency Injection cuando se necesita más simplesa =>
+  - utilizar la clase SimpleDelegator que nos facilita el uso de las clases, pudiendo utilizar sus métodos sin necesidad de indicar el objeto =>
+    class Modelo; def nombre_metodo end; end
+    class ModeloDecorator < SimpleDelegator
+      def metodo
+        funcionalidad
+      end
+    end
+    objeto = new ModeloDecorator(Modelo.new), esto nos permite poder utilizarlo con diferentes clases
+
+SimpleDelegator => clase para crear fácilmente clases decorator
+  - métodos de instancia =>
+    - cambiar el objeto delegado => __setobj__(objeto)
+    - obtener el objeto delegado => __getobj__
+
+action_cable =>
+  push notifications =>
+    - empezar las notificationes en la app, app/javascript/packs/application.js => Notification.requestPermission().then(result => { funcionalidad })
+    - generar el canal por el que se usara el actioncable => rails g channel notification_channel
+    - en app/channels/notification_channel.rb => def subscribed; stream_for "notification_channel"; end
+    - en app/javascript/channels/notification_channel.js =>
+      received(data) {
+        if (Notification.permission == "granted") { crear notificacion }
+      }
+    - en el método del controlador donde se utiliza => ActionCable.server.broadcast('notification_channel', data), data podria ser el mensaje (body) que se muestre en la notificacion
+
+implementar WYSIWYG =>
+  - summernote =>
+    - agregar la gema dentro del proyecto => gem 'summernote-rails'
+    - agregar el estilo en application.scss => @import "summernote";
+    - si utilizamos simple_form entonces podemos simplemente utilizar => <%= f.input :columna, as: :summernote %>, que sería lo mismo que data-provider="summernote"
+    - para poder tener bien summernote, necesitamos bootstrap y jquery
+    - en el application.js => aplicar cuando sea $(document).ready(funcion) o con turbolinks $(document).on('page:load', funcion)
+
+      $('[data-provide="summernote"]').each(function() {
+        $(this).summernote({
+          height: valor,
+          callbacks: {
+            onImageUpload: function(files) {
+              img = sendFile(this, files[0])
+            },
+            onMediaDelete: function(target, editor, editable) {
+              image_id = target[0].id
+              if (!!image_id) {
+                deleteFile(image_id)
+              }
+              target.remove()
+            }
+          }
+        })
+      })
+
+      function sendFile(that, file) {
+        data = new FormData
+        data.append('image[image]', file)
+        $.ajax({
+          data: data,
+          type: 'POST',
+          url: '/images',
+          cache: false,
+          contentType: false,
+          processData: false,
+          success: function(data) {
+            img = document.createElement('IMG')
+            img.src = data.url
+            img.setAttribute('id', data.image_id)
+            $(that).summernote 'insertNode', img
+          }
+        })
+      }
+
+      function deleteFile(file_id) {
+        $.ajax
+          type: 'DELETE',
+          url: "/images/#{file_id}",
+          cache: false,
+          contentType: false,
+          processData: false
+      }
+
+    - mostrar el contenido del summernote => objeto.columna.html_safe
+    - crear la migracion para el uso de refile despues de la instalacion => rails g model image image_id image_filename image_size:integer image_content_type
+    - crear el controlador para manejar las rutas para las imagenes app/controllers/images_controller.rb =>
+      protect_from_forgery except: :create
+      def create
+        @image = Image.new(image_params)
+        @image.save
+        respond_to do |format|
+          format.json { render :json => { url: Refile.attachment_url(@image, :image), image_id: @image.image_id } }
+        end
+      end
+
+      def destroy
+        @image = Image.find_by(image_id: params[:id])
+        @image.destroy
+        respond_to do |format|
+          format.json { render :json => { status: :ok } }
+        end
+      end
+
+      private
+
+      def image_params
+        params.require(:image).permit(:image)
+      end
+    - crear la asociacion del modelo con las imagenes de una a muchas
+
+polymorphic associations =>
+  - crear el modelo con sus respectivos campos => rails g model modeable:references{polymorphic} campos.., al indicar que es polymorphic entonces creara dos campos modeable_id y modeable_type
+  - realizar las asociaciones en los modelos =>
+    - en el modelo que tendrá el polymorphic => belongs_to :notable, polymorphic: true
+    - en los modelos que se usará => has_many :modelo, as: :modeable
+  - dentro de las rutas para poder identificar cada uno =>
+    resources :modelos do
+      resources :modelo_polymorphic, module: :modelos
+    end
+    esto es en todos los modelos que se usará
+  - crear un controlador para refactorizar el código del modelo_polymorphic y de este extienda en el determinado module::modelo_polymorphic que se creo
+  - crear el form para usar => <%= form_with(model: [@modelo, ModeloPolymorphic.new], local: true) do |form| %>
+
+indicar que métodos proteger contra CSRF => protect_from_forgery, es un callback que puede tener only|except
+
+desactivar la protección contra CSRF => skip_before_action :verify_authenticity_token
+
+form_with una combinación de form_for y form_tag =>
+  - podemos indicar tanto la url o el modelo a usar => url: url ó model: objeto
+  - no necesitamos hacer wrappers, podemos indicar directamente a el formulario o inputs
+  - se deben agregar los ids y clases manualmente
+  - no pide obligatoriamente que en el objeto tenga los atributos
+  - todos los formularios vienen con remote: true por lo que para deshabilitarlo => local: true
+
+tests =>
+  - model specs => validaciones, asociaciones, scopes y business logic
+  - controller specs => status code, content type, layout/template renderizado, flash messages, inserts, updates, deletes, redirects
+  - helper specs => specific view helpers, methods, desired ouput
+
+rspec => gem 'rspec-rails'
+  - tener el proyecto instalado con rspec => rails generate rspec:install
+  - generar un test para el modelo => rails g rspec:model nombre_modelo
+  - generar un test para el controlador => rails g rspec:controller nombre_controlador_plural
+  - generar un test para funcionalidad de la aplicación en el browser (capybara) => rails g rspec:feature nombre
+  - indicar que sea más preciso con los test que no pasaron => crear un archivo .rspec y agregar --format documentation
+  - dentro de los specs se agrega context 'string para el contexto' do; tests end
+  - los tests => it 'nombre test' do; testeo; end
+    - elemento que debe dar el valor igual => expect(valor).to eq(valor esperado)
+    - una forma de tener variables memorizadas en los tests => let (:variable) { valor }
+      - utilizar el let! (:variable) { valor } indicaría que se utilizará en todos los tests
+    - acciones antes de que se ejecuten los tests => before(:each) do; acciones; end
+    - probar el método CRUD del controlador => metodo :metodo, params: { parametros }, los parametros son opcionales
+    - comprobar qué la respuesta es exitosa => expect(response).to have_http_status(:successful)
+  - agregar simplecov para generar reportes cuando se realicen los tests => gem 'simplecov', require: false, group: :test
+    - dentro del spec_helper.rb => SimpleCov.start
+  - capybara => es una gema que nos permite poder simular las interaciones del usuario mediante el browser con nuestra aplicación
+    - poner libreria => gem 'capybara', group: :test
+    - requerir la gema en rails_helper.rb => require 'capybara/rails'
+    - generar un rspec:feature
+    - en lugar de utilizar it se usa scenario 'descripcion' do; end
+    - ir hacia una pagina => visit _path
+    - llenar el formulario por selector => within('selector') do; fill_in 'Atributo', with: 'valor'; end
+    - darle click al botón => click_button 'Nombre boton'
+    - asertar el contenido que tenga la página => expect(page).to have_content('mensaje de la pagina')
+    - asertar un cambio en la bd => expect { click_button 'nombre' }.to change(Modelo, :count).by(cantidad)
+    - testear el JS del browser => gem 'selenium-webdriver'
+      - instalar localmente el software geckodriver(firefox) o selenium_chrome(chrome)
+      - agregar en rails_helper.rb => Capybara.default_driver = :selenium
+    - aceptar el dialog de confirmación => accept_confirm do; asserts; end
+  - ejecutar el test especificamente => rspec spec/tipo/archivo:linea_codigo
+  - factory bot => nos proporciona metodos para la automatizacion adecuada de los tests
+    - poner las librerías => gem 'factory_bot_rails' y gem 'faker'
+    - crear un archivo en spec/support/factory_bot.rb que sería un initializer =>
+      RSpec.configure do |config|
+        config.include FactoryBot::Syntax::Methods
+      end
+    - requerir el archivo en rails_helper.rb => require 'support/factory_bot'
+      - usar esto si se tiene varios archivos de configuración => Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+      - crear una carpeta para los archivos spec/factories, dentro del archivo =>
+        FactoryBot.define do
+          factory :nombre_variable do
+            atributo { valor, usar Faker }
+          end
+        end
+      - dentro del test crear la variable =>
+        - Modelo.new => let (:variable) { build(:variable_factory) }
+        - Modelo.create => let (:variable) { create(:variable_factory) }
+          tambien se puede agregar un atributo cuando se crea la variable => { build(:variable_factory, atributo: valor) }
+        - crear una lista de objetos => let(:variables) { create_list(:variable_factory, cantidad_variables) }
+  - parallel_tests => poder correr tests en diferentes núcleos del CPU
+    - gem 'parallel_tests'
+    - en database.yml en la parte de test: db/test<%= ENV['TEST_ENV_NUMBER'] %>.sqlite3
+    - crear las db de test => rails parallel:create
+    - ejecutar las migraciones => rails parallel:migrate
+    - ejecutar test(s) => rails "parallel:spec[^spec/(directorio)/(archivo_opcional)]"
+  - database_cleaner => para limpiar la bd después de los tests
+    - gem 'database_cleaner'
+    - crear un archivo en spec/support/database_cleaner.rb que sera un initializer =>
+      RSpec.configure do |config|
+        config.before(:suite) do
+          DatabaseCleaner.clean_with(:truncation)
+        end
+        config.before(:each) do
+          DatabaseCleaner.strategy = :transaction
+        end
+        config.before(:each, type: :feature) do
+          DatabaseCleaner.strategy = :truncation
+        end
+        config.before(:each) do
+          DatabaseCleaner.start
+        end
+        config.after(:each) do
+          DatabaseCleaner.clean
+        end
+      end
+
+utilizar SendInBlue =>
+  - para la versión 2 =>
+    - gema => gem 'sendinblue'
+    - configurar en environment/...rb =>
+      config.action_mailer.raise_delivery_methods = true
+      config.action_mailer.perform_deliveries = true
+      config.action_mailer.delivery_method = :smtp
+      config.action_mailer.smtp_settings = {
+        :address => '',
+        :port => 587,
+        :user_name => 'USER NAME SENDINBLUE',
+        :password => 'PASSWORD SENDINBLUE',
+        :authentication => 'login',
+        :enable_starttls_auto => true
+      }
+  - para la version 3 API =>
+    - gema => gem 'sib-api-v3-sdk'
+    - crear un initializer init_sendinblue.rb =>
+      require 'sib-api-v3-sdk'
+      SibApiV3Sdk.configure do |config|
+        # Configure API key authorization: api-key
+        config.api_key['api-key'] = ENV['SENDINBLUE_API_KEY']
+      end
+
+indicar los archivos que se van a precompilar => Rails.application.config.assets.precompile = %w( nombre_archivo.extension )
+
+fullcalendar =>
+  - instalar gems => gem 'fullcalendar-rails' y gem 'momentjs-rails'
+  - agregar en el application.js =>
+    //= require moment
+    //= require fullcalendar
+    //= require fullcalendar/locale-all
+  - agregar para los estilos en application.css =>
+    *= require fullcalendar
+  - crear un archivo js full_calendar.js =>
+    var initialize_calendar
+    initialize_calendar = function() {
+      $('.calendar').each(function() {
+        var calendar = $(this)
+        calendar.fullCalendar({ configuracion })
+      })
+    }
+    $(document).on('turbolinks:load', initialize_calendar)
+
+serialize attributes => cuando se guarda configuración o varios valores para tomarlos dentro de un hash o json
+  - dentro del modelo =>
+    serialize :atributo, clase_o_codificador # para el codificador puede ser un Hash o un JSON
+    after_initialize do
+      %w(atributo atributo).each do |property|
+        define_singleton_method property do
+          atributo_nombre[property]
+        end
+      end
+    end
+  - en el formulario =>
+    f.simple_form_fields :atributo_serializado do |ff|
+      ff.input :atributo_dentro, input_html: { value: objeto.atributo_serializado[:atributo_dentro] }
+  - en el controlador =>
+    - primera forma => params.require(:objeto).permit(..., atributo_serializado: [:atributo_dentro, ...])
+    - segunda forma =>
+      inside_serialized_fields = []
+      params.require(:user).each do |key, value|
+        inside_serialized_fields << value.keys if key == 'nombre_atributo_serializado'
+      end
+      [].tap do |attributes|
+        attributes << { atributo_serializado: inside_serialized_fields }
+      end
+  NOTA: si se usa postgres para JSON no es necesario serializarlo porque automaticamente lo serializará
+
+refactorización de modelos =>
+  - crear un archivo dentro de una carpeta cuando el modulo del concern es únicamente para organizar el código del modelo
+  - poner en el concern normal cuando el código es para múltples modelos
+  - para usar el archivo como concern => extend ActiveSupport::Concern
+
+crear un hex random => SecureRandom.hex
+
+verificar que el valor existe en la clase => objeto.class.exists?(atributo: valor)
+
+meta-tags => mejorar el manejo del SEO
+  - instalar gema => gem 'meta-tags'
+  - crear un initializer para la gema config/initializers/meta_tags.rb =>
+    MetaTags.configure do |c|
+      c.title_limit = 70
+      c.description_limit = 160
+      c.keywords_limit = 255
+      c.keywords_separator = ', '
+    end
+  - agregar la función para añadir los tags en el layout application.html.erb => <%= display_meta_tags %>
+  - agregar al método del controlador en como se utilizará los meta tags =>
+    set_meta_tags title: 'valor',
+                  site: 'valor',
+                  description: 'valor',
+                  twitter|og: { # configuración para twitter o para instagram/fb (og)
+                    card: 'valor',
+                    site: 'valor',
+                    title: 'valor',
+                    description: 'valor'
+                  },
+                  alternate: { # util para cuando se quiere otro url para otro idioma
+                    { href: 'url', hreflang: 'valor' }
+                  }
+
+validaciones para el cliente => client_side_validations
+  - añadir para uso en form normal => gem 'client_side_validations', github: 'DavyJonesLocker/client_side_validations'
+  - añadir con la anterior esta gema si se quiere usar con simple_form =>
+    gem 'client_side_validations-simple_form', github: 'DavyJonesLocker/client_side_validations-simple_form'
+  - instalar para generar el initializer => rails g client_side_validations:install
+  - copiar los assets de la gema en el propio proyecto => rails g client_side_validations:copy_assets
+  - si usamos Turbolinks, en el archivo app/assets/javascripts/rails.validations.js en la línea 658 =>
+    cambiar page:load con turbolinks:load, porque es de la última version de Turbolinks
+  - agregar en el formulario => simple_form_for @objeto, validate: true
+  - cuando se renderiza el formulario mediante un format js se necesita agregar =>
+    - en el formulario => simple_form_for @objeto, validate: true
+    - en el js.erb => $('form[data-validate]').enableClientSideValidations()
+  - se pueden manejar diferentes callbacks para el formulario =>
+    - cuando el formulario aun no es exitoso =>
+      window.ClientSideValidations.callbacks.element.fail = function(element, message, callback) {
+        $('.submit').prop('disable', true)
+        callback()
+      }
+    - cuando el formulario es exitoso =>
+      window.ClientSideValidations.callbacks.element.pass = function(element, message, callback) {
+        $('.submit').prop('disable', false)
+        callback()
+      }
+
+OpenStruct => crear objetos rapidamente
+  - convertir la clase en un hash => objeto_struct.marshal_dump
+
+manejar JSON =>
+  utilizar la gema => require 'json'
+  convertir de un JSON => JSON.parse(response)
+    - convertir con las keys en symbols => JSON.parse(response, symbolize_names: true)
+    - convertir creando un objeto de clase => JSON.parse(response, object_class: Clase)
+  convertir los objetos en json => objeto.to_json
+
+proyecto API =>
+  - empezar un proyecto adaptado para crear una API => rails new nombre_app --api
+  - adaptar las rutas para utilizar api => namespace :api, path: '/', constraints: { subdomain: 'api' } do; rutas; end
+  - utilizar gema ActiveModelSerializer para poder renderizar con json => gem 'active_model_serializers'
+  - crear un directorio app/serializers y la clase padre para manejarlo =>
+    class ApplicationSerializer < ActiveModel::Serializer
+      include Rails.application.routes.url_helpers # obtener acceso a las rutas
+      default_url_options[:host] = 'api.host' # esto únicamente si se utiliza un host distinto
+    end
+  - indicar que serializer se utilizará en el controller de la api =>
+    - en show => render json: @variable, serializer: ModeloSerializer
+    - en index => render json: @variables, each_serializer: ModeloSerializer
+  - generar un serializer => rails g serializer nombre_modelo
+  - en el serializer =>
+    - atributos que se mostrarán => attributes :columna, ...
+    - renderizar el html de un controlador =>
+      attributes :metodo
+      def metodo
+        ModeloController.render(:metodo, assigns: { variable_instancia: object }, layout: si_se_coloca_el_application)
+      end
+
+json web token (JWT) =>
+  - secciones del token =>
+    - header: incluye información sobre el token
+    - payload (contenido): incluye la información que se quiere transmitir
+    - signature (firma): es usado para verificar que no haya sido utilizada la información contenida en el payload y el header
+  - tipos de token JWT:
+    - token firmados pero no encriptados: puede ser codificado por cualquiera porque no está encriptado, pero la firma verifica que el contenido no haya sido modificado
+    - token firmados y encriptados: no pueden ser decodificados a menos que la parte que reciba el token tenga la llave para desencriptarlo
+  - cargar la gema para la API => gem 'knock' # está bastante adaptado para poder integrarse con gem 'devise'
+  - instalar la gema para crear el initializer => rails g knock:install
+  - generar un controlador y una ruta para el token => rails g knock:token_controller nombre_controlador
+
+  validar JWT las SPA => gem jwt_sessions
+
+doorkeeper:
+  version 5.3.2:
+  - para agregar autorización dentro de una ruta => before_action :doorkeeper_authorize!
+  - refrescar token => use_refresh_token
+  - para manejar configuraciones de credenciales => resource_owner_credentials do { block }
+
+  version 4.0.0.rc1:
+  - usar un tipo de token => Doorkeeper.configuration.token_grant_types << 'password'
+  - obtener el id del usuario actual => doorkeeper_token.resource_owner_id
+
+  - requerir la gema oauth2 para integrarla => gem install oauth2
+    - crear un cliente de oauth2 => client = OAuth2::Client.new(application_uid_de_doorkeeper, secret_id_de_doorkeeper, site: 'url')
+    - crear un token para acceso => token = client.password.get_token(usuario, password)
+      - verificar que el token no expiro => token.expired?
+      - obtener el token que nos permitirá ingresar a los endpoints => token.token
+      - obtener el token que nos permitirá generar un nuevo token => token.refresh_token
+      - obtener json de una ruta => token.get('url').parsed
+      - refrescar el token, volviendo invalido el anterior => new_token = token.refresh!
+
+tratar requests maliciosos =>
+  - instalar la gema => gem 'rack-attack'
+  - en config/application.rb => config.middleware.use Rack::Attack
+  - crear un initializer config/initializers/rack_attack.rb =>
+    class Rack::Attack
+      # Rack::Attack.cache.store = ActiveSupport::Cache::MemoryStore.new # nos permite mantener almacenada la configuración de throttle, allow2ban y fail2ban en memcached o redis
+
+      configuraciones
+    end
+
+habilitar subdominios en development, agregar en config/environments/development.rb => config.action_dispatch.tld_length = 0
+
+manejar asociaciones entre modelos =>
+  - indicar de que la asociación puede ser opcional => asociacion :modelo, optional: true|false
+
+implementar un hash para poder usar symbol o string como key al llamar un valor => new_hash = HashWithIndifferentAccess.new(hash) | new_hash = hash.with_indifferent_access
+  - ahora se podrá hacer => new_hash[:key] o new_hash["key"]
+
+Psych => es un analizador y emisor de YAML
+  - convertir un objeto en yaml => objeto.to_yaml
+  - convertir un yaml a un objeto => YAML.safe_load(objeto_yaml)
+    - sale un error de Psych::DisallowedClass cuando son clases fuera de la whitelist de YAML por lo que se debe indicar => YAML.safe_load(objeto_yaml, [Clase, Clase, ...]), indicando la clase que no esta en whitelist
+    - cuando se manejan fechas (clase más complejas que las de whitelist) y se colocan dos valores iguales dentro de un hash, sale un error Psych::BadAlias por lo que se debe indicar que está permitido usar dos valores iguales
+      YAML.safe_load(objeto_yaml, [Clases, ...], [], true)
+    - se debe considerar que estos dos errores son para evitar diferentes problemas de seguridad
+      - Psych::DisallowedClass => deserializar symbols puede exponer a la aplicación a un ataque DoS
+      - Psych::BadAlias => analiza yaml bombs que constituyen un ataque DoS
+
+manejar secrets => para mantener las credenciales
+  - cuando la aplicación es monolítica => encriptar el archivo con las credenciales
+  - cuando la aplicación es grande y compleja => un almacenamiento centralizado con todas las credenciales de los servicios (centralized storage)
+  - en Rails 5.1 existia el archivo secrets pero a partir de 5.2 se empieza a usar credentials
+  - en Rails 5.2
+    - para poder editar las credentials y esto generará las nuevas credentials dandonos el master.key y credentials.yml.enc => EDITOR="vim -f" rails credentials:edit
+    - master.key es la contraseña para encriptar y desencriptar las credentials (está en .gitignore), se debe tener cuidado al manejar con otros devs
+    - acceder a los credentials => Rails.application.credentials.nombre_key
+    - para colocar en heroku o aplicaciones en prod para que puedan manejar las credentials, en master.key => RAILS_MASTER_KEY=valor_key
+    - configurar para manejar las credenciales en distintos archivos =>
+      - en config/application.rb, agregar una opción que manejará las variables =>
+        config.after_initialize do
+          Rails.application.credentials.env = RailsEnv.new
+        end
+      - crear clase RailsEnv en config/ =>
+        class RailsEnv
+          def initialize
+            load_environment_variables unless Rails.env.production? # se cargará las credenciales en los entornos de development y test
+            allow_encrypted_credentials # permitir usar las credentials encriptadas cuando en development o test no están asignadas
+          end
+          def load_environment_variables
+            return unless File.exist?(file_name)
+            HashWithIndifferentAccess.new(YAML.safe_load(File.open(file_name))).each do |key, value|
+              self.class.define_method(key.downcase) { value }
+            end
+          end
+          def allow_encrypted_credentials
+            self.class.define_method(:method_missing) do |m, *_args, &_block|
+              Rails.application.credentials.send(m)
+            end
+          end
+          def file_name
+            Rails.root.join('config', "#{Rails.env}.yml")
+          end
+        end
+    - en Rails 6 => Rails adopta a manejar distintos archivos con sus respectivas master keys por environment
+      - se maneja tal cual como en Rails 5.2 solo con unos cambios por tener los archivos ya separados con el comando => EDITOR="vim -f" rails credentials:edit --environment nombre_environment
+        creará los archivos en credentials/ como => environment.yml.enc y environment.key
+        es mejor manejar las credentials de production con el archivo principal credentials.yml.enc en lugar de crear uno en la carpeta credentials/
+
+geocoding => gem ''
+  - habilitar la API de Places de Google, el servicio tiene un límite diario antes de empezar a cobrar
+  -

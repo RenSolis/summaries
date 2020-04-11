@@ -1,0 +1,386 @@
+estructura para select:
+    SELECT
+    FROM
+    WHERE
+    GROUP BY
+    HAVING
+    ORDER BY
+
+operaciones de grupos en consultas:
+    UNION: no muestra las filas duplicadas
+    UNION ALL: muestra todas las filas
+    MINUS
+    INTERSECT
+
+DISTINCT: es una clausula que hace que un registro se muestre una sola vez
+
+WHERE:
+    LIKE: para hacer una comparación con los registros de una columna
+    IN(valor, valor, ...):  utilizar cuando se compara con múltiples valores, no se puede buscar '%palabra%' porque buscará el porcentaje
+
+SUBSTR(column, inicio, fin): nos devuelve determinada parte de un string
+
+SYSDATE: fecha y hora actual
+
+NUMROW: limita el número de filas (Oracle)
+
+cambiar password de user: ALTER USER nombre_usuario IDENTIFIED BY nuevo_password
+
+eliminar todas las tablas: select 'drop table', table_name, 'cascade constraints;' from user_tables;
+
+
+//////// CLASES ////////
+
+
+Base de datos: conjunto de datos persistentes lógicamente coherente con significado implicito, siendo una representación del mundo real
+
+Sistemas de base de datos = BD + SGBD + Software de Aplicación/Consultas
+
+de enfoque de base de datos:
+    naturaleza autodescriptiva
+        procesamiento de ficheros: la aplicación accede a datos específicos cuya estructura se describe en el propio código
+        sistemas de base de datos: contiene metadatos (descripción de la estructura de la BD)
+    separación entre programas y datos
+        procesamiento de ficheros: definición de datos forma parte de los programas de aplicación
+        sistemas de base de datos: descripción de estructura y organización de ficheros
+            independencia de datos: por la abstracción de datos (aislar dato de la BD) proporcionada por SGBD
+    datos compartidos y procesamiento de transacciones multiusuario
+        acceso simultáneo a datos sin interferencias ni inconsistencias
+        control de concurrencia por el SGBD
+    múltiples vistas de los datos
+        separar a cada usuario con la necesidad de información que necesita por vista
+    datos compartidos actualizados
+    flexibilidad ante los cambios
+    rápida creación de nuevas aplicaciones
+    cumplimiento de reglas, normas o políticas de empresa
+
+actores:
+    administrador
+        responsable de administrar los recursos del SBD a nivel técnico
+        funciones:
+            definir/modificar la estructura de la BD y restricciones de los datos
+            crear/modificar estructuras de almacenamiento y métodos de acceso
+            conceder/denegar permisos de acceso y controlar acceso a datos (seguridad)
+            definir planes de copias de seguridad
+            garantizar el funcionamiento correcto del sistema y proporcionar servicio técnico al usuario
+            adquirir el software y hardware necesario
+    diseñadores
+        funciones:
+            comprenden las necesidades y objetivos
+            identifican que datos almacenar en la base de datos
+            diseño final de BD que satisface las necesidades de todos los usuarios
+    usuarios finales
+        ocasiones o sofisticados: acceso diferente cada vez
+        paramétricos o normales: accesos constantes y repetitivos, usan transacciones programadas
+        avanzados o especializados: implementan sus propias aplicaciones especializadas para cumplir complejos requisitos
+        autónomos: BD personales a través de aplicación comercial específico
+    ingenieros de software
+        conocen perfectamente capacidades y recursos del SGBD
+        para analistas (identifican necesidades de procesamiento) y programadores (implementan estas especificaciones)
+    diseñadores e implementadores del SGBD
+        diseñan e implementan modulos e interfaces del SGBD
+    operadores y personal de mantenimiento
+        de entorno de software y hardware del sistema BD
+    desarrolladores de herramientas
+        diseño e implementación de herramientas para mejorar la BD
+
+ventajas del uso de SGBD
+    disminución y control de la redundancia de datos: datos predecibles e innecesarios
+    evitar inconsistencias en los datos: se genera cuando hay redundancia de datos
+    mantener la integridad: asegurar que la informacion es correcta (cuando no existe redundancia ni inconsistencia en los datos)
+        se evitan con restricciones de integridad (RI, fundamental en SBD multiusuario)
+            restricciones sobre tipos de datos
+            restricciones semánticas
+            identificadas en el diseño de la BD
+    restricciones de seguridad (RS)
+        control de acceso a la BD selectivo
+    suministro de mútiples interfaces de usuario
+        programadores de aplicaciones -> interfaces de lenguajes de programación
+        usuarios paremétricos -> formularios y comandos
+        usuarios autónomos -> interfaces controladas por menú y de lenguaje natural
+    representación de relaciones complejas entre datos
+    respaldo y recuperación
+
+cuando no usar SGBD
+    BD y aplicaciones muy simples
+    requisitos de tiempo real que no se cumplirían por el costo extra
+    no se necesita acceso multiusuario
+
+arquitectura del SBD
+    modelos de datos conceptual: conceptos cercanos a cómo el usuario perbice la realidad
+        entidad, atributo, relación
+        modelo entidad-relación, UML
+    modelos de datos lógicos: estructura lógica global, descripción de la implementación
+    modelos de datos físicos: descripción de los destalles de almacenamiento de los datos
+
+esquema: metainformación o metadatos
+
+estados de BD: conjunto de datos que contiene la BD en un momento concreto
+    estado consistente: satisface estructura y restricciones especificadas en esquema
+
+arquitectura ANSI/X3/SPARC
+    nivel externo (vistas): descrito mediante esquemas externos (lenguaje de programación)
+    nivel conceptual: define la estructura lógica de toda la BD (modelo conceptual y lógico) con lenguaje de definición de datos (LDD)
+    nivel interno: define la estructura de almacenamiento de toda la BD (modelo físico) con SQL
+
+LDD: lenguaje de definición de datos, usado para especificar esquema conceptual y correspondiencias
+
+LDA: lenguaje de definición de almacenamiento, para especificar esquema interno y correspondencias
+
+LDV: lenguaje de definición de vistas, para especificar esquemas externos
+
+LMD: lenguaje de manipulación de datos (obtención, inserción, eliminación y modificación de datos)
+    procedimental:
+        orientado a registros, cada registro se manipula individualmente
+    declarativo:
+        usado para operaciones complejas de BD, obtiene/actualiza muchos registros de una sola sentencia
+    modos de ejecutar instrucciones:
+        interfaz de programa de aplicación (ODBC, JDBC)
+        extender la sintaxis del lenguaje
+
+módulos componentes:
+    arquitectura cliente-servidor
+    compilador de consultas
+    precompilador y compilador de LMD
+    compilador de LDD
+    procesador de consultas
+
+clasificación de SGBD
+
+    modelo de datos:
+        relacional, jerarquico, red
+        orientado a objetos
+        objeto/relacional
+
+    usuarios simultaneos
+        monousuario
+        multiusuario
+
+    lugares donde se almacenen
+        centralizado
+        distribuido
+
+    propósito
+        propósito general
+        propósito específico (para un tipo concreto de aplicaciones)
+
+sistemas centralizados:
+    se ejecutan en un solo sistema de cómputo
+    sistema de cómputo de propósito general:
+        uno o más CPU's y controladores de dispositivos conectados a través de un bus común que provee acceso a una memoria compartida y SO para un usuario
+    sistema de mono-usuario:
+        solo una CPU y uno o más discos duros
+    sistema multiusuario:
+        más discos, más memoria, múltiples CPU's y SO multiusuarios
+
+sistemas cliente-servidor:
+    satisfacen las requisiciones por n sistemas clientes
+    backend:
+        manejo de acceso a estructuras, concurrencia y recuperación, evaluación de consultas
+    frontend:
+        herramientas como formas, wizards para reportes
+    interfaz entre frontend y backend es a través de SQL o API
+    sistemas servidores:
+        servidores de transacciones: usados en BD relaciones
+        servidores de datos: usados en BD orientados a objetos
+
+servidores de transacciones (query servers):
+    se comunican al servidor a través de RPC (Remote Procedure Calls)
+    drivers:
+        ODBC (Open Database Connectivity): API estándar de Microsoft desarrollada en C
+        JDBC (Java Database Connectivity): es igual a ODBC pero para plataforma Java
+    los procesos pueden ser multihilos permitiendo a un proceso realizar varias queries a la vez
+    procesos de administrador de bloqueos
+    procesos para escritura de logs
+    procesos para control de checkpoints
+    procesos de monitoreo de otros procesos
+
+servidores de datos:
+    usando cuando existe una conexión LAN (alta velocidad) entre clientes y servidor
+    se requiere máquinas con la misma capacidad que los servidores
+
+sistemas paralelos:
+    grano-grueso: pequeño número de procesadores poderosos
+    grano-fino (masivamente paralela): utiliza miles de pequeños procesadores
+    throughput: número de tareas que pueden ser completadas en un intervalo de tiempo dado
+    tiempo de respuesta: total de tiempo que toma finalizar una tarea
+    BD paralela:
+        memoria compartida: procesadores comparten memoria
+        discos compartidos: procesadores comparten discos
+        memoria y discos no compartidos: no comparten ni memoria ni discos
+        jerárquica: híbrido de las arquitecturas anteriores
+
+sistemas distribuidos:
+    homogeneas:
+        mismo software/esquema pero particionado en diferentes sitios
+        proveer una vista simple de BD pero sin detalles de distribución
+    heterogeneas:
+        diferente software/esquema
+        proveer BD existentes para proveer funcionalidad de uso
+    transaccion local: acceder al mismo sitio donde la transaccion fue iniciada
+    transaccion global: accede a la misma transacción en diferentes sitios
+    desventajas:
+        costo de desarrollo de software
+        potencial a errores
+
+medios de almacenamiento físicos
+    caché, memoria principal, volátil, flash
+    discos magnéticos: se almacenan en discos giratorios para largo plazo
+    almacenamiento óptico: no volátil, leen ópticamente un disco giratorio mediante un láser
+    almacenamiento en cinta: para copias de seguridad
+
+discos magnéticos:
+    subsistema de disco: a través de un controlador se conectan varios discos a una máquina
+    medidas de prestaciones: tiempo de acceso, tasa de transferencia, tiempo medio entre fallos (MTTF)
+    discos ópticos: CD ROM, DVD, CD-R (solo escritura) y DVD-R (solo escritura)
+    cintas magnéticas: almacenan grandes cantidades de información y proporcionan altas tasas de transferencias
+
+RAID (Redundant Array of Inexpensive Disks): alternativa de bajo coste a tener discos grandes y caros
+    arreglos paralelos: cada disco participa en el proceso de entrada/salida
+    arreglos independientes: cada disco opera de forma independiente
+    aumento de la disponibilidad mediante la redundancia
+    aumento de las prestaciones mediante paralelismo: aumentar la tasa de transferencia diviendo los datos entre varios discos
+        nivel bit: se reparten los bits de cada byte
+        nivel de bloque: n discos, bloque i de un fichero va al disco
+    niveles:
+        RAID 0 (NO REDUNDANTE)
+            tiras a nivel de bloque, no redundante, es útil en aplicaciones de alta velocidad donde no sea crítico la perdida de datos
+            utiliza striping, la cual distribuye la información en bloques entre los diferentes discos
+        RAID 1 (CON ESPEJO)
+            discos en espejos, buenas características en escritura, útil en aplicaciones de almacenamiento de ficheros log
+            utiliza mirroring, la cual duplica la información del disco en otro disco
+        RAID 2
+            códigos de corrección de errores tipo memoria
+        RAID 3
+            un único bit de paridad, mejora de prestaciones en grandes transferencias
+            striping con paridad dedicada porque utiliza un disco de protección de información separado para almacenar información de control codificada
+        RAID 4
+            paridad de bloque intercalada
+        RAID 5
+            paridad de bloque intercalada distribuida
+            striping con paridad distribuida ya que la información se reparte en bloques como RAID 0 pero un bloque de cada disco se dedica a la paridad
+        RAID 6
+            esquema de redundancia P + Q
+        RAID 10
+            es un nivel de arreglos de discos donde se distribuyen los bloques como en RAID-0 y cada disco se duplica como en RAID-1 creando un segundo arreglo
+
+buffer => porción de la memoria principal disponible para almacenar copias de bloques
+
+gestor de buffer => subsistema responsable de asignar espacio de buffer a la memoria principal
+
+// SEMANA 4
+
+registro: colección de datos relacionados entre sí, cada valor corresponde a un campo, cada campo asocia a un tipo de dato
+
+los registros son almacenados en discos para que cuando se necesiten su recuperación se eficiente
+
+transferencia de datos entre la memoria principal y el disco es a través de bloques
+
+información contenida del bloque:
+    lectura: copia del bloque del disco al búfer
+    escritura: copia del bloque del búfer al disco
+
+solución al cuello de botella => estructurar los ficheros para minizar el número de transferencias de bloques necesarias para localizar y transferir datos del disco a la memoria principal
+
+fichero: secuencia de registros con igual estructura
+    mixto: contiene registros con diferentes tipos, aumenta la eficiencia de operaciones de reunión
+
+ficheros de registros de longitud fija
+ficheros de registros de longitud variable:
+    fichero mixto
+    registro con campos de longitud variable, opcional, multivalorado
+
+organización extendida: aprovechando almacenando una parte del registro (para reducir el espacio de desperdicio del bloque)
+organización no extendida: no se permite que un registro este almacenado en varios bloques
+
+calculo espacio bloque: fbl = B(BYTES) / R(LONGITUD FIJA)
+
+descriptor de fichero: contiene datos necesarios para que los programas puedan acceder a los registros del fichero (ubicación del bloque)
+
+operaciones con ficheros:
+    obtención de datos => localizar ciertos registros
+    actualización => inserción, eliminar, modificar registros
+    condición de busqueda
+    registro actual (el más reciente en el búfer)
+
+fichero no ordenado (montón) => registrados al final de un fichero en orden de inserción
+    ventajas: inserción eficiente, búsqueda lineal
+
+fichero ordernado (secuencial) => registros ordenados de forma según valores de cierto campo
+    ventajas: lectura ordenada, buscar siguiente, buscar pero si la lectura ordenada o buscar no estan basados en el campo de ordenación ya no serían ventajas
+
+fichero mixto => almacena registros de diferente tipo que provienen de distintas tablas
+    ventajas: mayor eficiencia de las operaciones con JOIN entre las tablas, valores claves de ficheros mixtos almacenados solo una vez
+
+fichero de direccionamiento calculado (Hashing) => permite acceso rapido a registros segun una condicion de busqueda de igualdad sobre un solo campo
+    dispersión interna => espacio de direcciones destino (conjunto de M registros), función de dispersión h (traduce el valor de campo de dispersión a un entero), colisión (el nuevo registro)
+    dispersión externa => espacio de direcciones destino (conjunto de cubetas), función de dispersión h (traduce el valor del campo en un número de cubeta), decrece el numero de colisiones
+    dispersión dinámica => representación del resultado de la función de dispersión h como una cadena de bits, los registros se distribuyen en cubetas según los primeros bits de su valor de dirección calculado
+
+ficheros de indices
+    índice => estructura de acceso adicional
+    índice primario => sobre ficheros con registros ordenados según los valores de un campo clave
+    índice de agrupamiento => sobre ficheros con registros ordenados según los valores de un campo no clave
+    índice secundario sobre campo clave => sobre un campo que es clave del fichero principal y que no marca la ordenación de los registros de datos
+    indice secundario sobre campo no clave => sobre un campo que no es clave del fichero principal, y que no marca la ordenación de los registros de datos
+    índice de múltiples niveles => creación sucesiva de índices primarios sobre índices
+
+    índice único => basado en la columna cuyos valores son únicos
+    índice primario => basado en la clave primaria
+    índice secundario => basados en columnas con valores no únicos
+    índice compuesto => basado en 2 o más columnas y puede ser único, primario o secundario
+
+crear índice => CREATE INDEX nombre_indice ON tabla (columnas, ...);
+crear explicitamente el unique del indice => CREATE UNIQUE INDEX nombre_indice ON TABLE (columnas, ...);
+eliminar indice => DROP INDEX nombre_indice; Nota: no se puede eliminar un índice creado automaticamente por el sistema
+
+cuando emplear un fichero no ordenado => cuando la tabla es pequeña
+cuando emplear un fichero ordenado => la tabla es medio-grande, la tabla no es frecuentemente modificada
+cuando emplear un esquema de dispersión => los accesos de las tablas son frecuentes, individuales y aleatorios
+cuando evitar un esquema de dispersión => por rango de valores de a, salvo una lista IN(val, val, val)
+cuando emplear un fichero mixto => la reunión entre dos o más tablas relacionadas
+
+// PARTE 2
+
+usuarios => son objetos globale de la base de datos
+
+crear un usuario =>
+  CREATE USER nombre_usuario
+  IDENTIFIED BY contraseña
+  DEFAULT TABLESPACE users
+  TEMPORARY TABLESPACE temp
+  QUOTA cantidad_memoria ON users
+  PROFILE DEFAULT;
+
+todos las características de los usuarios se guardan en dba_users
+
+ver la quota del usuario user_ts_quotas y dba_ts_quotas
+
+bloquer y desbloquear una cuenta => ALTER USER nombre_usuario ACCOUNT (UN)LOCK;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

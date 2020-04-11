@@ -1,0 +1,20 @@
+deshabilitar los warnings => requests.packages.urllib3.disable_warnings()
+
+importar librería para el sistema operativo y ejecutar comandos => __import__('os')
+  - se puede ejecutar comandos al importar la librería => __import__('os').system('comandos')
+
+habilitar en os el tty => python -c 'import pty;pty.spawn("/bin/sh")'
+
+en Python no existen las variables sino la nomenclatura de utilizar => VARIABLE = valor, para que los otros programadores entiendan que es una constante
+
+asignamiento de multiples variables => var1, var2, ... = valor1, valor2, ...
+
+también se puede comparar dos valores con => valor1 is valor2
+
+recibir un valor mediante la consola => input("texto")
+
+imprimir valores en consola => print(valor, valor), cada valor estará separado por un espacio en blanco
+
+cast =>
+  - convertir un string a un entero => int(string)
+  - convertir un string a un float => float(string)

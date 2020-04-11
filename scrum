@@ -1,0 +1,65 @@
+scrum => es un marco de trabajo compuesto por procesos para gestionar el trabajo de productos complejos
+
+basada en el empirismo => la toma de decisiones es relacionada a la experiencia
+    pilares =>
+        - transparencia => debe ser visible para todos aquellos que son responsables del resultado
+        - inspección => se debe inspeccionar frecuentemente los artefactos de scrum y el progreso hacia un objetivo
+        - adaptación => un inspector determina que un proceso se desvia de los limites aceptables, se necesitara un reajuste
+
+scrum team => equipos auto-organizados eligen la mejor opción para llevar a cabo su trabajo entregando productos de manera iterativa e incremental
+
+product owner => encargado de maximizar el valor del producto, el único encargado de gestionar la pila del producto (product backlog)
+
+scrum master => responsable en promocionar y apoyar scrum
+
+scrum master a product owner => asegurar que los objetivos sean entendidos por el scrum team, encontrar técnicas para gestionar el product backlog
+
+scrum master a development team => guiar al equipo para que sea auto-organizado y multifuncional
+
+eventos de scrum =>
+    sprint => son realizados en un determinado periodo de tiempo
+    cancelacion del sprint => solo el product owner puede cancelar el sprint
+    sprint planning => es el plan colaborativo de todo el equipo de scrum
+        temas
+            - que puede hacerse en este sprint?
+            - como se conseguira completa el trabajo seleccionado?
+    sprint goal => el 	 del sprint originado por el product backlog (creado en el sprint planning)
+    daily scrum => reunión de 15 minutos para el development team
+    sprint review => realizado para inspeccionar el incremento y adaptar el product backlog si fuese necesario
+    sprint retrospective => oportunidad de inspeccionarse a si mismo y crear un plan de mejoras 
+
+artefactos del scrum =>
+    product backlog => todo lo que podría ser necesario en el producto, nunca está completa, siempre avanza por cada sprint o cambios
+    sprint backlog => es un conjunto de elementos del product backlog seleccionados para el sprint , es una funcionalidad hecha por el development team acerca de la funcionalidad del sprint
+    
+transparencia de los artefactos => las decisiones para optimizar el valor y controlar el riesgo se toman basadas en el estado percibido en los artefactos
+
+clases de diseño => 
+    clases de usuario de la interfaz => todas las IHC
+    clases de dominio de negocios => refinamiento de clases de analisis
+    clases de proceso => implantan abstracciones de negocios de bajo nivel
+    clases persistentes => representan almacenamientos de datos
+    clases de sistemas => implantan las funciones de administración y control del software
+
+componente => es una parte física y reemplazable de un sistema, conformado por un conjunto de interfaces
+
+programación basada en capas => consiste en separar responsabilidades de tal manera que cada capa cumple una función específica
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
