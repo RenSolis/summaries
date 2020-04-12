@@ -551,6 +551,9 @@ environment variables => son todas las variables que no son creadas por el bash
   - TERM => el nombre del tipo de terminal
   - TZ => especifíca el time zone
   - USER => nombre del usuario actual
+  - HISTCONTROL => controlar el comando history
+    - ignoredups => indica que se ignorarán los comandos que ya han sido grabados
+  - HISTSIZE => controlar el tamaño de lineas que recuerda el comando history, se le puede cambiar el número que por default son 500
 
 shell variables => son bits de datos colocados por bash, también guarda aliases y shell functions
 
@@ -576,6 +579,10 @@ startup files =>
   - los non-login startup files heredan el environment de los login shell startup files
 
 indicar que la variable será usado en los procesos del shell actual => export VARIABLE
+
+extensiones comunes para backups => .bak, .sav, .old, .orig
+
+hacer que un startup file lea sus cambios sin necesidad de reiniciar el shell => source .nombre_startup_file
 
 ==================================================================================================================================================================
 BASH

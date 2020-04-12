@@ -208,7 +208,7 @@ acceder a las variables de entorno => process.env.VARIABLE
 
 librería para poder cambiar de componentes por rutas => npm install vue-router | vue add router (con vue add router ya configura el proyecto con vue-router)
   - características => modular, configuración basada en componentes, navigation API, route parameters
-  - HTML5 history mode => utiliza un objeto (hash) para poder simular las URL's
+  - HTML5 history mode => remover el fragment por default que hay en las URL's, para evitar los errores cuando se guardan los url como /#/path
   - en el main.js =>
     import router from './router.js'
     new Vue({ router, ... }) // agregar en la instancia de Vue
@@ -231,16 +231,35 @@ librería para poder cambiar de componentes por rutas => npm install vue-router 
       - agregar el componente =>
         - eager loading => component: Componente
         - lazy loading => () => import(/* webpackChunkName: "nombre-bundle" */ 'path/componente'), opcionalmente se le agrega el comentario para que webpack ponga el bundle con el nombre dado, separa por bundles los archivos JS para mejorar la performancia y cuando sean llamados sea mas liviano el archivo (webpack code splitting), pero es recomendable agrupar en bundle componentes que esten sumamente relacionados
+      - named routes => en lugar de utilizar component usar components
+        components: {
+          default: ComponentePorDefault,
+          nombre_router_view: Componente,
+          ...
+        }
+        - en el router-link tag  => <router-link name="nombre_ruta_view" />, si no se coloca significa que es por default
       - redireccionar a otra ruta => redirect: '/ruta'
       - pasar los parametros como props => props: true|false| r => ({ nombre_param: convertir_valor_param(r.params.nombre_param) }), r es el objeto router
-  - colocar donde se verán los componentes del router en app.vue => <router-view></router-view>
+      - pasar rutas nesteadas =>
+        children: [
+          { /* mismas opciones de las rutas, solo que el path no necesita slash al principio */ }
+        ]
+      - realizar validación antes de ir a la ruta cuando el parametro está mal =>
+        beforeEnter(to, from, next) {
+          /* validacion */
+          next(valor) // el valor debe ser true o false
+        }
+  - colocar donde se verán los componentes del router en app.vue, también se deben colocar dentro del componente que tendrá rutas nesteadas => <router-view />
   - crear los links para otras rutas => <router-link to="/path"></router-link>
-  - crear un link con params => <router-link to="{ name: 'nombre-componente', params: { nombre_param: value } }"></router-link>
-  - convertir en un botón => <router-link tag="button"></router-link>
+  - crear un link con params => <router-link :to="{ name: 'nombre-componente', params: { nombre_param: value } }"></router-link>
+  - convertir en un diferente tag => <router-link tag="nombre_tag"></router-link>
   - se pueden añadir clases y tambien bind events
   - url no encontrada (404) => al último del router
     { path: '*',  componente: Componente }
   - redireccionar a otra ruta => this.$router.push({ name: 'nombre-componente' })
+  - darle un color generalizado para cuando se encuentra en la ruta => .router-link-active { propiedades }, aunque también se le puede cambiar la clase que se utiliza para cuando <router-link active-class="clase"></router-link>
+  - indicar en que path exacto estará activo el link => <router-link to="" exact></router-link>
+  - obtener el valor del parametro que se usa => this.$route.params.nombre_parametro
 
 librería para manejar estados => npm install vuex | vue add vuex
   - tipos de data compartida =>

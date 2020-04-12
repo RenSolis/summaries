@@ -199,6 +199,10 @@ indicar que se ejecute una función en un determinado intervalo de tiempo => set
 temporizador de una función, indicar en cuanto tiempo se ejecutará la función que se está pasando => setTimeout(funcion, tiempo_en_milisegundos, argumento_funcion, ...)
   - a partir del segundo argumento todas las que siguen se tomarán como argumentos para la primera función
 
+convertir un string a un número => +string
+
+comprobar si el valor es un integer => Number.isInnteger(valor)
+
 ==================================================================
 NODE MODULES
 
