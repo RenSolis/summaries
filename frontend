@@ -256,4 +256,4 @@ input:valid => es una pseudo-clase que representa cualquier input que se haya va
 
 input:invalid => es una pseudo-clase que representa cualquier input que no cumpla con la validación
 
-
+mostrar tal cual está escrito en html => <pre>valores</pre>

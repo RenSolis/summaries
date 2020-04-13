@@ -291,7 +291,7 @@ librería para manejar estados => npm install vuex | vue add vuex
           commit('metodoMutation', variable_valor)
         }
       },
-      getters: { // hace fácil acceder a las partes del state, ejemplo: un elemento dentro de un array o un objeto
+      getters: { // hace fácil acceder a las partes del state, ejemplo: un elemento dentro de un array o un objeto o para realizar filtros
         metodoGetter({ atributo_state }) { acceder al valor }
       }
     })
@@ -308,7 +308,7 @@ librería para manejar estados => npm install vuex | vue add vuex
   - utilziar los getters =>
     - dentro del computed propery =>
       - importar el helper => import { mapGetters } from 'vuex'
-      - llamar los getters dentro de computed property => ...mapGetters({ metodoComputed: 'metodoGetter' }) | ...mapGetters
+      - llamar los getters dentro de computed property => ...mapGetters({ metodoComputed: 'metodoGetter' }) | ...mapGetters | this.$store.getters.nombre_funcion
   - vuex recomienda utilizar los helpers
 
 librería para modularidad y manejo de objetos y arrays => npm install lodash

@@ -203,6 +203,8 @@ convertir un string a un número => +string
 
 comprobar si el valor es un integer => Number.isInnteger(valor)
 
+destructuring array => [variable, ...] = array
+
 ==================================================================
 NODE MODULES
 
