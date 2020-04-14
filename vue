@@ -1,4 +1,4 @@
-elementos de instancia de Vue:
+elemento de instancia de Vue:
   - el: 'selector' => indicamos el elementos que utilizaremos como base para usar Vue
   - data: { values } => indicamos la información que se utilizará en la instancia
   - methods: { functions } => indicamos los métodos que se utilizarán
@@ -286,7 +286,7 @@ librería para manejar estados => npm install vuex | vue add vuex
         }
       },
       actions: { // es igual a mutation solo que en lugar de mutar el state, hacen un commit al mutate, pueden ser async o sync, se llama desde el componente, son los encargados de llamar a los metodos mutate
-        async metodoAction({ commit }, valor) { // el segundo parametro es únicamente necesario si se actualizará el valor de un estado y el async únicamente porque se obtiene data mediante axios
+        async metodoAction({ state, getters, commit, dispatch }, valor) { // el segundo parametro es únicamente necesario si se actualizará el valor de un estado y el async únicamente porque se obtiene data mediante axios
           const variable_valor = await axios()
           commit('metodoMutation', variable_valor)
         }
@@ -310,6 +310,20 @@ librería para manejar estados => npm install vuex | vue add vuex
       - importar el helper => import { mapGetters } from 'vuex'
       - llamar los getters dentro de computed property => ...mapGetters({ metodoComputed: 'metodoGetter' }) | ...mapGetters | this.$store.getters.nombre_funcion
   - vuex recomienda utilizar los helpers
+
+configuración de vue para proxy (webpack config), nos simplica el tener que usar el dominio de una URL externa =>
+  - crear un archivo => vue.config.js
+  - en el archivo vue.config.js =>
+    module.exports = {
+      devServer: { // configuración para el webpack-dev-server
+        proxy: {
+          '/path': { // el path con el que iniciará para indicar que url se utilizará
+            target: 'url', // indicar la url que se utilizará para todos estos paths
+            changeOrigin: true, //
+          }
+        }
+      }
+    }
 
 librería para modularidad y manejo de objetos y arrays => npm install lodash
   - importar la librería => import _ from 'lodash'
