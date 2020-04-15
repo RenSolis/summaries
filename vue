@@ -305,7 +305,8 @@ librería para manejar estados => npm install vuex | vue add vuex
       - importar el helper => import { mapActions } from 'vuex'
       - añadir dentro del methods property => ...mapActions(['metodoAction'])
       - se llamara al action como método propio del componente => this.metodoAction()
-  - utilziar los getters =>
+    - dentro de la función se puede devolver la promesa de la consulta, como cuando se usa axios
+  - utilizar los getters =>
     - dentro del computed propery =>
       - importar el helper => import { mapGetters } from 'vuex'
       - llamar los getters dentro de computed property => ...mapGetters({ metodoComputed: 'metodoGetter' }) | ...mapGetters | this.$store.getters.nombre_funcion

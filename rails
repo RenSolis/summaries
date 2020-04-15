@@ -1402,5 +1402,15 @@ manejar secrets => para mantener las credenciales
         es mejor manejar las credentials de production con el archivo principal credentials.yml.enc en lugar de crear uno en la carpeta credentials/
 
 geocoding => gem ''
-  - habilitar la API de Places de Google, el servicio tiene un límite diario antes de empezar a cobrar
-  -
+  - habilitar la API de Places de Google, el servicio tiene un límite diario antes de empezar a cobrar, agregar la API key en credentials
+  - agregar librería => gem 'geocoder'
+  - en el modelo en que se usará =>
+    - indicar a partir de que columna se obtendrá la longitude y latitude => geocoded_by :columna
+    - indicar en que momento se realizará la obtención de latitude y longitude => after_validation :geocode, only: :column_asignada_changed?
+  - buscar que lugares dentro de la BD estan cerca del sitio indicado => objeto_con_geocode.nearbys
+  - buscar todos los lugares dentro de la BD que estan cerca de la direccion => Modelo.near("direccion" | objeto_con_geocode)
+  - cambiar la configuración del geocoder creando un initializer, config/initializers/geocoder.rb => rails g geocoder:config
+  - indicar la distancia que hay entre el objeto con geocode con el valor dado => objeto_con_geocode("direccion" | objeto_con_geocode)
+
+crear tags mediante helpers => content_tag(nombre_tag, contenido, opciones, &bloque), se puede utilizar el contenido directamente como string o pasar un bloque para indicar cual será el contenido
+  - todo menos el nombre_tag son opcionales

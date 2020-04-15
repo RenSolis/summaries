@@ -242,11 +242,15 @@ animaciones => animation: nombre duracion timing-function delay iteration-count 
     - parecido a ease-in-out pero comienza más rápido de lo que termina => ease
     - mismo tiempo desde que empieza hasta que termina => linear
     - definir propios valores con cubic-bezier function => cubic-bezier(x1, y1, x2, y2), para efectos de movimientos horizontales cubic-bezier(0.86, 0, 0.7, 1)
+    - indicar el número de segmentos que tendrá la transition de un estado a otro => steps(numero_de_pasos)
   fill-mode => especifica el estilo del elemento cuando la animación no está sucediendo (animation-fill-mode: valor;)
     - elemento retiene el último estilo que se le coloco en ek keyframe => forwards
   direction => define la dirección que tomará la animación (animation-direction: valor;)
     - keyframe se ejecuta del 0% al 100% => normal
     - keyframe se ejecuta del 100% al 0% => reverse
+  durations => indicar la duración de la animación
+  iteration-count => indicar el número de ciclos que se debe ejecutar la animación
+    - infinite => de manera infinita, la animación no se detendrá
 
 obtener el color actual del elemento para utilizar en pseudo-elementos (before y after) => propiedad: currentColor;
 
