@@ -24,3 +24,15 @@ filtrar elementos de un array usando una función callback => array_filter($obje
   - si no se pasa el callback entonces tomará por defecto que filtrará a los elementos que sean iguales a FALSE
 
 devolver todos los valores de un array e indexar numéricamente el array => array_values($objeto_array);
+
+obtener todos las keys del array => array_keys($objeto_array);
+
+recorrer array => array_map(function($item) {}, $objeto_array);
+
+combinar un array para utilizar como keys y un array de valores => array_combine($array_keys, $array_values); // deben tener la misma cantidad de valores los dos arrays
+
+ordenar un array independientemente de las keys => sort($objeto_array, $sort_flags = SORT_REGULAR); // la función devuelve true si se cumplio el ordenamiento o false en caso de error
+  - el segundo parametro es opcional, indicando como será el modo de ordenación
+
+ordenar un array con las keys => asort($objeto_array, $sort_flags = SORT_REGULAR); // la función devuelve true si se cumplio el ordenamiento o false en caso de error
+  - el segundo parametro es opcional, indicando como será el modo de ordenación

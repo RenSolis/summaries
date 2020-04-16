@@ -286,31 +286,44 @@ librería para manejar estados => npm install vuex | vue add vuex
         }
       },
       actions: { // es igual a mutation solo que en lugar de mutar el state, hacen un commit al mutate, pueden ser async o sync, se llama desde el componente, son los encargados de llamar a los metodos mutate
-        async metodoAction({ state, getters, commit, dispatch }, valor) { // el segundo parametro es únicamente necesario si se actualizará el valor de un estado y el async únicamente porque se obtiene data mediante axios
+        async metodoAction({ state, getters, commit, dispatch, rootState }, valor) { // el segundo parametro es únicamente necesario si se actualizará el valor de un estado y el async únicamente porque se obtiene data mediante axios
           const variable_valor = await axios()
           commit('metodoMutation', variable_valor)
         }
       },
       getters: { // hace fácil acceder a las partes del state, ejemplo: un elemento dentro de un array o un objeto o para realizar filtros
-        metodoGetter({ atributo_state }) { acceder al valor }
+        metodoGetter(state, getters, rootState) { acceder al valor } // los parametros son opcionales, el state es el estate del namespaced, el getters si es en el root namespaced entonces accederá a getters de todos los módulos, si es en un módulo solo accederá a getters locales, y el rootState es el state el root namespaced
       }
     })
   - acceder a los valores del state, crear el atributo dentro del componente en el computed property =>
     - si únicamente se necesita un state property => atributo() { return this.$store.state.atributo }
     - si se necesitan varios, se tiene el helper mapState =>
       - importar el helper => import { mapState } from 'vuex'
-      - dentro del computed property => ...mapState({ atributo: state => state.atributo }) | ...mapState({ atributo: 'atributo-del-state' }) | ...mapState(['atributo-state']) // este únicamente si el atributo tendrá el mismo que del state  - utilizar el action =>
+      - dentro del computed property => ...mapState('nombre_modulo', { atributo: state => state.atributo }) | ...mapState('nombre_modulo', { atributo: 'atributo-del-state' }) | ...mapState('nombre_modulo', ['atributo-state']) // este únicamente si el atributo tendrá el mismo que del state, el nombre_modulo es opcional sino se accederá como root namespaced
+  - utilizar el action =>
     - cuando solamente se utilizará un action => this.$store.dispatch('metodoAction')
     - cuando se utilizan múltiples actions =>
       - importar el helper => import { mapActions } from 'vuex'
-      - añadir dentro del methods property => ...mapActions(['metodoAction'])
+      - añadir dentro del methods property => ...mapActions('nombre_modulo', ['metodoAction']) | ...mapActions('nombre_modulo', { nombreMetodo: 'metodoAction' } // el nombre de modulo es opcional solamente si se necesita acceder a las propiedades del módulo sino utilizará el root namespaced
       - se llamara al action como método propio del componente => this.metodoAction()
     - dentro de la función se puede devolver la promesa de la consulta, como cuando se usa axios
   - utilizar los getters =>
     - dentro del computed propery =>
       - importar el helper => import { mapGetters } from 'vuex'
-      - llamar los getters dentro de computed property => ...mapGetters({ metodoComputed: 'metodoGetter' }) | ...mapGetters | this.$store.getters.nombre_funcion
+      - llamar los getters dentro de computed property => ...mapGetters('nombre_modulo', { metodoComputed: 'metodoGetter' }) | this.$store.getters.nombre_funcion | ...mapGetters({ nombreComputed: getters => getters['nombre_modulo/metodo_getter'] }) // opcionalmente se puede utilizar el nombre_modulo para acceder a las propiedades del módulo sino se utilizará del root namespaced
+  - utilizar los mutations (no recomendable) =>
+    - con el helper => ...mapMutations('nombre_modulo', misma_forma_que_los_demas_helpers) // el nombre modulo es opcional sino se accederá al root namespaced
   - vuex recomienda utilizar los helpers
+  - manejar vuex en modulos para no sobrecargar de código el store/index.js =>
+    - crear una carpeta modules/ en store/, crear el modulo.js y exportarlo como objeto
+    - en store/index.js exportar el modulo y agregar dentro de la instancia de vuex => modules: { nombre_modulo: ObjetoImportado }
+    - el cambio afectará a los estados => this.$store.state.nombre_modulo.estado
+    - cuando se tienen varios métodos iguales como actions o getters en cada modulo se puede diferenciar cual utilizar => namespaced: true, en su respectivo archivo de módulo
+      - utilizar los getters o actions será => this.$store.getters|actions['nombre_modulo/metodo']
+      - se tiene un root namespaced => es el archivo store/index.js
+      - aunque no se coloque el namespaced el state siempre lo está
+      - cuando se crean dentro de los módulos getters, mutations o actions que también tiene el root namespaced se tiene que colocar el namespaced sino saldrá error por utilizar dos veces el mismo método pertenecientes root namespaced
+    - todas las propiedades que se agreguen en el store/index.js como root no serán heredados en los módulos
 
 configuración de vue para proxy (webpack config), nos simplica el tener que usar el dominio de una URL externa =>
   - crear un archivo => vue.config.js
