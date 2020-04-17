@@ -5,8 +5,9 @@ elemento de instancia de Vue:
   - computed: {} => es donde se trata con propiedades dependientes, todos los atributos que esten dentro de computed serán tratados como atributos en data
     ejemplo => computed: { fullName() { return `${this.firstname} ${this.lastname}` } }
   - watched: {} => es donde se ejecutan código cuando la data cambia
-  - filter: {} => utiles para aplicar formatos a textos
+  - filters: {} => utiles para aplicar formatos a textos
   - template: '' => crear un template
+  - directives: {} => es para crear nuestros directives personalizados
 
 para activar eventos => v-on:nombre_evento
   para indicar en que argumento se usara el event => v-on:nombre_evento(variable, $event)
@@ -164,11 +165,14 @@ crear getter and setter para computed property =>
     }
   }
 
-utilizar un filter para textos =>
+utilizar filters =>
   - utilizarlo dentro del template => {{ texto | funcion_dentro_filter }}
   - puede hacerse en chain => {{ texto | funcion_dentro_filter | ... }}
   - puede también hacerse un filtro para fechas
   - se puede pasar parametros al filtro => {{ atributo | funcion_dentro_filter(parametro) }}
+  - volver el filter global en el main.js =>
+    - importar el archivo => import nombreFilter from 'archivo';
+    - Vue.filter('nombreFilter', nombreFilter);
 
 crear un filter global =>
   - se debe realizar antes que se cree la instancia de Vue => Vue.filter('nombre_funcion', function(value) { code })
@@ -367,3 +371,43 @@ styling componente =>
 Vue CLI ya tiene configurado webpack para poder soportar diferentes preprocesadores para CSS y HTML =>
   - utilizar SASS => yarn add node-sass sass-loader --dev
   - indicar el preprocesador => <style lang="scss|sass">
+
+directives =>
+  - crear un archivo js donde exportaremos el directive =>
+    export default {
+      bind: (element, binding) => { // el bind element es cuando el directive es agregado al elemento, aquí es donde se realiza la configuración inicial
+        /* funcionalidad */
+      },
+      update: (element, binding) => { // cuando las propiedades del binding han sido actualizadas
+        /* funcionalidad */
+      },
+      inserted: (element, binding) => { // se llama cuando el elemento se ha insertado en el componente
+        /* funcionalidad */
+      },
+      updateComponent: (element, binding) => { // cuando el componente contenedor se ha actualizado
+        /* funcionalidad */
+      },
+      unbind: (element, binding) => { // cuando se remueve el elemento
+        /* funcionalidad */
+      },
+    }
+    - element => es el elemento al que se le agrega el directive
+    - binding => es un objeto donde manejamos los valores que se le pasan al directive
+  - agregar el directive =>
+    - import directive from 'archivo'
+    - dentro de las propiedades del componente => directives: { nombreDirective: directive }
+    - utilizar dentro del elemento => <elemento v-nombreDirective=forma></elemento>
+      - formas valores para directives =>
+        - por modificadores => v-nombreDirective:argumento.modificador.modificador.....
+          - en el binding del archivo se puede acceder al argumento con => binding.arg
+          - en el binding del archivo se acceden a los modificadores con => binding.modifiers
+        - por objetos => v-nombreDirective="objeto"
+          - en el binding del archivo se puede acceder con => binding.value
+  - cuando se utilizan la misma funcionalidad para bind y para update solamente se debe exportar la function =>
+    export default function (element, binding) { /* funcionalidad */ }
+  - volver un directive global, en el archivo main.js =>
+    - import nombreDirective from 'archivo'
+      Vue.directive('nombreDirective', nombreDirective)
+
+
+

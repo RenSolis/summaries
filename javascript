@@ -90,6 +90,8 @@ crear a un documento DOM a partir de textos =>
   - instanciar el parser => parser = new DOMParser()
   - convertir a un DOM el texto => parser.parseFromString(texto)
 
+obtener todas las keys de un objeto => Object.keys(objeto) // devolverá un array de las keys
+
 obtener todo lo almacenado dentro del localStorage => Object.keys(localStorage).map(key => JSON.parse(localStorage.getItem(key)))
 
 limpiar el localStorage => localStorage.clean()
@@ -113,6 +115,8 @@ Notifications API =>
   - consultar si permitir las notificaciones => Notification.requestPermission().then(permission => { funcionalidad })
   - crear una notification => const notification = new Notification("texto titulo", { body: 'cuerpo mensaje', icon: 'imagen' })
   - manejar evento click de la notification => notification.onclick = function
+
+redireccionar página => window.location.href = "/path"
 
 limpiar el interval => window.clearInterval(intervalo_creado)
 
@@ -201,7 +205,7 @@ temporizador de una función, indicar en cuanto tiempo se ejecutará la función
 
 convertir un string a un número => +string
 
-comprobar si el valor es un integer => Number.isInnteger(valor)
+comprobar si el valor es un integer => Number.isInteger(valor)
 
 destructuring array => [variable, ...] = array
 

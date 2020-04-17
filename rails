@@ -1412,5 +1412,10 @@ geocoding => gem ''
   - cambiar la configuración del geocoder creando un initializer, config/initializers/geocoder.rb => rails g geocoder:config
   - indicar la distancia que hay entre el objeto con geocode con el valor dado => objeto_con_geocode("direccion" | objeto_con_geocode)
 
-crear tags mediante helpers => content_tag(nombre_tag, contenido, opciones, &bloque), se puede utilizar el contenido directamente como string o pasar un bloque para indicar cual será el contenido
-  - todo menos el nombre_tag son opcionales
+crear tags mediante helpers =>
+  - content_tag(nombre_tag, contenido, opciones, &bloque), se puede utilizar el contenido directamente como string o pasar un bloque para indicar cual será el contenido
+    - todo menos el nombre_tag son opcionales
+  - content_tag_for(nombre_tag, uno_o_multiples_records, prefijo, opciones, &bloque)
+    - utilizado para crear un tag con id personalizado al record con su columna id, el bloque es para indicar todo el contenido que tendrá el tag, el prefijo es para indicar que tendrá antes del id prefijo_record_id y las opciones son las que se puede tener en un tag
+  - div_for(record, argumentos, &bloque)
+    - utilizado para crear de manera rápida un div para los records que se necesiten, pasando argumentos para el div y un bloque para indicar cual será su contenido
