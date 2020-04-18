@@ -329,19 +329,45 @@ librería para manejar estados => npm install vuex | vue add vuex
       - cuando se crean dentro de los módulos getters, mutations o actions que también tiene el root namespaced se tiene que colocar el namespaced sino saldrá error por utilizar dos veces el mismo método pertenecientes root namespaced
     - todas las propiedades que se agreguen en el store/index.js como root no serán heredados en los módulos
 
-configuración de vue para proxy (webpack config), nos simplica el tener que usar el dominio de una URL externa =>
+configuración de vue => agregará o sobreescribirá la configuración que tiene para webpack
   - crear un archivo => vue.config.js
-  - en el archivo vue.config.js =>
-    module.exports = {
-      devServer: { // configuración para el webpack-dev-server
-        proxy: {
-          '/path': { // el path con el que iniciará para indicar que url se utilizará
-            target: 'url', // indicar la url que se utilizará para todos estos paths
-            changeOrigin: true, //
+  - para proxy (webpack config), nos simplica el tener que usar el dominio de una URL externa =>
+    - en el archivo vue.config.js =>
+      module.exports = {
+        devServer: { // configuración para el webpack-dev-server
+          proxy: {
+            '/path': { // el path con el que iniciará para indicar que url se utilizará
+              target: 'url', // indicar la url que se utilizará para todos estos paths
+              changeOrigin: true, //
+            }
           }
         }
       }
-    }
+  - para webpack =>
+    - en el archivo vue.config.js =>
+      module.exports = {
+        configureWebpack: {
+          module: { // para agregar preprocesadores
+            rules: [
+              test: /regex/, // para indicar cual debe ser la extensión
+              use: ['modulo-loader'] // el loader del preprocesador
+            ]
+          }
+        }
+      }
+    - otra opción es manejarlo como función =>
+      module.exports = {
+        configureWebpack: (config) => {
+          config.module.rules.push({
+            test: /regex/, // para indicar cual debe ser la extensión
+            use: ['modulo-loader'] // el loader del preprocesador
+          })
+        }
+      }
+      - sobreescribir un rule =>
+        const newRule = { /* rule */ }
+        const indexRule = config.module.rules.findIndex(element => element.test.source.includes?('string que contenga'))
+        config.module.rules.splice(indexRule, 1, newRule)
 
 librería para modularidad y manejo de objetos y arrays => npm install lodash
   - importar la librería => import _ from 'lodash'
@@ -409,5 +435,8 @@ directives =>
     - import nombreDirective from 'archivo'
       Vue.directive('nombreDirective', nombreDirective)
 
+manejar diferentes environment variables para probar =>
+  - ejecutar el env => npm run build --mode=nombre_env
+  - crear un .env.nombre_env => este archivo manejaría todas las variables que se necesiten
 
-
+ver la configuración de webpack para un environment => vue inspect --mode=nombre_env

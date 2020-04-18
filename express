@@ -1,0 +1,5 @@
+conectar con el history-mode de vue, con un middleware =>
+  - instalar la librería => npm install connect-history-api-fallback
+  - en donde se hará el routing =>
+    const history = require('connect-history-api-fallback');
+    app.use(history({ index: '/index.html' }));

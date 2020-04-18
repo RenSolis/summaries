@@ -179,7 +179,7 @@ obtener o configurar los estilos en el elemento => elemento.style.cssText, para 
 
 evento de doble click => elemento.addEventListener('dblclick', event => { funcionalidad })
 
-get/setter del texto del elemento => elemento.innerText
+get/setter del texto del elemento => elemento.innerText, únicamente debe ser utilizado para elementos que tienen solo texto
 
 convertir un número a un string => numero.toString(numero), el número puede ser entre 2 y 36 dando un valor binario, octal, hex, ...
 
@@ -208,6 +208,10 @@ convertir un string a un número => +string
 comprobar si el valor es un integer => Number.isInteger(valor)
 
 destructuring array => [variable, ...] = array
+
+recorrer un obteniendo obteniendo el index => for(index in array) { /* funcionalidad */ }
+
+devolver el index del primer array que se encuentre => array.findIndex(element => /* condition */) // en caso de que no se encuentre devolverá -1
 
 ==================================================================
 NODE MODULES
