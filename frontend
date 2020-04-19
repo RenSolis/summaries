@@ -261,3 +261,16 @@ input:valid => es una pseudo-clase que representa cualquier input que se haya va
 input:invalid => es una pseudo-clase que representa cualquier input que no cumpla con la validación
 
 mostrar tal cual está escrito en html => <pre>valores</pre>
+
+crear un degradado para el background de un elemento => background: linear-gradient(angulo_o_direccion, color, color, ...);
+
+crear un degradado de colores partiendo del centro => background: conic-gradient(color, color, ...); // no funciona en firefox
+
+evitar utilizar prefijos => agregar la librería prefixfree que es un script y automaticamente verá cuando es necesario agregar los prefix a los atributos
+
+polyfill => es un código escrito en javascript que nos permite utilizar atributos css sin importar el tipo de navegador
+
+agregar color a un svg como background => solo para webkit
+  - agregarle un background que será el color que tome => background: color;
+  - agregarle el atributo que usará el svg para cambiarse de color => -webkit-mask: url(imagen.svg) propiedades-images;
+    - también directamente se le puede asignar la imagen => -webkit-mask-image: url(imagen.svg);

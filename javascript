@@ -12,9 +12,10 @@ event 'onmouseover' es la misma funcionalidad de hover
 
 'objDate.setFullYear(year)' cambia el valor del año en una fecha
 
-'new Image()' para crear una tag image
-    '.src' para el valor de source (atributo)
-    '.onload' es un evento que recibe una función que se ejecutará una vez que la imagen
+manejar imagenes =>
+  - crear una instancia de una imagen => new Image() // el objeto que generá es un tag
+  - indicar el valor del src => objeto_imagen.src = 'url_imagen'
+  - evento que se ejecuta cuando cargue la imagen => objeto_image.onload = function() { /* this hace referencia al objeto */ }
 
 bind: es una función que recibe como primer argumento el objeto 'this' que se hace referencia, y posteriormente los argumentos para la función que se está utilizando
     'function.bind(object_reference)'
@@ -212,6 +213,13 @@ destructuring array => [variable, ...] = array
 recorrer un obteniendo obteniendo el index => for(index in array) { /* funcionalidad */ }
 
 devolver el index del primer array que se encuentre => array.findIndex(element => /* condition */) // en caso de que no se encuentre devolverá -1
+
+canvas =>
+  - obtener el contexto de dibujo del canvas => canvas.getContext('tipo') // 2d para tratar canvas en 2d
+  - dibujar una imagen en el canvas => context_canvas.drawImage(objeto_imagen, posicionX, posicionY, ancho, alto)
+  - llenar rectangulo con un color => context_canvas.fillRect(posicionX, posicionY, ancho, alto)
+  - poner un color para el background del canvas => context_canvas.fillStyle = 'color'
+  - dependiendo del orden en como se dibujen uno se sobrepondra sobre el otro
 
 ==================================================================
 NODE MODULES
