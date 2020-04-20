@@ -274,3 +274,5 @@ agregar color a un svg como background => solo para webkit
   - agregarle un background que será el color que tome => background: color;
   - agregarle el atributo que usará el svg para cambiarse de color => -webkit-mask: url(imagen.svg) propiedades-images;
     - también directamente se le puede asignar la imagen => -webkit-mask-image: url(imagen.svg);
+
+agregar estilos a un elemento vacío => element:empty { /* atributos */ }

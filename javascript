@@ -2,9 +2,13 @@ reemplazar solo una parte del texto 'string.replace(parte, reemplazo)'
 
 'typeof object' nos retorna en un string el tipo de dato que es el objeto
 
-obtener un dias anteriores o posteriores
-    'var today = new Date()' una instancia de hoy dia
-    'new Date(today.setDate(today.getDate() - cantidadDeDias))' con esto restamos el dia en que nos encontramos devolviendo un valor diferente para la fecha y teniendo que volver a instanciarla
+date =>
+  - realizar una instancia del día de hoy => new Date()
+  - obtener el año completo del date => date.getFullYear()
+  - obtener el mes en número del date => date.getMonth()
+  - obtener el día en número del date => date.getDay()
+  - cambiar el día del date => date.setDate(dia)
+  - obtener el día exacto => date.getDate()
 
 clonar un objeto o array sin referencia: primero convertirlo en JSON.stringify(objeto) para después JSON.parse(objeto) y se considera una nueva instancia del objeto o array
 
@@ -220,6 +224,17 @@ canvas =>
   - llenar rectangulo con un color => context_canvas.fillRect(posicionX, posicionY, ancho, alto)
   - poner un color para el background del canvas => context_canvas.fillStyle = 'color'
   - dependiendo del orden en como se dibujen uno se sobrepondra sobre el otro
+
+insertar un elemento tag dentro de otro => elemento.appendChild(otro_elemento)
+
+insertar un elemento o múltiples elementos tanto como strings => elemento.append(otro_element, 'string')
+
+ejecutar métodos o eventos cuando el documento cargo => document.addEventListener('DOMContentLoaded', function() { /* funcionalidad */ })
+
+HTTP client, devolverá de manera asíncrona => fetch
+  - realizar una consulta get => fetch('url')
+
+convertir un objeto response en un json => response.json() // devuelve una promesa
 
 ==================================================================
 NODE MODULES
