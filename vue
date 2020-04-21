@@ -440,3 +440,30 @@ manejar diferentes environment variables para probar =>
   - crear un .env.nombre_env => este archivo manejaría todas las variables que se necesiten
 
 ver la configuración de webpack para un environment => vue inspect --mode=nombre_env
+
+snapshot testing => comprobar que la UI no cambie inesperadamente
+
+testing jest =>
+  - instalar jest para proyectos ya creados => vue add unit-jest
+  - elegir dependiendo del componente, shallowMount para componentes hijos y que no habrá menos, y mount para componente que posee hijos => import { shallowMount, mount } from '@vue/test-utils'
+  - realizar el mount del componente => shallowMount(componente, { /* propiedades componente */ }) | mount(componente, /* propiedades componente */ }) // propsData es opcional
+    - una vez montado el componente podemos acceder =>
+      - al html => wrapper.html(), wrapper.contains('tag')
+      - al viewmodel de vue (instancia) => wrapper.vm
+  - esperar a que el DOM actualice después de un trigger event => wrapper.vm.$nextTick()
+  - hacer una descripción de un conjunto de tests => describe("titulo", () => { /* tests */ })
+  - hacer asignación del componente =>
+    let wrapper
+    beforeEach(() => { // se ejecutará antes de todos los tests
+      wrapper = shallowMount|mount(Componente)
+    })
+    - las propiedades al montarse =>
+      - propsData: { /* props */ }, son los props con los valores que se le pueden dar al componente
+      - methods: { /* metodos del componente */ }
+    afterEach(() => { // se ejecuta después de todos los test
+      wrapper.destroy() // eliminar el componente montado ayudará a limpiar la memoria
+    })
+  - indicar el test => it('nombre test', () => { /* test */ })
+  - indicar si el componente existe => wrapper.exists()
+  - comprobar si el valor esperado es igual al que se tiene => expect(valor_obtenido).toBe(valor_esperado)
+  - librería para tratar las promesas => yarn add flush-promise
