@@ -459,11 +459,34 @@ testing jest =>
     })
     - las propiedades al montarse =>
       - propsData: { /* props */ }, son los props con los valores que se le pueden dar al componente
-      - methods: { /* metodos del componente */ }
+      - methods: { /* metodos del componente */ }, si se tiene un método que se utiliza en un callback al crear el componente se debe color dentro de las propiedades del componente, methods: { nombreMetodo: () => {} }
     afterEach(() => { // se ejecuta después de todos los test
       wrapper.destroy() // eliminar el componente montado ayudará a limpiar la memoria
     })
   - indicar el test => it('nombre test', () => { /* test */ })
   - indicar si el componente existe => wrapper.exists()
   - comprobar si el valor esperado es igual al que se tiene => expect(valor_obtenido).toBe(valor_esperado)
+  - buscar un elemento html => wrapper.find('selector')
+    - obtener el texto del elemento => wrapper.find('selector').text()
+  - acceder a losm atributos data del viewmodel => wrapper.vm.$data.atributo
+  - crear un mock nos permite capturar las funciones reemplazandolas con el valor que se necesite
+    jest.mock('link|librería', () => ({
+      metodo() {
+        return {
+          metodoChained(fnc) {
+            return fnc(valor)
+          }
+        }
+      }
+    }))
+    - reemplazar funcionalidad de un módulo =>
+      - crear constante que reemplazará los métodos que se utilicen
+        const $router = { metodo: jest.fn() }
+      - dentro del shallowMount =>
+        mocks: { $router } // $ indica que es un atributo de la instancia de Vue
+      - indicar el método con los parametros que ha sido llamado después de que se ejecutará algun evento, utilizando flush-promises dentro del test que sería async =>
+        flushPromises()
+        expect($router.metodo).lastCalledWith(parametros)
+  - configurar los props => wrapper.setProps({ /* nuevos props */ }) // es una función asíncrona
+  - lanzar un evento de un elemento => wrapper.find(elemento).trigger('evento')
   - librería para tratar las promesas => yarn add flush-promise
