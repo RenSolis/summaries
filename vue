@@ -479,6 +479,7 @@ testing jest =>
         }
       }
     }))
+    - librería para tratar las promesas => yarn add flush-promise
     - reemplazar funcionalidad de un módulo =>
       - crear constante que reemplazará los métodos que se utilicen
         const $router = { metodo: jest.fn() }
@@ -489,4 +490,9 @@ testing jest =>
         expect($router.metodo).lastCalledWith(parametros)
   - configurar los props => wrapper.setProps({ /* nuevos props */ }) // es una función asíncrona
   - lanzar un evento de un elemento => wrapper.find(elemento).trigger('evento')
-  - librería para tratar las promesas => yarn add flush-promise
+  - acceder a los props que tiene sin necesidad de setearlos => wapper.vm._props.atributo_prop
+
+storybook => es una documentación de UI
+  - añadir storybook a vue cli => vue add storybook
+
+acceder a atributos de manera global por la instancia de Vue => Vue({ /* atributos */ }), acceder mediante this.$root.atributo, es mejor manejarlo con Vuex
