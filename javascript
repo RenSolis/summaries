@@ -236,6 +236,9 @@ HTTP client, devolverá de manera asíncrona => fetch
 
 convertir un objeto response en un json => response.json() // devuelve una promesa
 
+reducir un array a un solo valor => array.reduce((acumulatorio, siguienteElemento) => { /* el valor que retorna será el valor acumulatorio */ }, valorInicial)
+  el valorInicial sería el primer valor acumulatorio (es opcional)
+
 ==================================================================
 NODE MODULES
 

@@ -448,8 +448,9 @@ testing jest =>
   - elegir dependiendo del componente, shallowMount para componentes hijos y que no habrá menos, y mount para componente que posee hijos => import { shallowMount, mount } from '@vue/test-utils'
   - realizar el mount del componente => shallowMount(componente, { /* propiedades componente */ }) | mount(componente, /* propiedades componente */ }) // propsData es opcional
     - una vez montado el componente podemos acceder =>
-      - al html => wrapper.html(), wrapper.contains('tag')
+      - al html => wrapper.contains('tag')
       - al viewmodel de vue (instancia) => wrapper.vm
+  - obtener el html en string del elemento o vm => wrapper.vm.html() | wrapper.find('selector').html()
   - esperar a que el DOM actualice después de un trigger event => wrapper.vm.$nextTick()
   - hacer una descripción de un conjunto de tests => describe("titulo", () => { /* tests */ })
   - hacer asignación del componente =>
@@ -460,15 +461,23 @@ testing jest =>
     - las propiedades al montarse =>
       - propsData: { /* props */ }, son los props con los valores que se le pueden dar al componente
       - methods: { /* metodos del componente */ }, si se tiene un método que se utiliza en un callback al crear el componente se debe color dentro de las propiedades del componente, methods: { nombreMetodo: () => {} }
+      - slots: { /* default, y los named slots */ }
     afterEach(() => { // se ejecuta después de todos los test
       wrapper.destroy() // eliminar el componente montado ayudará a limpiar la memoria
     })
   - indicar el test => it('nombre test', () => { /* test */ })
   - indicar si el componente existe => wrapper.exists()
+    - también funciona al buscar un elemento en el componente y comprobar si existe => wrapper.find('selector').exists()
   - comprobar si el valor esperado es igual al que se tiene => expect(valor_obtenido).toBe(valor_esperado)
+  - indicar las clases que tiene el componente o elemento => wrapper.classes()
   - buscar un elemento html => wrapper.find('selector')
+    - buscar un componente hijo dentro del componente montado => wrapper.find(ComponenteHijo) // no olvidar importar el componente hijo
     - obtener el texto del elemento => wrapper.find('selector').text()
-  - acceder a losm atributos data del viewmodel => wrapper.vm.$data.atributo
+    - obtener los atributos del elemento => wrapper.find('selector').attributes() // nos devuelve un objeto con todos los atributos
+  - lanzar un evento de un elemento => wrapper.find('selector').trigger('nombre_evento')
+  - acceder a los eventos que fueron emitidos en el componente => wrapper.emitted().evento_emitido // es un array con todas las veces que se ha emitido el método con sus respectivos atributos y valores con lo que emite
+  - acceder a los atributos data del viewmodel => wrapper.vm.$data.atributo
+  - acceder a los slots => wrapper.vm.$slots // devuelve un array con los slots
   - crear un mock nos permite capturar las funciones reemplazandolas con el valor que se necesite
     jest.mock('link|librería', () => ({
       metodo() {
@@ -489,10 +498,79 @@ testing jest =>
         flushPromises()
         expect($router.metodo).lastCalledWith(parametros)
   - configurar los props => wrapper.setProps({ /* nuevos props */ }) // es una función asíncrona
-  - lanzar un evento de un elemento => wrapper.find(elemento).trigger('evento')
-  - acceder a los props que tiene sin necesidad de setearlos => wapper.vm._props.atributo_prop
+  - acceder a los props que tiene sin necesidad de setearlos => wrapper.vm._props.atributo_prop
+  - acceder a la data del vm => wrapper.vm._data.elemento
+  - acceder a los validators para los props => wrapper.vm.$options.props.nombre_prop.validator(valor_para_metodo) // esto devolverá true|false según la validación
+  - acceder a los computed methods => wrapper.vm.metodoComputed
+  - comprobar el contenido de un array => expect(array).toEqual(expect.arrayContaining([valor, valor, ...])) // se indican todos los valores que pueda tener el array, no necesariamente todos
+  - cuando se usa un módulo exterior se necesita importarlo y crear una instancia de Vue donde indiquemos que lo utilizaremos en el test =>
+    - importar la librería que se utilizará
+    - importar la librería para crear la instancia de Vue =>
+      import { createLocalVue } from '@vue/test-utils'
+      const localVue = createLocalVue()
+    - indicar que se utilizará la librería importada y agregarla en el mount|shallowMount =>
+      localVue.use(Libreria)
+      mount|shallowMount(Component, { localVue })
+  - utilizar los componentes de Quasar Framework =>
+    import * as All from 'quasar'
+    const { Quasar } = All
+    const components = Object.keys(All).reduce((object, key) => {
+      const val = All[key]
+      if (val && val.component && val.component.name != null) object[key] = val
+      return object
+    }, {})
+    localVue.use(Quasar, { components })
 
 storybook => es una documentación de UI
   - añadir storybook a vue cli => vue add storybook
+  - configuración de storybook en .storybook/main.js =>
+    module.exports = {
+      stories: ['../src/components/**/*.stories.js'], // indicamos en donde se encuentran los archivos stories
+      addons: ['@storybook/addon-actions', '@storybook/addon-links', '@storybook/addon-knobs'], // son los plugins de storybook (los 3 más utilizados en este caso)
+    }
+  - realizar configuración para soportar archivo scss, en la carpeta .storybook/webpack.config.js =>
+    const path = require('path')
+    module.exports = ({ config }) => {
+      config.module.rules.push({
+        test: /\.scss$/,
+        loaders: ['style-loader', 'css-loader', 'sass-loader'],
+        include: path.resolve(__dirname, '../'),
+      })
+    }
+  - creación básica de un archivo, nombrarlo como nombreComponente.stories.js =>
+    import Componente from 'path/Componente'
+    import { withKnobs, tipoKnob } from '@storybook/addon-knobs' // el tipoKnobs serían para utilizar en los props y que se vuelvan editables (array, object, text, boolean, number)
+    import { action } from '@storybook/addon-action' // para utilizar eventos que son emitidos en el componente
+
+    export default { // características de como estará formada la carpeta de stories del archivo actual
+      title: 'Carpeta/NombreComponente', // se pueden agregar cuantos nombres de carpetas se necesiten
+      decorators: [withKnobs], // para indicar que se utilizará el addon knobs
+    }
+
+    export const nombreEjemplo = () => ({ // el nombre que se le dará a la variación en el story, pueden crearse varias en el archivo
+      components: { Componente }, // el componente que se utilizará
+      props: { // opcionalmente se ponen los props para agregarlos en
+        nombreProp: {
+          default: () => tipoKnob('nombreParaEditarEnKnob', valor)
+        }
+      },
+      methods: { // los actions que tiene para el componente (opcional)
+        nombreMetodo: action('eventoEmitido')
+      },
+      template: '<componente :nombreProp="nombreProp" @eventoEmitido="nombreMetodo" />' // es tal cual como usas un componente en otro
+    })
+  - importar el filtro global => el nombre que se le de al filtro debe ser tal cual que se está usando en el componente
+    import Vue from 'vue'
+    import filter from 'path/filter'
+    Vue.filter('nombreFilter', filter)
+  - utilizar librerías third-party =>
+    import Vue from 'vue'
+    import LibreriaComponente from 'modulo'
+    Vue.use(LibreriaComponente)
+  - utilizar los estilos, componentes de Quasar Framework =>
+    import 'quasar/dist/quasar.min.css' // es la librería de css comprimida de quasar
+    import Quasar from 'quasar'
+    const { NombreComponenteQuasar } = Quasar
+    Vue.use(Quasar, NombreComponenteQuasar) // nos permitirá poder utilizar los componentes de Quasar dentro del story
 
 acceder a atributos de manera global por la instancia de Vue => Vue({ /* atributos */ }), acceder mediante this.$root.atributo, es mejor manejarlo con Vuex
