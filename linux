@@ -672,3 +672,4 @@ se pueden abrir múltiples archivos => vi archivo archivo archivo
 indicar el archivo que se editará => :e nombre_archivo
 insertar todo el contenido de otro archivo en el archivo actual, lo insertará arribar del cursor => :r nombre_archivo
 guardar y salir del archivo actual => ZZ
+autocompletar la palabra => en insert mode, CTRL + n

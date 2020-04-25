@@ -16,12 +16,13 @@ para activar eventos => v-on:nombre_evento
   - opcionalmente se puede usar los paréntesis para el método
 
 modificadores de eventos:
-  - para hacer event.stopPropagation() => v-on:nombre_evento.stop=""
-  - para hacer event.preventDefault() => v-on:nombre_evento.prevent=""
-
-modificadores de keys:
-  - para enter => v-on:nombre_evento.enter="function"
-  - para space => v-on:nombre_evento.space="function"
+  - modificadores click =>
+    - para hacer event.stopPropagation() => v-on:nombre_evento.stop=""
+    - para hacer event.preventDefault() => v-on:nombre_evento.prevent=""
+  - modificadores de keys =>
+    - para enter => @evento_key.enter="funcion"
+    - para space => @evento_key.space="funcion"
+    - para escape => @evento_key.esc="funcion"
 
 enlazar a un atributo HTML => v-bind:nombre_atributo="valor", los {{}} sirven únicamente cuando se intenta insertar texto pero no cuando se modifica los atributos
 
@@ -574,3 +575,36 @@ storybook => es una documentación de UI
     Vue.use(Quasar, NombreComponenteQuasar) // nos permitirá poder utilizar los componentes de Quasar dentro del story
 
 acceder a atributos de manera global por la instancia de Vue => Vue({ /* atributos */ }), acceder mediante this.$root.atributo, es mejor manejarlo con Vuex
+
+Quasar Framework => al tener componentes y configuraciones ya establecidas nos facilita la posibilidad de poder ser utilizada la aplicación en distintos dispositivos
+  - se puede utilizar quasar con un cli o dentro de vue cli, mejor quasar cli => sudo npm i -g @quasar/cli
+  - crear un proyecto quasar => quasar create nombre_proyecto
+  - crear un filtro global =>
+    - crear una carpeta src/filters donde se creen los filtros globales
+    - crear un archivo en src/boot/ que se llame filters.js =>
+      /* importar filtros */
+      export default ({ Vue }) => {
+        Vue.filter('nombreFiltro', filtroImportado) // para todos los filtros
+      }
+    - dentro del quasar.conf.js => boot: [...demasArchivos, 'filters']
+  - componentes de Quasar =>
+    - q-page => normalmente es un template que contiene el router-view
+      - agregarle padding al componente => <q-page padding>
+  - añadir una librería de componente third-party =>
+    - crear un archivo boot para añadir la librería => quasar new boot nombreLibrería
+    - dentro del src/boot/ se encontrará el archivo con una función que indicará a que atributos de la instancia de Vue, app podemos acceder
+    - en el quasar.conf.js => boot: ['nombreArchivoLibreria', ...]
+
+refs =>
+
+firebase =>
+  - instalar firebase => npm o yarn firebase
+  - crear un archivo que se llame src/firebase.js donde se manejará toda la configuración de firebase =>
+  - configurar para firestore, dentro del firebase.js =>
+    import firebase from 'firebase/app'
+    import 'firebase/firestore'
+    const firebaseApp = firebase.initializeApp({  // iniciar el sdk
+      /* configuraciones de acceso para firebase */
+    })
+    const db = firebaseApp.firestore() // crear acceso a firestore
+    export { db }

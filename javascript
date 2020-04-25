@@ -239,6 +239,8 @@ convertir un objeto response en un json => response.json() // devuelve una prome
 reducir un array a un solo valor => array.reduce((acumulatorio, siguienteElemento) => { /* el valor que retorna será el valor acumulatorio */ }, valorInicial)
   el valorInicial sería el primer valor acumulatorio (es opcional)
 
+acceder al index del elemento seleccionado en un select => event.target.selectedIndex
+
 ==================================================================
 NODE MODULES
 
