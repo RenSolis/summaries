@@ -11,7 +11,7 @@ elemento de instancia de Vue:
 
 para activar eventos => v-on:nombre_evento
   para indicar en que argumento se usara el event => v-on:nombre_evento(variable, $event)
-  - keystroke event => <tag v-on:input="metodo">
+  - keystroke event => <tag @input="metodo">, si se utiliza todo dentro del form tag entonces se aplicará para todos los elementos dentro del form
   - click event => <tag v-on:click="metodo">
   - opcionalmente se puede usar los paréntesis para el método
 
@@ -599,12 +599,26 @@ refs =>
 
 firebase =>
   - instalar firebase => npm o yarn firebase
+  - instalar vuefire => npm o yarn vuefire, nos provisiona una manera de manejar bases de datos en tiempo real: Realtime Database y Cloud Store
   - crear un archivo que se llame src/firebase.js donde se manejará toda la configuración de firebase =>
-  - configurar para firestore, dentro del firebase.js =>
-    import firebase from 'firebase/app'
-    import 'firebase/firestore'
-    const firebaseApp = firebase.initializeApp({  // iniciar el sdk
-      /* configuraciones de acceso para firebase */
-    })
-    const db = firebaseApp.firestore() // crear acceso a firestore
-    export { db }
+  - configurar para firestore =>
+    - dentro del firebase.js =>
+      import firebase from 'firebase/app'
+      import 'firebase/firestore'
+      const firebaseApp = firebase.initializeApp({  // iniciar el sdk
+        /* configuraciones de acceso para firebase */
+      })
+      const db = firebaseApp.firestore() // crear acceso a firestore
+      export { db }
+    - añadir en el archivo main.js =>
+      import { firestorePlugin } from 'vuefire'
+      Vue.use(firestorePlugin)
+    - en el componente que se utilizará =>
+      - acceder a la data de una colección => db.doc('coleccion/documento')
+        - obtener los datos de la coleccion => db.doc('coleccion/documento').get() // devuelve una promesa
+          - (await db.doc('coleccion/documento').get).data()
+        - configuración de la colección => db.doc('coleccion/documento').set(nuevaData) // devuelve una promesa
+
+debounce => es una librería que nos permite implementar un comportamiento después que ocurra una acción repetida
+  - instalar librería => yarn|npm debounce
+  - en los métodos => nombreMetodo: debounce(function() { /* funcionalidad repetida */ }, tiempo_espera_a_ejecución)

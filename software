@@ -1,3 +1,9 @@
 dependency injection => trata de volver más manejable y testeable el código al crear una forma en que la funcionalidad del servicio pueda variar
 
 deep linking => es cuando se puede acceder a distintos paths sin necesidad de pasar por la página principal para acceder a ellos
+
+------------------------ ALGORITHMS ------------------------
+
+graphs =>
+  - Breadth First Search (BFS) => se explora por los niveles de cada nodo de manera uniforme (horizontal)
+  - Deep First Search (DFS) => recorre los nodos de manera ordenada

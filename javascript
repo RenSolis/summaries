@@ -106,6 +106,8 @@ insertar html en cierta parte de un elemento => elemento.insertAdjacentElement(p
 crear un array con una cantidad de elementos y llenarlos con objetos => Array(cantidad_elementos).fill(objeto)
 
 crear un object con elementos no repetidos de un array => new Set(array)
+  - comprobar si tiene un elemento => objeto_set.has(elemento)
+  - añadir un nuevo elemento => objeto_set.add(elemento)
 
 crear un array con elementos únicos => Array.from(new Set(array))
 
@@ -240,6 +242,11 @@ reducir un array a un solo valor => array.reduce((acumulatorio, siguienteElement
   el valorInicial sería el primer valor acumulatorio (es opcional)
 
 acceder al index del elemento seleccionado en un select => event.target.selectedIndex
+
+almacenar y tratar un iterable como key/value => new Map(iterable)
+  - obtener valor => map_object.get(key)
+  - establecer un nuevo valor a una key => map_object.set(key, value)
+  - añadir un nuevo valor si el valor es un array => objeto_set.get(key).push(valor)
 
 ==================================================================
 NODE MODULES
