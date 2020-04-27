@@ -6,4 +6,13 @@ deep linking => es cuando se puede acceder a distintos paths sin necesidad de pa
 
 graphs =>
   - Breadth First Search (BFS) => se explora por los niveles de cada nodo de manera uniforme (horizontal)
-  - Deep First Search (DFS) => recorre los nodos de manera ordenada
+    - útil cuando se intenta descubrir piezas discretas de información
+  - Deep First Search (DFS) => recorre los nodos de manera no uniforme
+  - Dijkstra => es un algoritmo para encontrar el camino más corto, consiste en seleccionar el que tiene el menor vertice utilizando BFS y así obtener una ruta, haciendolo eficiente porque solo trata a subconjuntos de datos
+  - Best-First Search => se expande al nodo más prometedor siguiendo una regla establecida
+  - A* (pronuncia: a-star) => mejora el algoritmo Dijkstra utilizando el best-first search
+    - la diferencia con Dijkstra es que busca el nodo más cercano al destino, en cambio Dijkstra el más cercano al punto de inicio
+
+------------------------ DATABASES ------------------------
+
+graph database => es una base de datos que usa una estrucura de graphs para representar y almacenar datos (Amazon Neptune, AllegroGraph, etc.)

@@ -10,6 +10,7 @@ servicios =>
     - aws lambda => permite ejecutar código sin provisionar o manejar un servidor (FaaS)
   - storage =>
   - database =>
+    - amazon neptune => base de datos en graphs
   - migration & transfer =>
   - networking & content delivery =>
     - route 53 => es un servicio DNS web escalable, también cumple con IPv6
