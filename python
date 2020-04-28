@@ -18,3 +18,6 @@ imprimir valores en consola => print(valor, valor), cada valor estará separado 
 cast =>
   - convertir un string a un entero => int(string)
   - convertir un string a un float => float(string)
+
+realizar un comentario => # comentario
+  - de múltiples líneas => """ comentario """

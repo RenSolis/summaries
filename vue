@@ -473,6 +473,7 @@ testing jest =>
   - indicar las clases que tiene el componente o elemento => wrapper.classes()
   - buscar un elemento html => wrapper.find('selector')
     - buscar un componente hijo dentro del componente montado => wrapper.find(ComponenteHijo) // no olvidar importar el componente hijo
+      - se puede acceder a los atributos de instancia del componente => wrapper.find(ComponenteHijo).vm
     - obtener el texto del elemento => wrapper.find('selector').text()
     - obtener los atributos del elemento => wrapper.find('selector').attributes() // nos devuelve un objeto con todos los atributos
   - lanzar un evento de un elemento => wrapper.find('selector').trigger('nombre_evento')
@@ -521,6 +522,7 @@ testing jest =>
       return object
     }, {})
     localVue.use(Quasar, { components })
+  - indicar que se espera que el string sea parecido => expect('string').toMatch('string')
 
 storybook => es una documentación de UI
   - añadir storybook a vue cli => vue add storybook
@@ -595,8 +597,6 @@ Quasar Framework => al tener componentes y configuraciones ya establecidas nos f
     - dentro del src/boot/ se encontrará el archivo con una función que indicará a que atributos de la instancia de Vue, app podemos acceder
     - en el quasar.conf.js => boot: ['nombreArchivoLibreria', ...]
 
-refs =>
-
 firebase =>
   - instalar firebase => npm o yarn firebase
   - instalar vuefire => npm o yarn vuefire, nos provisiona una manera de manejar bases de datos en tiempo real: Realtime Database y Cloud Store
@@ -622,3 +622,44 @@ firebase =>
 debounce => es una librería que nos permite implementar un comportamiento después que ocurra una acción repetida
   - instalar librería => yarn|npm debounce
   - en los métodos => nombreMetodo: debounce(function() { /* funcionalidad repetida */ }, tiempo_espera_a_ejecución)
+
+multipleselection => npm|yarn multipleselection, para realizar diferentes tipos de seleccion
+  - props =>
+    - v-model="value" => debe colocarse un array como valor si es múltiple sino un valor cualquiera
+    - :options="list_de_opciones" => deben tener los elementos
+    - label="key_de_la_opcion" => se indicará que propiedad de las opciones se mostrará
+    - :multiple="true|false" => indica si el selector será múltiple o no
+    - track-by="key_de_la_opcion" => con que atributo de las opciones se buscará
+    - :close-on-select="true|false" => al seleccionar una opción se cerrará el dropdown
+    - :clear-on-select="true|false" => al seleccionar se limpiarán todas las opciones que fueron seleccionadas
+    - :preserve-search="true|false" => mantener la busqueda anterior que se realiza para el filtrado de opciones
+    - placeholder="string" => el valor del placeholder que se utilizará
+    - openDirection="top|bottom" => indica la posición en donde se abrirá el dropdown
+    - :maxHeight="numero" => es el valor máximo que tendrá el alto del dropdown
+    - :optionHeight="numero" => es el valor del alto que ocupará cada opción del dropdown
+    - select-label="string" => es el texto que irá en cada opción del dropdown
+    - :searchable="true|false" => indica si se podrá realizar el filtrado de opciones
+    - :showLabels="true|false" => los textos que van en cada opción
+    - :showPointer="true|false" => es un efecto que se activa con un hover sobre las opciones
+    - :max="numero" => indica el número máximo para items seleccionados en el dropdown
+  - eventos =>
+    - @select="metodoLocal" => indica cada vez que se selecciona un valor en el selector
+
+refs => son propiedades que nos permiten hacer referencias a elementos html en el template
+  - indicar el elemento con el atributo ref => <tag ref="nombre_ref" />
+  - para referencia el elemento => this.$refs.nombre_ref | this.$refs['nombre_ref'], esto sería igual que un querySelector
+  - también se puede utilizar en múltiples elementos (v-for) y se tomaría como un array
+  - no es recomendable utilizar dentro de los computed properties porque tiene la habilidad de manejar directamente nodos hijos
+
+listar los componentes hijos => this.$children // nos devuelve un array de los componentes hijos donde podremos acceder a sus instancias
+
+estructura de archivos =>
+  - React propone dos distintas formas de agrupar archivos =>
+    - por características o rutas
+    - por el tipo de archivo
+  - atomic design =>
+    - atoms => son los bloques más básicos (input, button)
+    - molecules => son grupos de atomos para crear unidades fundamentales (form search)
+    - organisms => son grupos de moleculas que relativamente para secciones complejas (header)
+    - templates => son grupos de organismos juntos para formar una página
+    - pages => es colocar información dentro de los templates
