@@ -663,3 +663,5 @@ estructura de archivos =>
     - organisms => son grupos de moleculas que relativamente para secciones complejas (header)
     - templates => son grupos de organismos juntos para formar una página
     - pages => es colocar información dentro de los templates
+
+vue-color => librería para seleccionar por una paleta de colores

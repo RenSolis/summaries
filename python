@@ -21,3 +21,28 @@ cast =>
 
 realizar un comentario => # comentario
   - de múltiples líneas => """ comentario """
+
+listas => son arrays que tienen la posibilidad de aumentar o disminuir de tamaño en medio de la ejecución
+  - se pueden obtener los valores también a partir de índices negativos
+  - obtener un subconjunto de listas => lista[inicio:fin:saltos] indicando los indices, los saltos son de cada cuanto se toma un elemento
+    - si es desde el inicio simplemente => lista[:fin]
+    - hasta el final => lista[inicio:]
+  - revés de la lista => lista[::-1]
+  - ordenar la lista ascendente => list.sort(reverse=False), si se pone el reverse True se ordenará de manera descendente
+  - obtener el mayor de la lista => max(lista)
+  - obtener el menor de la lista => min(lista)
+  - tamaño de la lista => len(lista)
+  - comprobar si un elemento se encuentra en la lista => valor in lista # devuelve un booleano
+  - obtener el índice de una lista => lista.index(valor)
+  - contar cuantos items de mismos valores se tiene en la lista => lista.count(valor)
+  - convertir una lista en un string => lista.join(string) # opcionalmente el string será el separador entre los items de la lista
+
+matrices => [[],[]] son listas dentro de una lista
+
+strings => naturalmente inmutables
+  - obtener la cantidad de caracteres => len(string)
+  - obtener el caracter por índice => string[índice]
+    - tiene las mismas características que una lista => string[inicio:fin:saltos]
+  - separar un string en una lista => string.split(filtro) # el filtro un string
+  - crear un string de multiple lineas => objeto = """ varias lineas """
+  - convert un string en una lista separandola por lineas => string.splitlines()

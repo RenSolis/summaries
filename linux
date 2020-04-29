@@ -675,3 +675,6 @@ guardar y salir del archivo actual => ZZ
 autocompletar la palabra => en insert mode, CTRL + n
 mostrar los números de línea => :set number
 ocultar los número de línea => :set nonumber
+NERDTree => plugin para poder utilizar un menú de todos los archivos
+  - split de manera horizontal => i
+  - split de manera vertical => s
