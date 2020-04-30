@@ -435,6 +435,8 @@ directives =>
   - volver un directive global, en el archivo main.js =>
     - import nombreDirective from 'archivo'
       Vue.directive('nombreDirective', nombreDirective)
+  - solucionar error de context por canvas => npm install jest-canvas-mock
+    - en el jest.config.js => setupFiles: ['jest-canvas-mock']
 
 manejar diferentes environment variables para probar =>
   - ejecutar el env => npm run build --mode=nombre_env
@@ -463,6 +465,7 @@ testing jest =>
       - propsData: { /* props */ }, son los props con los valores que se le pueden dar al componente
       - methods: { /* metodos del componente */ }, si se tiene un método que se utiliza en un callback al crear el componente se debe color dentro de las propiedades del componente, methods: { nombreMetodo: () => {} }
       - slots: { /* default, y los named slots */ }
+      - attachToDocument: true|false => indicará si al componente se le insertará en un div dentro del body, dandonos la forma en poder utilizar todo el DOM
     afterEach(() => { // se ejecuta después de todos los test
       wrapper.destroy() // eliminar el componente montado ayudará a limpiar la memoria
     })
@@ -500,8 +503,8 @@ testing jest =>
         flushPromises()
         expect($router.metodo).lastCalledWith(parametros)
   - configurar los props => wrapper.setProps({ /* nuevos props */ }) // es una función asíncrona
-  - acceder a los props que tiene sin necesidad de setearlos => wrapper.vm._props.atributo_prop
-  - acceder a la data del vm => wrapper.vm._data.elemento
+  - acceder a los props que tiene sin necesidad de setearlos => wrapper.vm.props().atributo_prop
+  - acceder a la data del vm => wrapper.vm.elemento
   - acceder a los validators para los props => wrapper.vm.$options.props.nombre_prop.validator(valor_para_metodo) // esto devolverá true|false según la validación
   - acceder a los computed methods => wrapper.vm.metodoComputed
   - comprobar el contenido de un array => expect(array).toEqual(expect.arrayContaining([valor, valor, ...])) // se indican todos los valores que pueda tener el array, no necesariamente todos
@@ -523,6 +526,8 @@ testing jest =>
     }, {})
     localVue.use(Quasar, { components })
   - indicar que se espera que el string sea parecido => expect('string').toMatch('string')
+  - comprobar las veces que ha sido llamada una mock function => expect(mockFn).toHaveBeenCalledTimes(cantidad)
+  - comprobar si el mock function ha sido llamado => expect(mockFn).toHaveBeenCalled()
 
 storybook => es una documentación de UI
   - añadir storybook a vue cli => vue add storybook

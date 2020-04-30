@@ -248,6 +248,14 @@ almacenar y tratar un iterable como key/value => new Map(iterable)
   - establecer un nuevo valor a una key => map_object.set(key, value)
   - añadir un nuevo valor si el valor es un array => objeto_set.get(key).push(valor)
 
+comprobar si un elemento contiene a otro => element.contains(otroElemento)
+
+obtener todo el path del objeto en un evento => event.composedPath() // nos da toda la ruta de nodos del evento objeto
+
+obtener el índice de un elemento dentro de un array => array.indexOf(elemento) // si el array no tiene el elemento devuelve un -1
+
+ejecutar una función dentro de una variable => variable.call(argumentos)
+
 ==================================================================
 NODE MODULES
 
