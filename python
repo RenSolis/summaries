@@ -18,6 +18,7 @@ imprimir valores en consola => print(valor, valor), cada valor estará separado 
 cast =>
   - convertir un string a un entero => int(string)
   - convertir un string a un float => float(string)
+  - convertir un objeto a un string => str(int|float|boolean)
 
 realizar un comentario => # comentario
   - de múltiples líneas => """ comentario """
@@ -33,16 +34,48 @@ listas => son arrays que tienen la posibilidad de aumentar o disminuir de tamañ
   - obtener el menor de la lista => min(lista)
   - tamaño de la lista => len(lista)
   - comprobar si un elemento se encuentra en la lista => valor in lista # devuelve un booleano
+    - también se puede cambiar el valor boolean => valor not in lista # devolverá el boolean contrario
   - obtener el índice de una lista => lista.index(valor)
   - contar cuantos items de mismos valores se tiene en la lista => lista.count(valor)
   - convertir una lista en un string => lista.join(string) # opcionalmente el string será el separador entre los items de la lista
 
 matrices => [[],[]] son listas dentro de una lista
 
-strings => naturalmente inmutables
+strings => son inmutables, los métodos crean un nuevo string
   - obtener la cantidad de caracteres => len(string)
   - obtener el caracter por índice => string[índice]
     - tiene las mismas características que una lista => string[inicio:fin:saltos]
   - separar un string en una lista => string.split(filtro) # el filtro un string
   - crear un string de multiple lineas => objeto = """ varias lineas """
   - convert un string en una lista separandola por lineas => string.splitlines()
+  - poner un string con letra capital => string.capitalize()
+  - poner todos los caracteres al contrario del case que tiene => string.swapcase()
+  - todo el string en mayúscula => string.upper()
+  - todo el string en minúscula => string.lower()
+  - comprobar si el texto se encuentra en solo mayúsculas => string.isupper()
+  - comprobar si el texto se encuentra en solo minúsculas => string.islower()
+  - convertir el string a un formato de título => string.title()
+  - reemplazar un substring del string => string.replace(substring, otro_string, cantidad_cambios) # la cantidad de cambios es opcional, indica cuantos substrings cambiará
+  - eliminar los espacios en blanco de los extremos => texto.strip()
+  - crear un string donde las variables dentro de este sean reemplazados => "%s %s ..." %(valor, valor, ...) # se puede utilizar cuantas veces se quiera el %s y se debe indicar la misma cantidad de valores que lo reemplazará
+  - insertar valores dentro del string => " {} ".format(valor) # se puede utilizar cuantas veces se quieran los {} y con la misma cantidad para los valores del formato
+    - también se puede agregar un nombre al valor que se insertará al string => " {a} ".format(a=valor) # esto hace más preciso cuando agreguemos un valor a cual nos referimos
+  - un string no puede concatenarse con otro valor que no sea un string => string + str(valor) # por lo que se necesita hacer un cast para poder concatenar
+  - obtener cuantas veces hay un string dentro de otro => string.count(substring)
+  - comprobar si un string se encuentra dentro de otro => substring in string # devuelve un boolean
+    - también se puede cambiar el valor boolean => substring not in string # devolverá el boolean contrario
+  - obtener el index de un substring => string.find(substring) # en caso no se encuentre devolverá un -1
+  - comprobar como inicia el string => string.startswith(substring)
+  - comprobar como termina el string => string.endswith(substring)
+
+tuple => es una secuencia parecida a una lista
+  - crear una tuple => (valor, valor, ...)
+
+dictionary =>
+  - comprobar si una key se encuentra en el dictionary => "key" in dictionary
+  - obtener el valor de la key sin error cuando no existe => dictionary.get("key") # en caso no exista retorna un None
+    - si no se encuentra la key se puede indicar que valor retornar => dictionary.get('key', value)
+  - buscar una key y si no lo encuentra que la agregue => dictionary.setdefault('key', valor)
+  - obtener todas las keys => dictionary.keys() # nos devuelve un objeto dict_keys con todas las keys, se puede convertir el objeto en otros (list(dict_keys), tuple(dict_keys))
+  - obtener todos los valores => dictionary.values() # nos devuelve un objeto dict_values con todos los valores, se puede convertir el objeto en otros (list(dict_values), tuple(dict_values))
+  - obtener un objeto donde se agrupen las keys con los values => dictionary.items() # devuelve un objeto dict_items, que se puede convertir en otro objeto (list(dict_items), duple(dict_items))

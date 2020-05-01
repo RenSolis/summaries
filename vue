@@ -528,6 +528,7 @@ testing jest =>
   - indicar que se espera que el string sea parecido => expect('string').toMatch('string')
   - comprobar las veces que ha sido llamada una mock function => expect(mockFn).toHaveBeenCalledTimes(cantidad)
   - comprobar si el mock function ha sido llamado => expect(mockFn).toHaveBeenCalled()
+  - cuando se necesita que directamente se emita un evento dentro de un componente hijo => wrapper.find(ComponenteHijo).vm.$emit('nombreEvento', parametros_que_devuelve) // solamente si devuleve un valor al emitir
 
 storybook => es una documentación de UI
   - añadir storybook a vue cli => vue add storybook
@@ -670,3 +671,49 @@ estructura de archivos =>
     - pages => es colocar información dentro de los templates
 
 vue-color => librería para seleccionar por una paleta de colores
+  - tiene diferentes tipos de componentes para seleccionar
+  - agregar librería => npm install vue-color
+  - importar librería => import { nombreComponente } from 'vue-color'
+  - los props que se utilizaran en el componente =>
+    - v-model="color" => indicaremos un atributo data donde se manejará los valores del componente
+    - indicar el valor por defector del color => :value="#color"
+    - indicar un conjunto de colores predefinidos => :presetColors="[colores]"
+
+vuelidate => validaciones para formularios
+  - agregar librería => npm i vuelidate
+  - import la librería para uso global =>
+    import Vuelidate from 'vuelidate'
+    Vue.use(Vuelidate)
+  - utilizar validaciones en el componente =>
+    import { tipoValidacion } from 'vuelidate/lib/validators'
+    export default {
+      ...,
+      validations: {
+        atributo {
+          tipoValidacion,
+          ...
+        }
+      }
+  - validar todos los campos => this.$v.$touch()
+  - validar únicamente un campo => this.$v.nombreCampo.$touch();
+  - tipo de validaciones =>
+    - required => no permite ningún elemento sin contenido
+    - alphaNum => únicamente permite letras y números, no permite espacios
+  - crear validacion customizada =>
+    - creacion => const nombreValidacionCustomizada => (value) => /* devolver un valor boolean despues de validar el value */
+    - agregar a validations del elemento que se utilizará como cualquier otro tipo de validación
+  - comprobar si todo ha sido invalido => this.$v.$invalid
+  - acceder a un campo para comprobar si tiene un error por alguna validación => this.$v.campo.nombreValidacion // si es valido dara false y si es valido retornará true
+
+vue-swal => librería para realizar alerts personalizados
+  - instalar librería => npm install vue-swal
+  - importar librería para uso global =>
+    import VueSwal from 'vue-swal'
+    Vue.use(VueSwal)
+  - utilizarlo dentro del componente => this.$swal({ atributos })
+    - el título del sweet alert => title: string
+    - el texto debajo del título => text: string
+    - el ícono que se pondrá primero => icon: 'success|error|warning|info'
+    - agregar el botón con un texto => button string
+    - indicar que se cierre si se hace un click afuera del sweet alert => closeOnClickOutside: true|false // por defecto en true
+    - indicar que se cierre cuando se presiona esc => closeOnEsc: true|false // por defecto en true

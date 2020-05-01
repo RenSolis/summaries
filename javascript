@@ -97,9 +97,10 @@ crear a un documento DOM a partir de textos =>
 
 obtener todas las keys de un objeto => Object.keys(objeto) // devolverá un array de las keys
 
-obtener todo lo almacenado dentro del localStorage => Object.keys(localStorage).map(key => JSON.parse(localStorage.getItem(key)))
-
-limpiar el localStorage => localStorage.clean()
+localStorage => es un almacenamiento de datos en el lado del cliente
+  - cambiar el valor de una key o asignarle => localStorage.setItem('key', valor_en_json)
+  obtener todo lo almacenado dentro del localStorage => Object.keys(localStorage).map(key => JSON.parse(localStorage.getItem(key)))
+  limpiar el localStorage => localStorage.clean()
 
 insertar html en cierta parte de un elemento => elemento.insertAdjacentElement(position, parte)
 
@@ -116,6 +117,8 @@ limitar la cantidad de elementos de un array => array.length = cantidad
 obtener los últimos elementos de un array => array.slice(-cantidad)
 
 saber la cantidad de tiempo que toma => performance.now(), se deberia restar con otro variable con performance.now() para obtener el tiempo
+
+manejar el deshabilitado de un elemento => elemento.disabled = true|false
 
 Notifications API =>
   - comprobar el tipo de permission => Notification.permission
@@ -239,7 +242,7 @@ HTTP client, devolverá de manera asíncrona => fetch
 convertir un objeto response en un json => response.json() // devuelve una promesa
 
 reducir un array a un solo valor => array.reduce((acumulatorio, siguienteElemento) => { /* el valor que retorna será el valor acumulatorio */ }, valorInicial)
-  el valorInicial sería el primer valor acumulatorio (es opcional)
+  el valorInicial sería el primer valor acumulatorio (es opcional), en caso no se use se utilizará el primer valor del array
 
 acceder al index del elemento seleccionado en un select => event.target.selectedIndex
 
