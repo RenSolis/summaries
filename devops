@@ -66,6 +66,66 @@ modelos de implementación informática en la nube =>
   - solución híbrida => es una manera de conectar la infraestructura y las aplicaciones entre los recursos basados en la nube y los recursos existentes fuera de esta
   - implementación local (nube privada) => administración de recursos y virtualización que ofrece recursos dedicados, no posee los beneficios de la informática en la nube
 
+
+
+
+
+=========================================================================================================================================================
+ANOTACIONES PARA ORDERNAR A PARTIR DE ABAJO
+
+==================================================================
+SERVERLESS
+
+serverless: evolución del diseño de aplicaciones, no servidores a administrar, escalabilidad automatica, pago por uso, alta disponibilidad por defecto
+arquitectura monolítica: todos los componentes de software se encuentran acopladas dentro de una aplicación (frontend, backend, etc)
+arquitectura de microservicios => componentes desacoplados
+aws trusted advisor
+aws elastic beanstalk
+aws opsworks
+ec2 auto-recovering
+ec2 containers service
+aplicación serverless =>
+  fuente del evento (cambios de estados en los datos, peticiones a endpoints, cambios en recursos) => lambda (tambien se pueden usar otros servicios) => acción (base de datos, nube)
+lambda => servicio de computo detonado por eventos, sin servidores (microservicio sin servidor)
+  componentes =>
+    - función
+    - evento externo
+    - servicio aws lambda
+    - ambiente de red para la función
+  tiempo de ejecucion =>
+    - sincrono, API gateway
+    - asincrono, S3 o aws sns
+    - basado en evento, cambios como en DynamoDB, amazon kinesis
+  ambiente de red de la funcion =>
+    - default, ambiente de red
+    - customer vcp
+  casos de uso lambda =>
+    - web
+    - backend
+    - procesamiento de datos
+    - chatbots
+    - amazon alexa
+    - automatizacion
+  unicidad =>
+    - abstraccion a nivel codigo/funcion
+    - modelo de seguridad (IAM, VPC)
+    - modelo de precio, se escribe una logica y se toma el tiempo ejecutando todas las lineas de codigo, ese tiempo de ejecucion es lo que cobra
+    - comunidad
+    - integracion con los servicios de aws
+    - escalabilidad
+    - ejecucion basada en eventos
+  solo puede guardar en bd, cache o s3 porque es stateless
+rol IAM => se indican las politicas y roles
+cold start
+api gateway =>
+  crea un api unificada
+  proteccion ddos y throttling para backend
+  autenticacion y autorizacion en los requests para el backend
+  throttle , meter and monetize api uso por 3rd party-developers
+todo el frontend dentro de los assets
+aws step functions => orquestacion de como estará organizado el serverless
+serverless framework
+
 =======================================
 ANOTACIONES AWS GIRL
   amazon sagemaker
@@ -121,57 +181,3 @@ kubernetes en aws
 https://aws.amazon.com/es/fargate/
 
 
-
-
-==================================================================
-SERVERLESS
-
-serverless: evolución del diseño de aplicaciones, no servidores a administrar, escalabilidad automatica, pago por uso, alta disponibilidad por defecto
-arquitectura monolítica: todos los componentes de software se encuentran acopladas dentro de una aplicación (frontend, backend, etc)
-arquitectura de microservicios => componentes desacoplados
-aws trusted advisor
-aws elastic beanstalk
-aws opsworks
-ec2 auto-recovering
-ec2 containers service
-aplicación serverless =>
-  fuente del evento (cambios de estados en los datos, peticiones a endpoints, cambios en recursos) => lambda (tambien se pueden usar otros servicios) => acción (base de datos, nube)
-lambda => servicio de computo detonado por eventos, sin servidores (microservicio sin servidor)
-  componentes =>
-    - función
-    - evento externo
-    - servicio aws lambda
-    - ambiente de red para la función
-  tiempo de ejecucion =>
-    - sincrono, API gateway
-    - asincrono, S3 o aws sns
-    - basado en evento, cambios como en DynamoDB, amazon kinesis
-  ambiente de red de la funcion =>
-    - default, ambiente de red
-    - customer vcp
-  casos de uso lambda =>
-    - web
-    - backend
-    - procesamiento de datos
-    - chatbots
-    - amazon alexa
-    - automatizacion
-  unicidad =>
-    - abstraccion a nivel codigo/funcion
-    - modelo de seguridad (IAM, VPC)
-    - modelo de precio, se escribe una logica y se toma el tiempo ejecutando todas las lineas de codigo, ese tiempo de ejecucion es lo que cobra
-    - comunidad
-    - integracion con los servicios de aws
-    - escalabilidad
-    - ejecucion basada en eventos
-  solo puede guardar en bd, cache o s3 porque es stateless
-rol IAM => se indican las politicas y roles
-cold start
-api gateway =>
-  crea un api unificada
-  proteccion ddos y throttling para backend
-  autenticacion y autorizacion en los requests para el backend
-  throttle , meter and monetize api uso por 3rd party-developers
-todo el frontend dentro de los assets
-aws step functions => orquestacion de como estará organizado el serverless
-serverless framework

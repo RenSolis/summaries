@@ -598,10 +598,40 @@ Quasar Framework => al tener componentes y configuraciones ya establecidas nos f
   - componentes de Quasar =>
     - q-page => normalmente es un template que contiene el router-view
       - agregarle padding al componente => <q-page padding>
+    - q-list => un componente que crea una lista
+      - indicar si los elementos tienen un fondo dark para cambiar el color de los items dentro => dark="true|false"
+    - q-item => es el item que se utiliza dentro de la lista
+      - indicar que es clickable => clickable="true|false"
+      - indicar el tag que se usará => tag="nombretag"
+      - indicar el target => target="valor"
+      - con vue-router =>
+        - indicar la dirección url => to="/url"
+    - q-item-section => por cada vez que se coloque dentro del q-item lo separa en secciones
+      - indicar que la seccion será para avatar => avatar="true|false"
+    - q-item-label => componente que indica el label del item dentro del q-item-section
+      - indicar que será el encabezado de la lista => header="true|false"
+      - la clase que se utilizará => class="nombreClase"
+    - q-icon => componente para indicar el ícono que se utilizará
+      - indicar el material design icon => name="nombreIcon"
+    - q-footer => una sección de footer
+      - agregar elevación y un box-shadow para el footer => elevated="true|false"
+    - q-tabs => es un menú de tabs
+    - q-tab => es un elemento dentro del menú de tabs
+      - se puede elegir el icono segun material design => icon="nombreIcono"
+      - el label que se utilizará para el tab => label="texto"
+    - q-route-tab => es un componente que hereda de q-tab y se puede conectar con vue-router
+      - indicar la ruta => to="/ruta"
+    - q-drawer => es el componente de sidebar
+      - indicar el modelo que se utilizará => v-model="nombreModelo"
+      - poner un borde => bordered
+      - indicar el punto donde no se mostrará => :breakpoint="numero_pixeles"
+    - q-layout => es un componente diseñado para manejar todo el window y envolver todo el contenido de la página
+      - indicar como estarán distribuidos los elementos de la página como header, sidebar, footer, etc. => view="valores"
   - añadir una librería de componente third-party =>
     - crear un archivo boot para añadir la librería => quasar new boot nombreLibrería
     - dentro del src/boot/ se encontrará el archivo con una función que indicará a que atributos de la instancia de Vue, app podemos acceder
     - en el quasar.conf.js => boot: ['nombreArchivoLibreria', ...]
+  - en el archivo quasar.variables.extension es donde podemos redefinir las variables
 
 firebase =>
   - instalar firebase => npm o yarn firebase

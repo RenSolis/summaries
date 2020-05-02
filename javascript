@@ -99,8 +99,9 @@ obtener todas las keys de un objeto => Object.keys(objeto) // devolverá un arra
 
 localStorage => es un almacenamiento de datos en el lado del cliente
   - cambiar el valor de una key o asignarle => localStorage.setItem('key', valor_en_json)
-  obtener todo lo almacenado dentro del localStorage => Object.keys(localStorage).map(key => JSON.parse(localStorage.getItem(key)))
-  limpiar el localStorage => localStorage.clean()
+  - obtener un valor asignado a una key => localStorage.getItem('key')
+  - obtener todos las keys del localStorage = Object.keys(localStorage)
+  - limpiar el localStorage => localStorage.clean()
 
 insertar html en cierta parte de un elemento => elemento.insertAdjacentElement(position, parte)
 
@@ -140,8 +141,15 @@ métodos para video =>
   para las versionas de Firefox 70 para adelante no se puede usar estos métodos porque bloquea los permisos
 
 acceder al nodo padre del elemento => element.parentNode
+  - también se puede utilizar parentElement, pero es más utilizado en browsers nuevos y parentNode para cualquier browser, la mayor diferencia entre ellos es que cuando se busca el padre y no tiene este devuelve null
+
+acceder al elemento siguiente del nodo => elemento.nextElementSibling
+
+acceder al elemento anterior del nodo => elemento.previousElementSibling
 
 obtener todos los hijos del elemento => element.children
+
+eliminar un nodo hijo del elemento => element.removeChild(selector_para_hijo|element.children[indice])
 
 obtener el fragment del link => element_link.hash
 
