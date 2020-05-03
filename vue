@@ -600,14 +600,19 @@ Quasar Framework => al tener componentes y configuraciones ya establecidas nos f
       - agregarle padding al componente => <q-page padding>
     - q-list => un componente que crea una lista
       - indicar si los elementos tienen un fondo dark para cambiar el color de los items dentro => dark="true|false"
+      - indicar si cada item tendrá un separador => separator="true|false"
+      - indicar si la lista tendrá un borde => bordered="true|false"
     - q-item => es el item que se utiliza dentro de la lista
       - indicar que es clickable => clickable="true|false"
       - indicar el tag que se usará => tag="nombretag"
       - indicar el target => target="valor"
+      - indicar si tendrá el efecto ripple => v-ripple="true|false"
       - con vue-router =>
         - indicar la dirección url => to="/url"
     - q-item-section => por cada vez que se coloque dentro del q-item lo separa en secciones
       - indicar que la seccion será para avatar => avatar="true|false"
+      - indicar que se utilizará una clase para ajustar el ancho auto al contenido del elemento => aside="true|false"
+      - indicar que en flex que el contenido será al start => top="true|false"
     - q-item-label => componente que indica el label del item dentro del q-item-section
       - indicar que será el encabezado de la lista => header="true|false"
       - la clase que se utilizará => class="nombreClase"
@@ -627,6 +632,28 @@ Quasar Framework => al tener componentes y configuraciones ya establecidas nos f
       - indicar el punto donde no se mostrará => :breakpoint="numero_pixeles"
     - q-layout => es un componente diseñado para manejar todo el window y envolver todo el contenido de la página
       - indicar como estarán distribuidos los elementos de la página como header, sidebar, footer, etc. => view="valores"
+    - q-button => es un componente para botones
+      - indicar que tendrá redondeado => round="true|false"
+      - indicar el color, que será un color predefinido en quasar => color="nombreColor"
+      - indicar el icon del material design => icon="nombreIcon"
+  - plugins =>
+    - Dialog => es una ventana prompt de confirmación
+      - empezar a utilizarla, dentro de quasar.conf.js => plugins: [..., 'Dialog']
+      - iniciar el dialog en el componente =>
+        this.$q.dialog({
+          title: 'Texto',
+          message: 'Mensaje debajo del texto',
+          ok: {
+            push: true|false, // indicar que se puede clickear
+          },
+          cancel: {
+            color: 'negative' // indica el color que se utilizará para el botón
+          },
+          persistent: 'true|false' // indica si el dialog no se cerrará cuando se de click afuera o escape
+        })
+        .onOk(() => {
+          /* funcionalidad cuando se de click en ok */
+        })
   - añadir una librería de componente third-party =>
     - crear un archivo boot para añadir la librería => quasar new boot nombreLibrería
     - dentro del src/boot/ se encontrará el archivo con una función que indicará a que atributos de la instancia de Vue, app podemos acceder
@@ -747,3 +774,7 @@ vue-swal => librería para realizar alerts personalizados
     - agregar el botón con un texto => button string
     - indicar que se cierre si se hace un click afuera del sweet alert => closeOnClickOutside: true|false // por defecto en true
     - indicar que se cierre cuando se presiona esc => closeOnEsc: true|false // por defecto en true
+
+eliminar una propiedad de un objeto de manera reactiva => Vue.delete(objeto, property)
+
+cambiar una propiedad de un objeto o un valor de un array => Vue.set(objeto|array, indice|property, valor)
