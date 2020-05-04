@@ -632,10 +632,39 @@ Quasar Framework => al tener componentes y configuraciones ya establecidas nos f
       - indicar el punto donde no se mostrará => :breakpoint="numero_pixeles"
     - q-layout => es un componente diseñado para manejar todo el window y envolver todo el contenido de la página
       - indicar como estarán distribuidos los elementos de la página como header, sidebar, footer, etc. => view="valores"
-    - q-button => es un componente para botones
-      - indicar que tendrá redondeado => round="true|false"
+    - q-btn => es un componente para botones
+      - indicar que el botón será redondo => round="true|false"
       - indicar el color, que será un color predefinido en quasar => color="nombreColor"
       - indicar el icon del material design => icon="nombreIcon"
+      - indicar que el botón ocupará menos espacio => dense="true|false"
+      - indicar que el botón no tendrá bordes => flat="true|false"
+      - usar directiva que cierra los dialog => v-close-popup
+    - q-dialog => no es el plugin, es un componente para personalizar un dialog
+      - indicar el valor de si se mostrará o no => v-model="atributo"
+    - q-card => es un componente para agrupar contenido
+      - q-card-section => es un componente para indicar una sección dentro del card
+      - q-card-actions => es un componente que hace de sección para los botones que se tendrán
+    - q-input => es un componente que nos permite personalizar inputs
+      - indicar el modelo que manejará el valor => v-model="atributo"
+      - indicar que cuando se muestre se hará focus => autofocus="true|false"
+      - indicar el label que utilizará el componente => label="string"
+      - indicar la validación que manejará el input => rules="[val => condicion || 'texto de error']"
+      - indicar en los slots en que parte del contenido input se mostrará => v-slot:append|prepend
+        - se pueden colocar íconos al lado del input
+        - configurar para que sea un input date =>
+          <q-icon name="event" class="cursor-pointer"
+            <q-popup-proxy>
+              <q-date v-model="taskToSubmit.dueDate" />
+            </q-popup-proxy>
+          </q-icon>
+          - q-date => componente para selección de fecha
+        - poner el slot para input time =>
+          <q-icon name="access_time" class="cursor-pointer">
+            <q-popup-proxy>
+              <q-time v-model="taskToSubmit.dueTime" />
+            </q-popup-proxy>
+          </q-icon>
+          - q-time => componente para selección de tiempo
   - plugins =>
     - Dialog => es una ventana prompt de confirmación
       - empezar a utilizarla, dentro de quasar.conf.js => plugins: [..., 'Dialog']
@@ -659,6 +688,9 @@ Quasar Framework => al tener componentes y configuraciones ya establecidas nos f
     - dentro del src/boot/ se encontrará el archivo con una función que indicará a que atributos de la instancia de Vue, app podemos acceder
     - en el quasar.conf.js => boot: ['nombreArchivoLibreria', ...]
   - en el archivo quasar.variables.extension es donde podemos redefinir las variables
+  - crear uid's =>
+    - importar la librería => import { uid } from 'quasar'
+    - generar el uid => uid()
 
 firebase =>
   - instalar firebase => npm o yarn firebase
@@ -713,6 +745,8 @@ refs => son propiedades que nos permiten hacer referencias a elementos html en e
   - para referencia el elemento => this.$refs.nombre_ref | this.$refs['nombre_ref'], esto sería igual que un querySelector
   - también se puede utilizar en múltiples elementos (v-for) y se tomaría como un array
   - no es recomendable utilizar dentro de los computed properties porque tiene la habilidad de manejar directamente nodos hijos
+  - se pueden buscar refs dentro de un ref que hace referencia a un componente hijo
+    <componente-hijo ref="nombreRef" />, pudiendo buscarlo como this.$refs.nombreRef.$refs.refDentro
 
 listar los componentes hijos => this.$children // nos devuelve un array de los componentes hijos donde podremos acceder a sus instancias
 
@@ -778,3 +812,8 @@ vue-swal => librería para realizar alerts personalizados
 eliminar una propiedad de un objeto de manera reactiva => Vue.delete(objeto, property)
 
 cambiar una propiedad de un objeto o un valor de un array => Vue.set(objeto|array, indice|property, valor)
+
+sincronizar un prop con el valor en el padre => cada cambio que se realice en el prop hijo mutará al valor del padre
+  - en el padre => <componente-hijo :nombreProp.sync="nombreEmit" />
+  - en el hijo => this.$emit('update:nombreProp', $event)
+  - cada vez que se realice un cambio al prop se debe realizar un emit para que se muestre el cambio en el padre
