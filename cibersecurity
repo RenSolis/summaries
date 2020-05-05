@@ -12,24 +12,6 @@ ejecutar los dionaea =>
 
 // REDES
 
-LAN => red pequeña como la de una casa u oficina
-WAN => redes que interconectan países o ciudades
-MAN => redes que ocupan el tamaño de una urbanización
-
-topología en redes: nos ayuda a identificar como los nodos están conectados
-
-    topología de bus: es el más usado en tipos de redes LAN, los nodos están conectados en un mismo medio que transporta la información
-        ventaja: la red es fácil de comprender y puede crecer sin cambios bruscos a la red
-        desventaja: el tráfico de los nodos pueden ser visto por los otros y a medida que crece la red afectará el rendimiento
-
-    topología de anillo: cada nodo tiene una sola conexión de entrada y una de salida, garantiza el envío de la información pero puede llegar a ser lenta porque pasa por cada nodo intermedio siendo posible que si un nodo falle, todos los demás también
-
-    topología de estrella: todos los nodos están conectados a un punto central, así nos permite garantizar el funcionamiento de la red, permite agregar nuevos nodos mientras que el nodo central lo permita, pero en caso deje de funcionar el nodo central, toda la red también
-
-    topología de malla: todos los nodos están conectados entre sí, permitiendo el poder actuar como servidor y como cliente, es la forma óptima de mantener la conexión entre dispositivos en una red ya que se reduce a uno la cantidad de diapositivos por los que debe viajar la información y en caso uno falle, puede ser enviado por otro nodo
-
-    topología de árbol: contamos con varios dispositivos intermedios que permiten que otros nodos se conecten
-
 ISP: Internal Service Provider
 
 redes convergentes: transportan múltiples servicios a través de la misma red

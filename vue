@@ -435,8 +435,6 @@ directives =>
   - volver un directive global, en el archivo main.js =>
     - import nombreDirective from 'archivo'
       Vue.directive('nombreDirective', nombreDirective)
-  - solucionar error de context por canvas => npm install jest-canvas-mock
-    - en el jest.config.js => setupFiles: ['jest-canvas-mock']
 
 manejar diferentes environment variables para probar =>
   - ejecutar el env => npm run build --mode=nombre_env
@@ -529,6 +527,10 @@ testing jest =>
   - comprobar las veces que ha sido llamada una mock function => expect(mockFn).toHaveBeenCalledTimes(cantidad)
   - comprobar si el mock function ha sido llamado => expect(mockFn).toHaveBeenCalled()
   - cuando se necesita que directamente se emita un evento dentro de un componente hijo => wrapper.find(ComponenteHijo).vm.$emit('nombreEvento', parametros_que_devuelve) // solamente si devuleve un valor al emitir
+  - cambiar el valor de un input => wrapper.find(inputSelector).setValue('valor')
+  - acceder a los valores de vuelidate => wrapper.vm.$v.funcionalidadesDeVuelidate
+  - solucionar error de context por canvas => npm install jest-canvas-mock
+    - en el jest.config.js => setupFiles: ['jest-canvas-mock']
 
 storybook => es una documentación de UI
   - añadir storybook a vue cli => vue add storybook
@@ -665,6 +667,9 @@ Quasar Framework => al tener componentes y configuraciones ya establecidas nos f
             </q-popup-proxy>
           </q-icon>
           - q-time => componente para selección de tiempo
+    - q-banner => es un componente para mostrar un mensaje prominente
+      - indicar que ocupe menos espacio => dense="true|false"
+      - indicar que las actions estaran en la misma fila que el contenido => line-actions="true|false"
   - plugins =>
     - Dialog => es una ventana prompt de confirmación
       - empezar a utilizarla, dentro de quasar.conf.js => plugins: [..., 'Dialog']
@@ -691,6 +696,9 @@ Quasar Framework => al tener componentes y configuraciones ya establecidas nos f
   - crear uid's =>
     - importar la librería => import { uid } from 'quasar'
     - generar el uid => uid()
+  - utilizar event bus para indicar un emit global =>
+    - en el componente hijo => this.$root.$emit('nombreEvento', valor)
+    - en el componente padre => this.$root.$on('nombreEvento', (valor) => { /* funcionalidad */ })
 
 firebase =>
   - instalar firebase => npm o yarn firebase

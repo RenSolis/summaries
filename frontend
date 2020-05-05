@@ -276,3 +276,14 @@ agregar color a un svg como background => solo para webkit
     - también directamente se le puede asignar la imagen => -webkit-mask-image: url(imagen.svg);
 
 agregar estilos a un elemento vacío => element:empty { /* atributos */ }
+
+metodología BEM (Block Element Modifier) => block-name__element-name--modifier-name
+
+BEVM (Block Element Variant Modifier) => block-name__element-name-variation -modifier-name
+
+metodología ABEM (Atomic Block Element Modifier) => es una adaptación de la metodología BEM con un prefijo de atomic
+  [a/m/o/]-blockName__elementName -modifierName
+  - los modificadores a diferencia de BEM ahora están separados de la clase
+  - afectar directamente a los descendientes que tienen múltiples niveles de profundidad sin que se salga de control => .-modifierName > * > & {}
+  - cuando un modificador igual se encuentre en varios componentes a las vez entonces se cambiará el nombre => .-componentName--modificador & {}
+
