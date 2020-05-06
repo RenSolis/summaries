@@ -699,6 +699,7 @@ Quasar Framework => al tener componentes y configuraciones ya establecidas nos f
   - utilizar event bus para indicar un emit global =>
     - en el componente hijo => this.$root.$emit('nombreEvento', valor)
     - en el componente padre => this.$root.$on('nombreEvento', (valor) => { /* funcionalidad */ })
+  - configurar quasar.variables.extension y agregar una nueva variable hará que quasar a la variable que nombre le cree una clase como text-nombreVariable que tendrá el color
 
 firebase =>
   - instalar firebase => npm o yarn firebase

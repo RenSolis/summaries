@@ -10,6 +10,11 @@ graphs =>
   - A* (pronuncia: a-star) => mejora el algoritmo Dijkstra utilizando el best-first search
     - la diferencia con Dijkstra es que busca el nodo más cercano al destino, en cambio Dijkstra el más cercano al punto de inicio
 
+duck typing => es un patrón que acepta cualquier objeto que tenga un método en particular
+  - a diferencia de polimorfismo a duck typing solo le importa que tenga el método necesario y en caso de polimorfismo anula el metodo de la clase base sobreescribiendolo en clases hijas
+
+dependency injection => trata de volver más manejable y testeable el código, al crear una forma en que un objeto que depende de la funcionalidad de un servicio puede ser intercambiable con otro servicio
+
 ------------------------ DATABASES ------------------------
 
 graph database => es una base de datos que usa una estrucura de graphs para representar y almacenar datos (Amazon Neptune, AllegroGraph, etc.)
@@ -22,4 +27,3 @@ context sensitive style => indica que un elemento dentro de un padre debe aplica
 
 ------------------------ BACKEND ------------------------
 
-dependency injection => trata de volver más manejable y testeable el código al crear una forma en que la funcionalidad del servicio pueda variar

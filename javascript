@@ -267,6 +267,8 @@ obtener el índice de un elemento dentro de un array => array.indexOf(elemento) 
 
 ejecutar una función dentro de una variable => variable.call(argumentos)
 
+obtener el contenido de texto de un elemento => elemento.contentText
+
 ==================================================================
 NODE MODULES
 
