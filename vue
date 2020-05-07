@@ -143,6 +143,14 @@ slots => es una forma de pasar contenido dentro de la etiqueta del componente <s
   - el slot unicamente le afecta el style scope en el componente que utilizará dentro el <slot></slot>
   - se puede indicar un valor por defecto dentro del slot cuando no se le pasa contenido => <slot> contenido </slot>
   - named slot => agregarle el atributo name="nombre" dentro de la etiqueta slot para poder utilizarlo, y dentro para indicar los elementos que se utilizaran en el slot agregar slot="nombre"
+  - scoped slot => es un tipo de slot que permite devolver la data del slot para que pueda ser manejado por el componente padre =>
+    - componente hijo => <slot v-for="element in elements" :nombreValor="element"></slot> // no necesariamente el v-for tiene que estar en el slot tambien en un nodo padre
+    - componente padre =>
+      <componente-hijo>
+        <template slot-scoped="{ nombreValor }">
+          <!-- acciones con los valores del nombreValor -->
+        </template>
+      </componente-hijo>
 
 cambiando entre componentes de manera dinamica =>
   <component :is="stringAtributo"></component>, el stringAtributo es el componente
@@ -531,6 +539,14 @@ testing jest =>
   - acceder a los valores de vuelidate => wrapper.vm.$v.funcionalidadesDeVuelidate
   - solucionar error de context por canvas => npm install jest-canvas-mock
     - en el jest.config.js => setupFiles: ['jest-canvas-mock']
+  - utilizar stubs para eliminar comportamientos innecesarios de componentes hijos y centrarnos únicamente en el componente actual =>
+    - mount(NombreComponente, { stubs: { componenteHijo: true|"<tag>markup</tag>"|Componente } }) // se puede reemplazar indicando true, un markup customizado del componente o un componente
+    - directamente con shallowMount se realiza un stubbing de los componentes hijos
+  - testing a vue-router =>
+    - testear los links =>
+      import { ..., RouterLinkStub } from '@vue/test-utils'
+      mount(NombreComponente, { stubs: { RouterLink: RouterLinkStub })
+      - acceder a las propiedads del router-link => wrapper.find(RouterLinkStub).props() // posee la propiedad to que es la url donde se redirecciona el router-link
 
 storybook => es una documentación de UI
   - añadir storybook a vue cli => vue add storybook
@@ -700,6 +716,26 @@ Quasar Framework => al tener componentes y configuraciones ya establecidas nos f
     - en el componente hijo => this.$root.$emit('nombreEvento', valor)
     - en el componente padre => this.$root.$on('nombreEvento', (valor) => { /* funcionalidad */ })
   - configurar quasar.variables.extension y agregar una nueva variable hará que quasar a la variable que nombre le cree una clase como text-nombreVariable que tendrá el color
+  - instalar storybook =>
+    - existen problemas de dependencia por storybook y quasar que usan distintas versiones => yarn|npm -D core-js@^2.0.0
+    - configurar automaticamente => npx -p @storybook/cli sb init --type vue
+    - configurar storybook para acceder a componentes quasar, directivas, filters y plugins (dentro de .storybook/preview.js) =>
+      // Quasar Setup
+      import 'quasar/dist/quasar.min.css';
+      import 'quasar/dist/quasar.css'
+      // Not Quasar Styles
+      import '../src/css/archivo.css';
+      // Directives
+      import directiva from '../src/directives/directiva';
+      // Filters
+      import filtro from '../src/filters/filtro';
+      // Plugins
+      import componente from 'nombre-librería';
+
+      import Vue from 'vue';
+      import Quasar from 'quasar';
+      Vue.use(Quasar, {});
+      /* Añadir plugins, filters y directivas */
 
 firebase =>
   - instalar firebase => npm o yarn firebase

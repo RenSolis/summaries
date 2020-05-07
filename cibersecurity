@@ -552,7 +552,9 @@ nmap => ejecuta los servicios (1000 puertos) más comunes para ver si se encuent
     --script vuln [direccion] => realizar un primer análisis de vulnerabilidades
 
 searchsploit => es una herramienta de linea de comandos que nos permite que permite llevar una copia de Exploit Database para poder utilizar sin internet => searchsploit nombre_app
-  indicar las fechas para saber que versiones son afectadas con los exploits => searchsploit nombre_app -x path
+  - indicar las fechas para saber que versiones son afectadas con los exploits => searchsploit nombre_app -x path # el path es del resultado despues de buscar el nombre de la app
+  - copiar los resultados del path del exploit => searchsploit -m path
+  - actualizar la Exploit Database => searchsploit -u
 
 desactivar la verificación SSL al clonar un repositorio => git -c http.sslVerify=false clone repositorio
 
@@ -615,8 +617,16 @@ gobuster => es una herramienta para fuerza bruta
   - usar directorio/archivo para indicar el modo de fuerza bruta => gobuster dir
     - indicar la url => gobuster dir -u url
     - indicar el wordlist => gobuster dir -u url -w /usr/share/wordlists/archivo.txt
-    - indicar la extensión => gobuster dir -u url -ẃ /usr/share/wordlists/archivo.txt -x extension
+      - dirbuster => tiene txt's que contienen diferentes nombres de directorios y archivos para comprobar su existencia
+    - indicar la extensión => gobuster dir -u url -w /usr/share/wordlists/archivo.txt -x extension
     - output de los resultados => gobuster dir -u url -w /usr/share/wordlists/archivo.txt -x extension -o salida.out
+
+wfuzz => herramienta para fuerza bruta
+  - indicar una salida con colores => -c
+  - indicar el wordlist que se utilizará => -w /usr/share/wordlists/directorios
+  - indicar que códigos debe ocultar => --hc=codigo
+  - indicar el número de conexiones => -t numero
+  - indicar la url que se utilizara => http://url/FUZZ # se utiliza FUZZ al final porque se cambiará con los valores del wordlist
 
 investigar sockets => ss
   - mostrar solo los sockets escuchando => ss -l
@@ -629,3 +639,6 @@ foxyproxy => extension de firefox que nos permite un mejor manejo de los switch 
 exiftool => es para leer los metadatos de las imagenes
 
 billion laughs attack => es un tipo de ataque DoS que consiste en crear 10 entidades que cada una tenga almacenada los 10 veces la entidad anterior
+
+curl => una librería cliente para peticiones a la web
+  - petición a un proxy especifico => --proxy [protocol://]host[:port] | -x [protocol://]host[:port] # en caso no se indique el protocolo se utilizará por defecto el HTTP proxy

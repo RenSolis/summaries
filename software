@@ -27,3 +27,12 @@ context sensitive style => indica que un elemento dentro de un padre debe aplica
 
 ------------------------ BACKEND ------------------------
 
+
+------------------------ REDES ------------------------
+
+IPAM => conjunto de herramientas que permiten descubrir y gestionar las direcciones IP de nuestra red
+  - OpenNetAdmin
+
+------------------------ CIBERSECURITY ------------------------
+
+Burp Suite => herramienta para pruebas de seguridad de aplicaciones web

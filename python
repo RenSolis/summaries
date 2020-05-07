@@ -15,6 +15,9 @@ recibir un valor mediante la consola => input("texto")
 
 imprimir valores en consola => print(valor, valor), cada valor estará separado por un espacio en blanco
 
+ejecutar una librería mediante la terminal => pythonVERSION -m nombreLibreria
+  - utilizarlo para empezar un servidor => pythonVERSION -m http.server numero_puerto
+
 cast =>
   - convertir un string a un entero => int(string)
   - convertir un string a un float => float(string)
