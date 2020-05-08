@@ -454,13 +454,63 @@ snapshot testing => comprobar que la UI no cambie inesperadamente
 
 testing jest =>
   - instalar jest para proyectos ya creados => vue add unit-jest
-  - elegir dependiendo del componente, shallowMount para componentes hijos y que no habrá menos, y mount para componente que posee hijos => import { shallowMount, mount } from '@vue/test-utils'
-  - realizar el mount del componente => shallowMount(componente, { /* propiedades componente */ }) | mount(componente, /* propiedades componente */ }) // propsData es opcional
-    - una vez montado el componente podemos acceder =>
-      - al html => wrapper.contains('tag')
-      - al viewmodel de vue (instancia) => wrapper.vm
+  - renderización de componentes =>
+    - mount => utilizado para renderizar componentes padres con sus componentes hijos
+      { mount } from '@vue/test-utils'
+      mount(Componente)
+    - shallowMount => utilizado para renderizar componentes hijos o padres que utilicen stubs para reemplazar por un objeto falso al componente hijo
+      { shallowMount } from '@vue/test-utils'
+      shallowMount(Componente)
+  - testing props =>
+    - configurando el montaje del componente con props =>
+      mount|shallowMount(Componente, { propsData: { /* valores props */ } })
+    - factory function para aplicar DRY, nos permitirá montar el componente que necesitemos dependendiendo del object que le pasemos =>
+      const factory = (propsData) => {
+        return mount|shallowMount(Componente, { ...propsData, /* props por default */ })
+      }
+  - testing computed =>
+    - utilizar el método call para enlazar un objeto que reemplaze el this object del método computed, útil cuando se realice un stub del componente =>
+      Componente.computed.computedFunction.call({ /* valores para objecto this */ })
+    - acceder a los computed methods con el componente montado => wrapper.vm.metodoComputed
+  - triggering events =>
+    - modificar el valor de un input => wrapper.find('input').setValue('valor')
+    - lanzar un evento y si tiene un modificador se debe agregar también => wrapper.find('selector').trigger('nombre_evento.modificador')
+    - asegurar que Vue reactivity actualizo el DOM => wrapper.vm.$nextTick() // es un método async
+  - librería para tratar las promesas, permitiendonos esperar a que terminen las promesas faltantes antes que termine el test => yarn add flush-promises
+    - dentro del test => flushPromises() // esto reemplazará la funcionalidad de $nextTick
+  - mocks => cambiar el comportamiento de funciones
+    - crear los mocks =>
+      mount|shallowMount(Componente, {
+        mocks: {
+          /* mocks para reemplazar */
+        }
+      })
+    - reemplazar funcionalidad Vue.prototype.$http, al devolver una promesa los test que lo utilicen deben manejar async y la librería flush-promise =>
+      $http: {
+        get: (_url, _data) => {
+          return new Promise((resolve, reject) => {
+            url = _url
+            data = _data
+            resolve()
+          })
+        }
+      }
+  - acceder a los métodos del componente => wrapper.vm.nombreMetodo()
+  - testing emitted events =>
+    - acceder a los emitted events => wrapper.emitted() // devolverá un object con todos los emitted events
+      - al acceder a unn emitted event del object nos devuelve un array que dentro contiene arrays con los valores que retorna cada vez que se emitio el evento => [ [valor], [valor], ... ]
+    - testear el evento sin montar el componente =>
+      const events = {}
+      const $emit = (event, ...args) => { events[event] = [...args] }
+      Componente.methods.metodoQueLlamaAlEmit.call({ $emit })
+      expect(events.nombreEvento).toBe(valor)
+
+
+
+  - una vez montado el componente podemos acceder =>
+    - al html => wrapper.contains('tag')
+    - al viewmodel de vue (instancia) => wrapper.vm
   - obtener el html en string del elemento o vm => wrapper.vm.html() | wrapper.find('selector').html()
-  - esperar a que el DOM actualice después de un trigger event => wrapper.vm.$nextTick()
   - hacer una descripción de un conjunto de tests => describe("titulo", () => { /* tests */ })
   - hacer asignación del componente =>
     let wrapper
@@ -468,7 +518,6 @@ testing jest =>
       wrapper = shallowMount|mount(Componente)
     })
     - las propiedades al montarse =>
-      - propsData: { /* props */ }, son los props con los valores que se le pueden dar al componente
       - methods: { /* metodos del componente */ }, si se tiene un método que se utiliza en un callback al crear el componente se debe color dentro de las propiedades del componente, methods: { nombreMetodo: () => {} }
       - slots: { /* default, y los named slots */ }
       - attachToDocument: true|false => indicará si al componente se le insertará en un div dentro del body, dandonos la forma en poder utilizar todo el DOM
@@ -485,7 +534,6 @@ testing jest =>
       - se puede acceder a los atributos de instancia del componente => wrapper.find(ComponenteHijo).vm
     - obtener el texto del elemento => wrapper.find('selector').text()
     - obtener los atributos del elemento => wrapper.find('selector').attributes() // nos devuelve un objeto con todos los atributos
-  - lanzar un evento de un elemento => wrapper.find('selector').trigger('nombre_evento')
   - acceder a los eventos que fueron emitidos en el componente => wrapper.emitted().evento_emitido // es un array con todas las veces que se ha emitido el método con sus respectivos atributos y valores con lo que emite
   - acceder a los atributos data del viewmodel => wrapper.vm.$data.atributo
   - acceder a los slots => wrapper.vm.$slots // devuelve un array con los slots
@@ -499,7 +547,6 @@ testing jest =>
         }
       }
     }))
-    - librería para tratar las promesas => yarn add flush-promise
     - reemplazar funcionalidad de un módulo =>
       - crear constante que reemplazará los métodos que se utilicen
         const $router = { metodo: jest.fn() }
@@ -512,7 +559,6 @@ testing jest =>
   - acceder a los props que tiene sin necesidad de setearlos => wrapper.vm.props().atributo_prop
   - acceder a la data del vm => wrapper.vm.elemento
   - acceder a los validators para los props => wrapper.vm.$options.props.nombre_prop.validator(valor_para_metodo) // esto devolverá true|false según la validación
-  - acceder a los computed methods => wrapper.vm.metodoComputed
   - comprobar el contenido de un array => expect(array).toEqual(expect.arrayContaining([valor, valor, ...])) // se indican todos los valores que pueda tener el array, no necesariamente todos
   - cuando se usa un módulo exterior se necesita importarlo y crear una instancia de Vue donde indiquemos que lo utilizaremos en el test =>
     - importar la librería que se utilizará
@@ -535,11 +581,10 @@ testing jest =>
   - comprobar las veces que ha sido llamada una mock function => expect(mockFn).toHaveBeenCalledTimes(cantidad)
   - comprobar si el mock function ha sido llamado => expect(mockFn).toHaveBeenCalled()
   - cuando se necesita que directamente se emita un evento dentro de un componente hijo => wrapper.find(ComponenteHijo).vm.$emit('nombreEvento', parametros_que_devuelve) // solamente si devuleve un valor al emitir
-  - cambiar el valor de un input => wrapper.find(inputSelector).setValue('valor')
   - acceder a los valores de vuelidate => wrapper.vm.$v.funcionalidadesDeVuelidate
   - solucionar error de context por canvas => npm install jest-canvas-mock
     - en el jest.config.js => setupFiles: ['jest-canvas-mock']
-  - utilizar stubs para eliminar comportamientos innecesarios de componentes hijos y centrarnos únicamente en el componente actual =>
+  - utilizar stubs para eliminar comportamientos innecesarios de componentes hijos y centrarnos únicamente en el componente actual => uno de los casos es cuando no se quiere realizar la consulta a una api externa para evitar errores
     - mount(NombreComponente, { stubs: { componenteHijo: true|"<tag>markup</tag>"|Componente } }) // se puede reemplazar indicando true, un markup customizado del componente o un componente
     - directamente con shallowMount se realiza un stubbing de los componentes hijos
   - testing a vue-router =>

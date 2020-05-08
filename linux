@@ -28,6 +28,8 @@ ver los usuarios => cat /etc/passwd
 
 ver los grupos => cat /etc/group
 
+listar los grupos => groups
+
 buscar palabras en un archivo => grep busqueda nombre_archivo
   - grep -i => para eliminar el case-sensitive
   - grep -n => para indicar la línea de donde se encontró

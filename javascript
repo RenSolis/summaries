@@ -276,3 +276,5 @@ manejar los formatos de fechas => date-fns
   - instalar librería => npm install date-fns
   - importar librería => import { format } from 'date-fns'
   - cambiar el formato de la fecha => format(date, 'format')
+
+manejar las promesas => flush-promises

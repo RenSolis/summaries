@@ -565,6 +565,8 @@ tratar con base64:
 ssh client => es un programa para entrar dentro de una máquina remota y ejecutar comandos
   - indicar el puerto => ssh -pPUERTO usuario@direccion
   - indicar indentity file => ssh -i file
+    - puede que nos pida un passphrase por lo que tendremos que crackear el private rsa
+    - no olvidar para poder usar el archivo se tiene que dar permisos 600 al private rsa
   - indicar conexion TCP con el puerto o socket => ssh -L direccion_enlace:port:host:host_port|direccion_enlace:port:remote_socket|local_socket:host:hostport|local_socket:remote_socket
 
 generar una key ssh => ssh-keygen
@@ -610,7 +612,7 @@ herramienta para TCP/IP => nc [options] hostname ports
 
 configurar los outputs del terminal => stty
   - output todos los settings de una forma leible para humanos => -a
-  - no imprimir caracteres innecesarios por ejemplo al moverse de derecha a izquierda => raw -echo
+  - no imprimir caracteres innecesarios por ejemplo al moverse de derecha a izquierda => stty raw -echo
   - indicar el numero de columnas y filas que se usaran para la impresion => stty rows cantidad_filas cols cantidad_columnas
 
 gobuster => es una herramienta para fuerza bruta
@@ -642,3 +644,41 @@ billion laughs attack => es un tipo de ataque DoS que consiste en crear 10 entid
 
 curl => una librería cliente para peticiones a la web
   - petición a un proxy especifico => --proxy [protocol://]host[:port] | -x [protocol://]host[:port] # en caso no se indique el protocolo se utilizará por defecto el HTTP proxy
+
+reverse shell => es el acto de redirigir la entrada y salida del shell de manera remota para poder dejar una puerta trasera
+  - comprobar funcionamiento de reverse shell => python3 -c 'script'
+
+wget => herramienta para descarga de archivos online
+
+configurar para tener comandos de gnu => export TERM=screen
+
+poner interactivo shell =>
+  dentro del terminal => python3 -c "import pty;pty.spawn('/bin/bash')"
+  detener la terminal => CTRL + z
+  activar los output settings dentro de propia terminal => stty raw -echo
+  regresar a la terminal detenida => fg
+
+buscar archivos que tenga acceso el grupo local => find / -group internal 2>/dev/null
+
+netscat => herramienta para comprobar todas las conexiones activas de la computadora
+  - mostrar los server sockets => -l
+  - no mostrar nombre => -n
+  - mostrar el PID => -p
+  - indicar conexiones tcp => -t
+
+comprobar los sitios web que corre apache2 mostrandonos las .conf de los archivos => /etc/apache2/sites-enabled/
+
+crackear private rsa =>
+  ssh2john => es un script
+    - encontrar la ubicacion del archivo => locate ssh2john
+    - ejecutar => python /path/ssh2john.py archivo-rsa # esto nos devolverá el hash
+
+john => herramienta para descubrir contraseñas debiles dentro de un hash
+  john archivo-hash --wordlist=/usr/share/wordlists/rockyou.txt
+
+extraer un paquete .gz => gzip -d archivo.gz
+
+sudo => ejecutar comandos como otro usuario
+  - listar los privilegios del usuario => sudo -l
+
+ejecutar comandos dentro de nano => ctrl r, luego ctrl x

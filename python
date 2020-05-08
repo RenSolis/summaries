@@ -82,3 +82,6 @@ dictionary =>
   - obtener todas las keys => dictionary.keys() # nos devuelve un objeto dict_keys con todas las keys, se puede convertir el objeto en otros (list(dict_keys), tuple(dict_keys))
   - obtener todos los valores => dictionary.values() # nos devuelve un objeto dict_values con todos los valores, se puede convertir el objeto en otros (list(dict_values), tuple(dict_values))
   - obtener un objeto donde se agrupen las keys con los values => dictionary.items() # devuelve un objeto dict_items, que se puede convertir en otro objeto (list(dict_items), duple(dict_items))
+  - eliminar una key => con una palabra reservada => del dictionary['key']
+  - eliminar una key y devolver el valor => dictionary.pop('key')
+  - elimnar todas las keys => dictionary.clean()
