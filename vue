@@ -478,14 +478,14 @@ testing jest =>
     - asegurar que Vue reactivity actualizo el DOM => wrapper.vm.$nextTick() // es un método async
   - librería para tratar las promesas, permitiendonos esperar a que terminen las promesas faltantes antes que termine el test => yarn add flush-promises
     - dentro del test => flushPromises() // esto reemplazará la funcionalidad de $nextTick
-  - mocks => cambiar el comportamiento de funciones
+  - mocks => cambiar el comportamiento de funciones de objetos globales
     - crear los mocks =>
       mount|shallowMount(Componente, {
         mocks: {
           /* mocks para reemplazar */
         }
       })
-    - reemplazar funcionalidad Vue.prototype.$http, al devolver una promesa los test que lo utilicen deben manejar async y la librería flush-promise =>
+    - reemplazar funcionalidad Vue.prototype.$http, al devolver una promesa los test que lo utilicen deben manejar async y la librería flush-promise, dentro de mocks property =>
       $http: {
         get: (_url, _data) => {
           return new Promise((resolve, reject) => {
@@ -495,6 +495,11 @@ testing jest =>
           })
         }
       }
+    - reemplazar funcionalidad Vue.prototype.$t (i18n), dentro de mocks property => $t: (msg) => msg
+      - configurar por default los mocks para no necesitar indicarlos en cada montaje del componente
+        import { config } from '@vue/test-utils'
+        import translations = ./translationsi18n.js'
+        config.mocks["$t"] = (msg) => translations['locale'][msg]
   - acceder a los métodos del componente => wrapper.vm.nombreMetodo()
   - testing emitted events =>
     - acceder a los emitted events => wrapper.emitted() // devolverá un object con todos los emitted events
@@ -504,6 +509,10 @@ testing jest =>
       const $emit = (event, ...args) => { events[event] = [...args] }
       Componente.methods.metodoQueLlamaAlEmit.call({ $emit })
       expect(events.nombreEvento).toBe(valor)
+  - stubbing components => nos ayuda a reemplazar un componente por otro falso para eliminar comportamientos innecesarios y concentrarnos en el test del componente actual
+    - mount(NombreComponente, { stubs: { componenteHijo: true|"<tag>markup</tag>"|Componente } }) // se puede reemplazar indicando true, un markup customizado del componente o un componente
+    - directamente con shallowMount se realiza un stubbing de los componentes hijos
+  - finding elements =>
 
 
 
@@ -584,9 +593,6 @@ testing jest =>
   - acceder a los valores de vuelidate => wrapper.vm.$v.funcionalidadesDeVuelidate
   - solucionar error de context por canvas => npm install jest-canvas-mock
     - en el jest.config.js => setupFiles: ['jest-canvas-mock']
-  - utilizar stubs para eliminar comportamientos innecesarios de componentes hijos y centrarnos únicamente en el componente actual => uno de los casos es cuando no se quiere realizar la consulta a una api externa para evitar errores
-    - mount(NombreComponente, { stubs: { componenteHijo: true|"<tag>markup</tag>"|Componente } }) // se puede reemplazar indicando true, un markup customizado del componente o un componente
-    - directamente con shallowMount se realiza un stubbing de los componentes hijos
   - testing a vue-router =>
     - testear los links =>
       import { ..., RouterLinkStub } from '@vue/test-utils'

@@ -30,6 +30,8 @@ context sensitive style => indica que un elemento dentro de un padre debe aplica
 
 ------------------------ REDES ------------------------
 
+VPN (Virtual Private Network) => tecnología de redes que permiten enviar y recibir datos públicos como si fuera privado
+
 IPAM => conjunto de herramientas que permiten descubrir y gestionar las direcciones IP de nuestra red
   - OpenNetAdmin
 

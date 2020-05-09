@@ -14,8 +14,6 @@ ejecutar los dionaea =>
 
 ISP: Internal Service Provider
 
-redes convergentes: transportan múltiples servicios a través de la misma red
-
 protocolos definen:
     codificación del mensaje
     formato y encapsulamiento del mensaje
@@ -611,9 +609,9 @@ herramienta para TCP/IP => nc [options] hostname ports
   - el puerto que se escuchará => -p puerto
 
 configurar los outputs del terminal => stty
-  - output todos los settings de una forma leible para humanos => -a
+  - output todos los settings de una forma leible para humanos, así cuando se exceda en caracteres la terminal no se comportará de manera extraña => -a
+    - indicar el numero de columnas y filas que se usaran para la impresion => stty rows cantidad_filas cols cantidad_columnas
   - no imprimir caracteres innecesarios por ejemplo al moverse de derecha a izquierda => stty raw -echo
-  - indicar el numero de columnas y filas que se usaran para la impresion => stty rows cantidad_filas cols cantidad_columnas
 
 gobuster => es una herramienta para fuerza bruta
   - usar directorio/archivo para indicar el modo de fuerza bruta => gobuster dir
@@ -650,7 +648,7 @@ reverse shell => es el acto de redirigir la entrada y salida del shell de manera
 
 wget => herramienta para descarga de archivos online
 
-configurar para tener comandos de gnu => export TERM=screen
+configurar para tener comandos de gnu => export TERM=screen o export TERM=xterm
 
 poner interactivo shell =>
   dentro del terminal => python3 -c "import pty;pty.spawn('/bin/bash')"
@@ -660,7 +658,7 @@ poner interactivo shell =>
 
 buscar archivos que tenga acceso el grupo local => find / -group internal 2>/dev/null
 
-netscat => herramienta para comprobar todas las conexiones activas de la computadora
+netcat => herramienta para comprobar todas las conexiones activas de la computadora
   - mostrar los server sockets => -l
   - no mostrar nombre => -n
   - mostrar el PID => -p
@@ -682,3 +680,22 @@ sudo => ejecutar comandos como otro usuario
   - listar los privilegios del usuario => sudo -l
 
 ejecutar comandos dentro de nano => ctrl r, luego ctrl x
+
+privilege-escalation-awesome-scripts-suite => es una herramienta para poder obtener un seguimiento a rutas que puedan tener contraseñas dentro del sistema
+
+encontrar contraseñas perdidas =>
+  grep -rn 'pass'
+  find / | grep config # archivos de configuracion
+  buscar usuarios que tiene acceso bash => cat /etc/passwd | grep bash
+
+awk => herramienta para procesar datos basados en textos
+
+medusa => herramienta para probar autenticaciones con diferentes contraseñas (login con fuerza bruta)
+  - indicar el nombre del host => -h ip
+  - indicar los usuarios => -U listausuarios.txt
+  - indicar las contraseñas => -P passwords.txt
+  - indicar el nombre del modulo a ejecutar => -M ssh|otro_modulo
+
+entrar en ssh mode dentro de una conexion ssh => ~C hacerlo una vez, que salga error y volverlo a tipear y se entra al modo ss
+
+tratar hash SHA512 => sha512sum

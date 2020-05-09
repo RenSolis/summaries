@@ -343,6 +343,7 @@ redireccionando standard output =>
 
 redireccionando standard error =>
   - a un archivo => entrada 2> archivo
+  - redireccionar el standard error para no mostrarlo al hacer una busqueda => 2>/dev/null
 
 redireccionando stderr y stout =>
   - forma tradicional => entrada > archivo 2>&1
