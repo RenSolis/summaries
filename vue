@@ -275,10 +275,6 @@ librería para poder cambiar de componentes por rutas => npm install vue-router 
   - obtener el valor del parametro que se usa => this.$route.params.nombre_parametro
 
 librería para manejar estados => npm install vuex | vue add vuex
-  - tipos de data compartida =>
-    - entidad => como un modelo
-    - session => user info, preferencias, app settings, UX state, router config
-    - local => propiedades de clase o propiedades de componente
   - nos permite poder centralizar la data para poder manejarla en los distintos componentes
   - en el archivo main.js =>
     import store from './store'

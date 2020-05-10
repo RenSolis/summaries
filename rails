@@ -97,6 +97,8 @@ evitar error de método con objeto nulo: objeto.try(:metodo)
 request:
     formats: devuelve el formato con el que el servidor responde
     variant: especifica el tipo de dispositivo físico, es normalmente vacío porque no se ofrece información
+    referrer: la dirección donde se mando el request
+      - útil para cuando se requiere redireccionar hacia la misma ruta => redirect_to request.referrer
 
 cuando se realizan asociaciones polimórficas Rails llena crea el campo (association_name)_type
 
@@ -944,9 +946,10 @@ SimpleDelegator => clase para crear fácilmente clases decorator
     - obtener el objeto delegado => __getobj__
 
 action_cable =>
+  - generar canales para actioncable => rails g channel nombre_channel
   push notifications =>
     - empezar las notificationes en la app, app/javascript/packs/application.js => Notification.requestPermission().then(result => { funcionalidad })
-    - generar el canal por el que se usara el actioncable => rails g channel notification_channel
+    - generar el canal => rails g channel notification_channel
     - en app/channels/notification_channel.rb => def subscribed; stream_for "notification_channel"; end
     - en app/javascript/channels/notification_channel.js =>
       received(data) {
@@ -1417,3 +1420,7 @@ crear tags mediante helpers =>
     - utilizado para crear un tag con id personalizado al record con su columna id, el bloque es para indicar todo el contenido que tendrá el tag, el prefijo es para indicar que tendrá antes del id prefijo_record_id y las opciones son las que se puede tener en un tag
   - div_for(record, argumentos, &bloque)
     - utilizado para crear de manera rápida un div para los records que se necesiten, pasando argumentos para el div y un bloque para indicar cual será su contenido
+
+indicar que metodos dentro de un controlador se volverá un método helper, agregando en el controlador => helper_method :metodo_definido
+
+
