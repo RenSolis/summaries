@@ -947,6 +947,15 @@ SimpleDelegator => clase para crear fácilmente clases decorator
 
 action_cable =>
   - generar canales para actioncable => rails g channel nombre_channel
+    - genera un archivo nombre_channel.rb dentro de app/channels/ y uno js en app/javascript/channels/
+  - adapters =>
+    - redis => utilizar redis para obtener la interfaz de comunicación (redis-server)
+      - en cable.yml =>
+        adapter: redis
+        url: redis://localhost:6379/1
+  - una buena forma de asegurar que todos los elementos se hayan cargado cuando se ejecute las subscriptions es hacen un wrapper de la creacion del subscriptions con turbolinks:load o DOMContentLoaded
+  - eliminar subscriptions que no se utilizarán antes de crear una nueva =>
+    consumer.subscriptions.subscriptions.forEach((subscription) => consumer.subscriptions.remove(subscription))
   push notifications =>
     - empezar las notificationes en la app, app/javascript/packs/application.js => Notification.requestPermission().then(result => { funcionalidad })
     - generar el canal => rails g channel notification_channel
@@ -956,6 +965,11 @@ action_cable =>
         if (Notification.permission == "granted") { crear notificacion }
       }
     - en el método del controlador donde se utiliza => ActionCable.server.broadcast('notification_channel', data), data podria ser el mensaje (body) que se muestre en la notificacion
+
+Active Job => framework para declarar jobs para utilizar distintos tipos de queuing
+  - generar un job => rails g job nombre_job
+  - utilizar job tan pronto como el sistema este libre => NombreJob.perform_later(parametros)
+  - dentro del método perform para poder utilizar metodos del controlador, helpers o cualquier otro se debe utilizar con la clase padre antes (ejm: ApplicationController.render(...))
 
 implementar WYSIWYG =>
   - summernote =>
@@ -1422,5 +1436,3 @@ crear tags mediante helpers =>
     - utilizado para crear de manera rápida un div para los records que se necesiten, pasando argumentos para el div y un bloque para indicar cual será su contenido
 
 indicar que metodos dentro de un controlador se volverá un método helper, agregando en el controlador => helper_method :metodo_definido
-
-

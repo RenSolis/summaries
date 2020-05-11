@@ -509,7 +509,47 @@ testing jest =>
     - mount(NombreComponente, { stubs: { componenteHijo: true|"<tag>markup</tag>"|Componente } }) // se puede reemplazar indicando true, un markup customizado del componente o un componente
     - directamente con shallowMount se realiza un stubbing de los componentes hijos
   - finding elements =>
-
+    - realizar una búsqueda con querySelector => wrapper.find('selector')
+    - comprobar si un elemento es visible (v-show) => wrapper.find('selector').isVisible()
+    - búsqueda de componente =>
+      - importar el componente para buscarlo => wrapper.find(ChildComponentImported)
+      - buscar sin necesidad de importar => wrapper.find({ name: 'NombreComponente' })
+    - buscar cuando se tiene muchos elementos => wrapper.findAll(Componente|'selector')
+  - testing vuex =>
+    - mutations y getters => son simples funciones javascript para testear, manejando sus parametros
+    - actions =>
+      - realizar un mock de axios =>
+        url = ''
+        body = {}
+        mockError = false // para indicar cuando no salga correctamente que se maneje el error esperado
+        jest.mock('axios', () => {
+          post: (_url, _body) {
+            return new Promise((resolve) => {
+              if (mockError) throw Error('Mock error')
+              url = _url
+              body = _body
+              resolve(valor_esperado) // devolver el valor que se espera obtener de la API
+            })
+        })
+      - al hacer un mock de axios por cada consulta que se realice reemplazará los parametros que se pasa dentro del action a las variables que tenemos en el test
+      - testear cuando falla =>
+        mockError = true
+        await expect(actions.metodo({ commit: jest.fn() }, {})).rejects.toThrow('Nombre error')
+    - dentro de un componente =>
+      - crear una instancia temporal de Vue para utilizar Vuex aunque produce boilerplate =>
+        import { createLocalVue } from '@vue/test-utils'
+        const localVue = createLocalVue()
+        localVue.use(Vuex)
+        const store = new Vuex.Store({
+          /* state, getters, mutations, actions */
+        })
+        mount|shallowMount(Componente, { store, localVue })
+      - utilizar mocks al hacer el montaje del componente =>
+        mocks: {
+          $store: {
+            /* state, getters, mutations, actions */
+          }
+        }
 
 
   - una vez montado el componente podemos acceder =>
@@ -909,3 +949,15 @@ sincronizar un prop con el valor en el padre => cada cambio que se realice en el
   - en el padre => <componente-hijo :nombreProp.sync="nombreEmit" />
   - en el hijo => this.$emit('update:nombreProp', $event)
   - cada vez que se realice un cambio al prop se debe realizar un emit para que se muestre el cambio en el padre
+
+vue-moment => librería para manejar formatos de fechas
+  - instalar librería => npm|yarn vue-moment
+  - instanciar globalmente la librería para usar filtro o métodos =>
+    import VueMoment from 'vue-moment'
+    Vue.use(VueMoment)
+  - cambiar el idioma de la librería, agregando en la instancia de la librería =>
+    import moment from 'moment' // viene como dependencia de la librería
+    import 'moment/locale/idioma'
+    moment.locale(idioma)
+    Vue.use(VueMoment, { moment })
+  - crear un formato de una fecha donde indique el tiempo con respecto a la fecha actual => moment.duration({ milliseconds|seconds|minutes|hours|months|years: cantidad }).humanize()

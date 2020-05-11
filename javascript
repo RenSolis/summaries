@@ -2,13 +2,20 @@ reemplazar solo una parte del texto 'string.replace(parte, reemplazo)'
 
 'typeof object' nos retorna en un string el tipo de dato que es el objeto
 
-date =>
-  - realizar una instancia del día de hoy => new Date()
-  - obtener el año completo del date => date.getFullYear()
-  - obtener el mes en número del date => date.getMonth()
-  - obtener el día en número del date => date.getDay()
-  - cambiar el día del date => date.setDate(dia)
+date => new Date()
+  - obtener los segundos => date.getSeconds()
+  - obtener los minutos => date.getMinutes()
+  - obtener las horas => date.getHours()
   - obtener el día exacto => date.getDate()
+  - obtener el mes en número del date => date.getMonth()
+  - obtener el año completo del date => date.getFullYear()
+  - obtener el día de la semana en número=> date.getDay()
+  - cambiar valores dentro de la fecha =>
+    - cambiar los segundos => date.setSeconds(segundos)
+    - cambiar las horas => date.setHours(horas)
+    - cambiar el día => date.setDate(dia)
+    - cambiar el mes => date.setMonth(mes)
+    - cambiar el año => date.setFullYear(año)
 
 clonar un objeto o array sin referencia: primero convertirlo en JSON.stringify(objeto) para después JSON.parse(objeto) y se considera una nueva instancia del objeto o array
 
