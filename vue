@@ -550,7 +550,10 @@ testing jest =>
             /* state, getters, mutations, actions */
           }
         }
-
+      - cuando se testea getters como normalmente se utilizan en el computed propery podemos personalizar los valores al montaje del componente
+        mount|shallowMount(Componente, { computed: { propiedad: () => valor } }
+      - testear mutations => mutations.nombreMutation(objetoState, payload) // el primero que recibe es el valor del state que debería tener y el segundo el valor que hará un cambio al state
+  - indicar con que valores fue llamado una mock function => expect(mockFn).toHaveBeenCalledWith(argumento, argumento, ...)
 
   - una vez montado el componente podemos acceder =>
     - al html => wrapper.contains('tag')

@@ -115,7 +115,7 @@ adaptar css grid para adaptarse al contenido 'grid-template-columns: repeat(cant
 
 minmax(min, max): define un rango de tamaño mayor o igual que min y menor o igual a max (se emplea en css grid)
 
-calc(): una función que nos permite hacer operaciones entre diferentes medidas de unidad
+calc(): una función que nos permite hacer operaciones entre diferentes medidas de unidad (+, -, *, /)
 
 mix-blend-mode: indica como el color del contenido cambiar por el que tiene detrás y con el fondo del elemento (quien debe tener la propiedad es quien pasa por encima del contenido para cambiar el color)
     se indica el background que maneja el fondo del elemento
@@ -287,3 +287,4 @@ metodología ABEM (Atomic Block Element Modifier) => es una adaptación de la me
   - afectar directamente a los descendientes que tienen múltiples niveles de profundidad sin que se salga de control => .-modifierName > * > & {}
   - cuando un modificador igual se encuentre en varios componentes a las vez entonces se cambiará el nombre => .-componentName--modificador & {}
 
+manejar el resize de textarea => resize: value
