@@ -554,6 +554,14 @@ testing jest =>
         mount|shallowMount(Componente, { computed: { propiedad: () => valor } }
       - testear mutations => mutations.nombreMutation(objetoState, payload) // el primero que recibe es el valor del state que debería tener y el segundo el valor que hará un cambio al state
   - indicar con que valores fue llamado una mock function => expect(mockFn).toHaveBeenCalledWith(argumento, argumento, ...)
+  - testing vue-router =>
+    - utilizando mocks =>
+      mocks: {
+        $route: {
+          /* valores */
+        }
+      }
+
 
   - una vez montado el componente podemos acceder =>
     - al html => wrapper.contains('tag')
