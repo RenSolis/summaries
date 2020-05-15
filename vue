@@ -464,6 +464,9 @@ testing jest =>
       const factory = (propsData) => {
         return mount|shallowMount(Componente, { ...propsData, /* props por default */ })
       }
+    - cambiar el valor de los props de manera directa al wrapper => wrapper.setProps({ /* valores */ }) // realiza cambios en el view model
+    - acceder a los props => wrapper.vm.props().nombreProp
+    - acceder a los validators para los props => wrapper.vm.$options.props.nombre_prop.validator(valor_para_metodo) // esto devolverá true|false según la validación
   - testing computed =>
     - utilizar el método call para enlazar un objeto que reemplaze el this object del método computed, útil cuando se realice un stub del componente =>
       Componente.computed.computedFunction.call({ /* valores para objecto this */ })
@@ -496,6 +499,7 @@ testing jest =>
         import { config } from '@vue/test-utils'
         import translations = ./translationsi18n.js'
         config.mocks["$t"] = (msg) => translations['locale'][msg]
+    - reemplazar metodos al montar => mount(Componente, methods: { /* cambiar métodos */ })
   - acceder a los métodos del componente => wrapper.vm.nombreMetodo()
   - testing emitted events =>
     - acceder a los emitted events => wrapper.emitted() // devolverá un object con todos los emitted events
@@ -505,6 +509,7 @@ testing jest =>
       const $emit = (event, ...args) => { events[event] = [...args] }
       Componente.methods.metodoQueLlamaAlEmit.call({ $emit })
       expect(events.nombreEvento).toBe(valor)
+    - ejecutar directamente el emit de un componente => wrapper.vm.$emit('nombreEvento', valor_que_devuelve) | wrapper.find(ComponenteHijo).vm.$emit('nombreEvento', parametros_que_devuelve)
   - stubbing components => nos ayuda a reemplazar un componente por otro falso para eliminar comportamientos innecesarios y concentrarnos en el test del componente actual
     - mount(NombreComponente, { stubs: { componenteHijo: true|"<tag>markup</tag>"|Componente } }) // se puede reemplazar indicando true, un markup customizado del componente o un componente
     - directamente con shallowMount se realiza un stubbing de los componentes hijos
@@ -553,7 +558,10 @@ testing jest =>
       - cuando se testea getters como normalmente se utilizan en el computed propery podemos personalizar los valores al montaje del componente
         mount|shallowMount(Componente, { computed: { propiedad: () => valor } }
       - testear mutations => mutations.nombreMutation(objetoState, payload) // el primero que recibe es el valor del state que debería tener y el segundo el valor que hará un cambio al state
-  - indicar con que valores fue llamado una mock function => expect(mockFn).toHaveBeenCalledWith(argumento, argumento, ...)
+  - mock functions =>
+    - creación => metodo: jest.fn()
+    - indicar con que valores fue llamada la función => expect(mockFn).toHaveBeenCalledWith(argumento, argumento, ...)
+    - indicar cuantas veces fue llamada la función => expect(mockFn),toHeveBeenCalledTimes(cantidad)
   - testing vue-router =>
     - utilizando mocks =>
       mocks: {
@@ -561,69 +569,40 @@ testing jest =>
           /* valores */
         }
       }
-
-
-  - una vez montado el componente podemos acceder =>
-    - al html => wrapper.contains('tag')
-    - al viewmodel de vue (instancia) => wrapper.vm
-  - obtener el html en string del elemento o vm => wrapper.vm.html() | wrapper.find('selector').html()
-  - hacer una descripción de un conjunto de tests => describe("titulo", () => { /* tests */ })
-  - hacer asignación del componente =>
-    let wrapper
-    beforeEach(() => { // se ejecutará antes de todos los tests
-      wrapper = shallowMount|mount(Componente)
-    })
-    - las propiedades al montarse =>
-      - methods: { /* metodos del componente */ }, si se tiene un método que se utiliza en un callback al crear el componente se debe color dentro de las propiedades del componente, methods: { nombreMetodo: () => {} }
-      - slots: { /* default, y los named slots */ }
-      - attachToDocument: true|false => indicará si al componente se le insertará en un div dentro del body, dandonos la forma en poder utilizar todo el DOM
-    afterEach(() => { // se ejecuta después de todos los test
-      wrapper.destroy() // eliminar el componente montado ayudará a limpiar la memoria
-    })
-  - indicar el test => it('nombre test', () => { /* test */ })
-  - indicar si el componente existe => wrapper.exists()
-    - también funciona al buscar un elemento en el componente y comprobar si existe => wrapper.find('selector').exists()
-  - comprobar si el valor esperado es igual al que se tiene => expect(valor_obtenido).toBe(valor_esperado)
-  - indicar las clases que tiene el componente o elemento => wrapper.classes()
-  - buscar un elemento html => wrapper.find('selector')
-    - buscar un componente hijo dentro del componente montado => wrapper.find(ComponenteHijo) // no olvidar importar el componente hijo
-      - se puede acceder a los atributos de instancia del componente => wrapper.find(ComponenteHijo).vm
-    - obtener el texto del elemento => wrapper.find('selector').text()
-    - obtener los atributos del elemento => wrapper.find('selector').attributes() // nos devuelve un objeto con todos los atributos
-  - acceder a los eventos que fueron emitidos en el componente => wrapper.emitted().evento_emitido // es un array con todas las veces que se ha emitido el método con sus respectivos atributos y valores con lo que emite
-  - acceder a los atributos data del viewmodel => wrapper.vm.$data.atributo
-  - acceder a los slots => wrapper.vm.$slots // devuelve un array con los slots
-  - crear un mock nos permite capturar las funciones reemplazandolas con el valor que se necesite
-    jest.mock('link|librería', () => ({
-      metodo() {
-        return {
-          metodoChained(fnc) {
-            return fnc(valor)
-          }
-        }
-      }
-    }))
-    - reemplazar funcionalidad de un módulo =>
-      - crear constante que reemplazará los métodos que se utilicen
-        const $router = { metodo: jest.fn() }
-      - dentro del shallowMount =>
-        mocks: { $router } // $ indica que es un atributo de la instancia de Vue
-      - indicar el método con los parametros que ha sido llamado después de que se ejecutará algun evento, utilizando flush-promises dentro del test que sería async =>
-        flushPromises()
-        expect($router.metodo).lastCalledWith(parametros)
-  - configurar los props => wrapper.setProps({ /* nuevos props */ }) // es una función asíncrona
-  - acceder a los props que tiene sin necesidad de setearlos => wrapper.vm.props().atributo_prop
-  - acceder a la data del vm => wrapper.vm.elemento
-  - acceder a los validators para los props => wrapper.vm.$options.props.nombre_prop.validator(valor_para_metodo) // esto devolverá true|false según la validación
-  - comprobar el contenido de un array => expect(array).toEqual(expect.arrayContaining([valor, valor, ...])) // se indican todos los valores que pueda tener el array, no necesariamente todos
-  - cuando se usa un módulo exterior se necesita importarlo y crear una instancia de Vue donde indiquemos que lo utilizaremos en el test =>
-    - importar la librería que se utilizará
-    - importar la librería para crear la instancia de Vue =>
-      import { createLocalVue } from '@vue/test-utils'
-      const localVue = createLocalVue()
-    - indicar que se utilizará la librería importada y agregarla en el mount|shallowMount =>
-      localVue.use(Libreria)
-      mount|shallowMount(Component, { localVue })
+    - testear router links =>
+      import { RouterLinkStub } from '@vue/test-utils'
+      mount(NombreComponente, { stubs: { RouterLink: RouterLinkStub } })
+      - acceder a las propiedads del router-link => wrapper.find(RouterLinkStub).props() // posee la propiedad 'to' que es la url donde se redirecciona el router-link
+  - obtener html de un elemento o del view model => wrapper.vm.html() | wrapper.find('selector').html()
+  - comprobar si un elemento existe => wrapper.vm.exists() | wrapper.find('selector').exists()
+  - matchers =>
+    - indicar el valor contrario al matcher => expect(objeto).not.metodoMatcher()
+    - esperar que el objeto sea como el esperado => expect(objeto).toBe(valorEsperado)
+    - esperar que contenga un elemento => expect(objeto).toContain(elementoDentro)
+    - esperar que el objeto sea mayo => expect(objeto).toGreaterThan(numero)
+    - esperar que el objeto sea mayor o igual => expect(objeto).toBeGreaterThanOrEqual(numero)
+    - esperar que el objeto se menor o igual => expect(objeto).toBeLessThanOrEqual(numero)
+    - esperar que el string sea igual al esperado => expect(string).toMatch(string|regexp)
+    - cuando se intenta comparar dos objects => expect(objeto).toEqual(esperado)
+    - esperar que el enumerable contenga la cantidad de elementos => expect(enumerable).toHaveLength(numero)
+  - comprobar el contenido de un array => expect(array).toEqual(expect.arrayContaining([valor, valor, ...]))
+  - obtener las clases de un elemento encontrado => wrapper.classes() | wrapper.find('selector').classes()
+  - obtener el texto de un elemento => wrapper.find('selector').text()
+  - obtener los atributos del elemento => wrapper.find('selector').attributes()
+  - testing data =>
+    - cambiar los valores del data => wrapper.vm.setData({ /* valores */ }) // realiza cambios en el view model
+    - acceder a los atributos data del view model => wrapper.vm.$data.nombreAtributo
+  - testing slots =>
+    - al montar el componente => mount|shallowMount(Componente, { slots: { /* default, named slots */ } })
+    - acceder a los slots => wrapper.vm.$slots
+  - utilizar el componente dentro de un body => mount|shallowMount(Componente, { attachToDocument: true })
+  - hooks =>
+    - funcionalidad que se realice antes que todos los tests => beforeEach(() => { /* funcionalidad */ })
+    - funcionalidad que se realice después que terminen los tests => afterEach(() => { /* funcionalidad */ })
+      - es recomendable eliminar el montaje una vez termine el test para limpiar los archivos => wrapper.destroy()
+  - acceder al elemento node cuando se realiza una busqueda => wrapper.find(elemento).element
+  - testing vuelidate =>
+    - acceder a los valores de vuelidate => wrapper.vm.$v.funcionalidadesDeVuelidate
   - utilizar los componentes de Quasar Framework =>
     import * as All from 'quasar'
     const { Quasar } = All
@@ -633,18 +612,8 @@ testing jest =>
       return object
     }, {})
     localVue.use(Quasar, { components })
-  - indicar que se espera que el string sea parecido => expect('string').toMatch('string')
-  - comprobar las veces que ha sido llamada una mock function => expect(mockFn).toHaveBeenCalledTimes(cantidad)
-  - comprobar si el mock function ha sido llamado => expect(mockFn).toHaveBeenCalled()
-  - cuando se necesita que directamente se emita un evento dentro de un componente hijo => wrapper.find(ComponenteHijo).vm.$emit('nombreEvento', parametros_que_devuelve) // solamente si devuleve un valor al emitir
-  - acceder a los valores de vuelidate => wrapper.vm.$v.funcionalidadesDeVuelidate
   - solucionar error de context por canvas => npm install jest-canvas-mock
     - en el jest.config.js => setupFiles: ['jest-canvas-mock']
-  - testing a vue-router =>
-    - testear los links =>
-      import { ..., RouterLinkStub } from '@vue/test-utils'
-      mount(NombreComponente, { stubs: { RouterLink: RouterLinkStub })
-      - acceder a las propiedads del router-link => wrapper.find(RouterLinkStub).props() // posee la propiedad to que es la url donde se redirecciona el router-link
 
 storybook => es una documentación de UI
   - añadir storybook a vue cli => vue add storybook
@@ -697,6 +666,11 @@ storybook => es una documentación de UI
     import Quasar from 'quasar'
     const { NombreComponenteQuasar } = Quasar
     Vue.use(Quasar, NombreComponenteQuasar) // nos permitirá poder utilizar los componentes de Quasar dentro del story
+  - añadir vuex =>
+    - dentro del preview.js => import Vuex from 'vuex'; Vue.use(Vuex);
+    - cuando se exporta =>
+      store: new Vuex.Store({ /* valores */ }),
+      computed: ...mapState(...) // para llamar al valor que se pasará al componente
 
 acceder a atributos de manera global por la instancia de Vue => Vue({ /* atributos */ }), acceder mediante this.$root.atributo, es mejor manejarlo con Vuex
 

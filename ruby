@@ -48,10 +48,11 @@ METAPROGRAMMING
 
 
 rake file: son archivos que tienen la funcionalidad de mantenimiento o utilidad
-    namespace: es para definir donde se colocarán las tareas 'namespace :nombre_namespace do'
-    desc: es una descripción de lo que hará la tarea ' desc 'descripción' '
-    task: es la tarea y dentro del bloque definir su funcionalidad 'task :nombre_task do'
-    run: en línea de comandos 'bundle exec rake nombre_namespace:nombre_task'
+  namespace: es para definir donde se colocarán las tareas 'namespace :nombre_namespace do'
+  desc: es una descripción de lo que hará la tarea ' desc 'descripción' '
+  task: es la tarea y dentro del bloque definir su funcionalidad 'task :nombre_task do'
+  run: en línea de comandos 'bundle exec rake nombre_namespace:nombre_task'
+  - crear un task con argumentos => task :nombre_task, [:nombreArg, ...] do |task, args|; args[:nombreArg]; end
 
 acceder a los atributos nesteados en un hash: 'hash.dig(key, key_nesteado, ...)'
 
@@ -1159,5 +1160,3 @@ usar redis para mejorar la performancia =>
   - crear una instancia de redis => Redis.new también le podemos pasar argumentos para indicar el host, puerto y la bd (se manejan con numeros) Redis.new(host: host, port: port, db: 0|15|..)
   - guardar un valor en redis => redis.set "key", valor
   - obtener el valor guardado => redis.get "key"
-
-

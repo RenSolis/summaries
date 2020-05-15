@@ -600,7 +600,7 @@ buscar dentro de los repositorios (commits) por secretos => trufflehog, se insta
 
 imprimar las impresiones del paquete por la red => tcpdump icmp
   - no convertir las direcciones a nombres => -n
-  - especifica la interfaz a capturar => -i <interfaz>
+  - especifica la interfaz a capturar => tcpdump -i <interfaz> icmp
 
 herramienta para TCP/IP => nc [options] hostname ports
   - escuchar las entradas a un puerto => -l
@@ -618,6 +618,7 @@ gobuster => es una herramienta para fuerza bruta
     - indicar la url => gobuster dir -u url
     - indicar el wordlist => gobuster dir -u url -w /usr/share/wordlists/archivo.txt
       - dirbuster => tiene txt's que contienen diferentes nombres de directorios y archivos para comprobar su existencia
+        - big.txt => si no se encuentra descargar posee 20000 words
     - indicar la extensión => gobuster dir -u url -w /usr/share/wordlists/archivo.txt -x extension
     - output de los resultados => gobuster dir -u url -w /usr/share/wordlists/archivo.txt -x extension -o salida.out
 
@@ -625,8 +626,9 @@ wfuzz => herramienta para fuerza bruta
   - indicar una salida con colores => -c
   - indicar el wordlist que se utilizará => -w /usr/share/wordlists/directorios
   - indicar que códigos debe ocultar => --hc=codigo
-  - indicar el número de conexiones => -t numero
+  - indicar el número de conexiones => -t numero # warning: cuidado de usar muchos threads porque consume mucho cpu a pesar de la velocidad que nos otorga
   - indicar la url que se utilizara => http://url/FUZZ # se utiliza FUZZ al final porque se cambiará con los valores del wordlist
+  - hay momentos en que se necesita buscar un archivo porque se bloqueo el acceso a directorios => http://url/FUZZ/nombreArchivo
 
 investigar sockets => ss
   - mostrar solo los sockets escuchando => ss -l

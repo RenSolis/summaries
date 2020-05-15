@@ -1234,7 +1234,7 @@ refactorización de modelos =>
 
 crear un hex random => SecureRandom.hex
 
-verificar que el valor existe en la clase => objeto.class.exists?(atributo: valor)
+comprobar que un si un objeto ya existe => objeto.class.exists?(atributo: valor) // los atributos que se usen serán como un where para encontrar el objeto
 
 meta-tags => mejorar el manejo del SEO
   - instalar gema => gem 'meta-tags'
@@ -1326,8 +1326,6 @@ json web token (JWT) =>
   - cargar la gema para la API => gem 'knock' # está bastante adaptado para poder integrarse con gem 'devise'
   - instalar la gema para crear el initializer => rails g knock:install
   - generar un controlador y una ruta para el token => rails g knock:token_controller nombre_controlador
-
-  validar JWT las SPA => gem jwt_sessions
 
 doorkeeper:
   version 5.3.2:
@@ -1436,3 +1434,27 @@ crear tags mediante helpers =>
     - utilizado para crear de manera rápida un div para los records que se necesiten, pasando argumentos para el div y un bloque para indicar cual será su contenido
 
 indicar que metodos dentro de un controlador se volverá un método helper, agregando en el controlador => helper_method :metodo_definido
+
+tasks =>
+  - llamar un tasks desde otro => Rake::Task['namespace:task'].invoke(args) # colocar los args que sean necesarios para el task
+
+-------------------------------------- MIGRATIONS ---------------------------------------
+
+indicar si se aceptarán valores nulos => t.tipo :columna, null: true|false
+
+-------------------------------------- AUTHENTICATION ---------------------------------------
+
+bcrypt => es una gema de un sofisticado y seguro algoritmo de hash para hashing passwords
+  - indicar que a los atributos que culminen en _digest se les tratará como hash, agregando en el modelo => hash_secure_password
+    - añade validaciones como presence, menos o igual a 72 bytes y un atributo de confirmacion que estará como nombre_atributo_confirmation
+    - indicar que solo afectará a una columna => has_secure_password :nombre_columna_sin_digest
+    - indicar que no se necesitarán las validaciones => has_secure_password :nombre_columna_sin_digest, validations: false
+  - realizar autenticación => si es correcto devolverá el objeto sino false
+    - por defecto toma el password => objeto.authenticate('valor')
+    - indicar por otra columna => objeto.authenticate_nombre_columna('valor')
+
+--------------------------------------- API ---------------------------------------
+
+jwt_sessions => gema para utilizar cuando se usa SPA
+
+rack-cors => gema que provisiona soporte para CORS para aplicaciones web compatibles con Rack
