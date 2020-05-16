@@ -23,6 +23,10 @@ event 'onmouseover' es la misma funcionalidad de hover
 
 'objDate.setFullYear(year)' cambia el valor del año en una fecha
 
+FileList => es la lista de archivos que maneja un input file, únicamente se pueden leer no se puede generar un objeto
+
+DataTransfer => es usado como un contenedor de datos cuando se manipula operaciones drag & drop
+
 manejar imagenes =>
   - crear una instancia de una imagen => new Image() // el objeto que generá es un tag
   - indicar el valor del src => objeto_imagen.src = 'url_imagen'
@@ -136,8 +140,6 @@ Notifications API =>
 
 redireccionar página => window.location.href = "/path"
 
-limpiar el interval => window.clearInterval(intervalo_creado)
-
 closure => (function() { funcionalidad })(), nos permite no tener que preocuparnos por el alcance de las variables
 
 obtener la altura de todo el documento => document.documentElement.clientHeight
@@ -222,8 +224,9 @@ convertir string en formato path => escape(string)
 
 mergear objetos y asignarlos todos dentro del primer objeto => Object.assign(objeto, objeto, ...) o también se puede usar el spread operator { ...objeto }
 
-indicar que se ejecute una función en un determinado intervalo de tiempo => setInterval(funcion, tiempo_en_milisegundos)
+indicar que se ejecute una función en un determinado intervalo de tiempo => setInterval(funcion, tiempo_en_milisegundos) // si se almacena en una variable devuelve el id del interval
   - a partir del segundo argumento todas las que siguen se tomarán como argumentos para la primera función
+  - limpiar el interval => window.clearInterval(id_interval)
 
 temporizador de una función, indicar en cuanto tiempo se ejecutará la función que se está pasando => setTimeout(funcion, tiempo_en_milisegundos, argumento_funcion, ...)
   - a partir del segundo argumento todas las que siguen se tomarán como argumentos para la primera función
@@ -273,8 +276,6 @@ obtener todo el path del objeto en un evento => event.composedPath() // nos da t
 obtener el índice de un elemento dentro de un array => array.indexOf(elemento) // si el array no tiene el elemento devuelve un -1
 
 ejecutar una función dentro de una variable => variable.call(argumentos)
-
-obtener el contenido de texto de un elemento => elemento.contentText
 
 ==================================================================
 NODE MODULES

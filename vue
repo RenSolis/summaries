@@ -471,6 +471,7 @@ testing jest =>
     - utilizar el método call para enlazar un objeto que reemplaze el this object del método computed, útil cuando se realice un stub del componente =>
       Componente.computed.computedFunction.call({ /* valores para objecto this */ })
     - acceder a los computed methods con el componente montado => wrapper.vm.metodoComputed
+    - hacer un mock de un computed method, al montar => mount|shallowMount(NombreComponente, { computed: get() {}, set() {} }) // nos obliga a configurar el getter y setter del computed
   - triggering events =>
     - modificar el valor de un input => wrapper.find('input').setValue('valor')
     - lanzar un evento y si tiene un modificador se debe agregar también => wrapper.find('selector').trigger('nombre_evento.modificador')
@@ -585,6 +586,7 @@ testing jest =>
     - esperar que el string sea igual al esperado => expect(string).toMatch(string|regexp)
     - cuando se intenta comparar dos objects => expect(objeto).toEqual(esperado)
     - esperar que el enumerable contenga la cantidad de elementos => expect(enumerable).toHaveLength(numero)
+    - esperar que el objeto sea undefined => expect(objeto).toBeUndefined()
   - comprobar el contenido de un array => expect(array).toEqual(expect.arrayContaining([valor, valor, ...]))
   - obtener las clases de un elemento encontrado => wrapper.classes() | wrapper.find('selector').classes()
   - obtener el texto de un elemento => wrapper.find('selector').text()

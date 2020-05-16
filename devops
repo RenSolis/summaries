@@ -37,14 +37,18 @@ instances => son servidores de la aplicación
 auto scaling => permite indicar hasta que límite se podrá escalar la aplicación (CPU, RAM, ...)
 
 EC2 =>
-  - instancias => máquinas virtuales con diversas opciones de sistema operativo, cpu, ram, ect.
-  - seguridad => generación de llaves únicas para poder conectarse a la máquina mediante Linux o Windows de forma segura
-  - espacio => diversas opciones de espacio en disco duro
-  - redundancia => se pueden poner distintas copias en diferentes zona geográficas
-  - firewall => controlar de manera fina como conectarse a la máquina y por cuales puertos
-  - respaldos => se puede hacer un respaldo de toda la máquina
-  - escalable => se puede incrementar/decrementar los recursos de la máquina
-  - migración de snapshot => se puede hacer una copia de la máquina para utilizarlo en otras regiones
+  - características =>
+    - instancias => máquinas virtuales con diversas opciones de sistema operativo, cpu, ram, ect.
+    - seguridad => generación de llaves únicas para poder conectarse a la máquina mediante Linux o Windows de forma segura
+    - espacio => diversas opciones de espacio en disco duro
+    - redundancia => se pueden poner distintas copias en diferentes zona geográficas
+    - firewall => controlar de manera fina como conectarse a la máquina y por cuales puertos
+    - respaldos => se puede hacer un respaldo de toda la máquina
+    - escalable => se puede incrementar/decrementar los recursos de la máquina
+    - migración de snapshot => se puede hacer una copia de la máquina para utilizarlo en otras regiones
+  - tags => son las columnas que se muestran en las instancias, colocarle un tag name con el nombre de la instancia nos permitirá reconocer fácilmente cada una
+
+Amazon Machine Image (AMI) => es una imagen de máquina basada en CentOS con configuraciones ya realizadas
 
 aws lambda =>
   - event source => son eventos que harán que se ejecute el lambda
