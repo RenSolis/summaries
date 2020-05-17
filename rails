@@ -1455,6 +1455,37 @@ bcrypt => es una gema de un sofisticado y seguro algoritmo de hash para hashing 
 
 --------------------------------------- API ---------------------------------------
 
+cuando se crea un proyecto de Rails únicamente para un API en el application_controller hereda de ActionController::Api en lugar de ActionController
+
+configurar la cookie de response => response.set_cookie(nombre_cookie, argumentos)
+  argumentos =>
+    - value: valor => el valor que tendrá la cookie
+    - httponly: true|false => indicar que la cookie será accesible via scripting o http
+    - secure: true|false => indicar si la cookie será solo transmitida via https
+
 jwt_sessions => gema para utilizar cuando se usa SPA
+  - añadir las autorizaciones, en application_controller => include JWTSessions::RailsAuthorization
+  - manejar los errores de autorización, en application_controller =>
+    rescue_from JWTSessions::Errors::Unauthorized, with: :not_authorized
+    private
+    def not_authorized
+      render json: { error: 'Not Authorized' }, status: :unauthorized
+    end
+  - crear un objeto jwt session => JWTSessions::Session.new(payload: { valores }, refresh_by_access_allowed: true)
+    argumentos =>
+      - payload => recibe un hash object con el contenido necesario
+      - refresh_by_access_allowed => vincula el token de acceso y refresh actualizar el token de acceso cuando fue expirado
+    - acceder a los tokens generados y expiraciones de estos => session.login # es un hash con csrf, access, access_expirest_at, refresh, refresh_expires_at
+  - obtener el nombre de la cookie de acceso => JWTSessions.access_cookie
+  - configurar la cookie del response =>
+    response.set_cookie(JWTSessions.access_cookie, value: session.login[:access], httponly: true, secure: Rails.env.production?)
+  - controller helpers =>
+    - authorize_access_request! => valida el access token dentro del request
+    - authorize_refresh_request! => valida el refresh token dentro del request
+    - authorize_refresh_by_access_request! => validar en caso de falsificación de token y token token expirado, se necesita una actualización
+    - payload => el payload token decoded
+    - claimless_payload => el payload token decoded sin validación de expiración y otros, para poder observar la data de un token expirado
+  - vaciar una session =>
+    - por el access payload => session.flush_by_access_payload
 
 rack-cors => gema que provisiona soporte para CORS para aplicaciones web compatibles con Rack

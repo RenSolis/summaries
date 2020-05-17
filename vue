@@ -151,6 +151,12 @@ slots => es una forma de pasar contenido dentro de la etiqueta del componente <s
           <!-- acciones con los valores del nombreValor -->
         </template>
       </componente-hijo>
+    - utilizar únicamente un slot prop en el componente =>
+      render() {
+        return this.$scopedSlots.default({
+          nombreAtributo: valor
+        })
+      }
 
 cambiando entre componentes de manera dinamica =>
   <component :is="stringAtributo"></component>, el stringAtributo es el componente
@@ -587,7 +593,8 @@ testing jest =>
     - cuando se intenta comparar dos objects => expect(objeto).toEqual(esperado)
     - esperar que el enumerable contenga la cantidad de elementos => expect(enumerable).toHaveLength(numero)
     - esperar que el objeto sea undefined => expect(objeto).toBeUndefined()
-  - comprobar el contenido de un array => expect(array).toEqual(expect.arrayContaining([valor, valor, ...]))
+    - comprobar el contenido de un array => expect(array).toEqual(expect.arrayContaining([valor, valor, ...]))
+    - comprobar el contenido de un object => array(object).toEqual(expect.objectContaining({ key: valor, ... }))
   - obtener las clases de un elemento encontrado => wrapper.classes() | wrapper.find('selector').classes()
   - obtener el texto de un elemento => wrapper.find('selector').text()
   - obtener los atributos del elemento => wrapper.find('selector').attributes()
@@ -595,9 +602,15 @@ testing jest =>
     - cambiar los valores del data => wrapper.vm.setData({ /* valores */ }) // realiza cambios en el view model
     - acceder a los atributos data del view model => wrapper.vm.$data.nombreAtributo
   - testing slots =>
-    - al montar el componente => mount|shallowMount(Componente, { slots: { /* default, named slots */ } })
+    - al montar el componente => mount|shallowMount(Componente, { slots: { /* default, named slots */ } }) // el contenido del slot puede tener string de un html o también un commponente importado
+      - si se espera que solo un tipo de componente se use en el slot =>
+        const nombreComponenteWrapper = {
+          render(h) => h(ComponenteSlot, { props: { } }
+        }
+        mount|shallowMount(Componente, slots: { nombreSlot: nombreComponenteWrapper } })
     - acceder a los slots => wrapper.vm.$slots
   - utilizar el componente dentro de un body => mount|shallowMount(Componente, { attachToDocument: true })
+  - comprobar que un elemento es una instancia de Vue => wrapper.find('selector').isVueInstance()
   - hooks =>
     - funcionalidad que se realice antes que todos los tests => beforeEach(() => { /* funcionalidad */ })
     - funcionalidad que se realice después que terminen los tests => afterEach(() => { /* funcionalidad */ })

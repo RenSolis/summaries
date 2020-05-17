@@ -701,3 +701,5 @@ medusa => herramienta para probar autenticaciones con diferentes contraseñas (l
 entrar en ssh mode dentro de una conexion ssh => ~C hacerlo una vez, que salga error y volverlo a tipear y se entra al modo ss
 
 tratar hash SHA512 => sha512sum
+
+JWT Tokens => normalmente usan el algoritmo HS256 para encriptación
