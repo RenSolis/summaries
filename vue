@@ -517,6 +517,7 @@ testing jest =>
       Componente.methods.metodoQueLlamaAlEmit.call({ $emit })
       expect(events.nombreEvento).toBe(valor)
     - ejecutar directamente el emit de un componente => wrapper.vm.$emit('nombreEvento', valor_que_devuelve) | wrapper.find(ComponenteHijo).vm.$emit('nombreEvento', parametros_que_devuelve)
+    - para acceder directamente a las veces que se emitio un emit => wrapper.emitted('nombreEmit')
   - stubbing components => nos ayuda a reemplazar un componente por otro falso para eliminar comportamientos innecesarios y concentrarnos en el test del componente actual
     - mount(NombreComponente, { stubs: { componenteHijo: true|"<tag>markup</tag>"|Componente } }) // se puede reemplazar indicando true, un markup customizado del componente o un componente
     - directamente con shallowMount se realiza un stubbing de los componentes hijos
