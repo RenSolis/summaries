@@ -1,0 +1,12 @@
+topología de red => nos permite identificar como están conectados los nodos
+  - topología de bus => es el más usado en redes LAN, los nodos están conectados en un mismo medio que transporta la información
+    - la red es fácil de comprender y puede crecer sin cambios bruscos en la red
+    - el tráfico de nodos pueden ser visto por los otros y a medida que crece la red afectará al rendimiento
+  - topología de anillo => cada nodo tiene solo una conexión de entrada y una de salida
+    - garantiza el envión de la información pero puede llegar a ser lenta porque pasa por cada nodo intermedio siendo posible que si uno falla todos los demás también
+  - topología de estrella => todos los nodos están conectados a un punto central
+    - garantiza el funcionamiento de la red permitiendo agregar nuevos nodos mientras el nodo central lo permita
+    - en caso no funcione el nodo central toda la red tampoco funcionará
+  - topología de malla => todos los nodos están conectados entre sí, permitiendo poder actuar como servidor y como cliente
+    - forma óptima de mantener la conexión entre dispositivos ya que se reduce a uno la cantidad de dispositivos por los que viaja la información y en caso de que falle puede ser enviado por otro
+  - topología de árbol => conectan varios nodos mediante nodos intermedios que darán conexiones con los demás nodos

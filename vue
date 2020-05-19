@@ -569,7 +569,10 @@ testing jest =>
   - mock functions =>
     - creación => metodo: jest.fn()
     - indicar con que valores fue llamada la función => expect(mockFn).toHaveBeenCalledWith(argumento, argumento, ...)
-    - indicar cuantas veces fue llamada la función => expect(mockFn),toHeveBeenCalledTimes(cantidad)
+    - indicar cuantas veces fue llamada la función => expect(mockFn).toHaveBeenCalledTimes(cantidad)
+    - realizar un mock de console =>
+      jest.spyOn(console, 'log|warning|error)
+      expect(console.log|warning|error).toHaveBeenCalledWith('valor')
   - testing vue-router =>
     - utilizando mocks =>
       mocks: {
