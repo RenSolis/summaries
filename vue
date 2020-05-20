@@ -573,6 +573,7 @@ testing jest =>
     - realizar un mock de console =>
       jest.spyOn(console, 'log|warning|error)
       expect(console.log|warning|error).toHaveBeenCalledWith('valor')
+    - limpiar los mocks => jest.clearAllMocks()
   - testing vue-router =>
     - utilizando mocks =>
       mocks: {
@@ -965,3 +966,18 @@ vue-moment => librería para manejar formatos de fechas
     moment.locale(idioma)
     Vue.use(VueMoment, { moment })
   - crear un formato de una fecha donde indique el tiempo con respecto a la fecha actual => moment.duration({ milliseconds|seconds|minutes|hours|months|years: cantidad }).humanize()
+
+tailwind =>
+  - instalar la librería => npm|yarn tailwindcss
+  - crear archivo de configuracion para customizar => ./node_modules/.bin/tailwind init
+  - crear un archivo postcss.config.js =>
+    const tailwindcss = require('tailwindcss')
+    module.exports = {
+      plugins: [
+        tailwindcss,
+      ],
+    }
+  - crear un archivo main.extension_css para luego importarlo en el main.js =>
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;

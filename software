@@ -15,6 +15,8 @@ duck typing => es un patrón que acepta cualquier objeto que tenga un método en
 
 dependency injection => trata de volver más manejable y testeable el código, al crear una forma en que un objeto que depende de la funcionalidad de un servicio puede ser intercambiable con otro servicio
 
+factory method => consiste en utilizar una clase constructora abstracta con métodos para la construcción de objetos de distintos tipos o uno determinado
+
 ------------------------ DATABASES ------------------------
 
 graph database => es una base de datos que usa una estrucura de graphs para representar y almacenar datos (Amazon Neptune, AllegroGraph, etc.)

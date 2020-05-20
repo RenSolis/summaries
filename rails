@@ -1484,8 +1484,25 @@ jwt_sessions => gema para utilizar cuando se usa SPA
     - authorize_refresh_request! => valida el refresh token dentro del request
     - authorize_refresh_by_access_request! => validar en caso de falsificación de token y token token expirado, se necesita una actualización
     - payload => el payload token decoded
+      - nos permitirá crear el usuario actual => User.find(payload[:atributo_id])
     - claimless_payload => el payload token decoded sin validación de expiración y otros, para poder observar la data de un token expirado
   - vaciar una session =>
     - por el access payload => session.flush_by_access_payload
+  - realizar un refresh del payload => session.refresh_by_access_payload
+    - recibe un bloque que se utiliza para lanzar una exception cuando se quiere refrescar una session que aún el access_token no ha expirado =>
+      session.refresh_by_access_payload do
+        raise JWTSessions::Errors::Unauthorized, 'Refresh action is performed before the expiration of the access token'
+      end
 
 rack-cors => gema que provisiona soporte para CORS para aplicaciones web compatibles con Rack
+  - dentro de config/initializers/cors.rb =>
+    Rails.application.config.middleware.insert_before 0, Rack::Cors do
+      allow do
+        origins 'url_donde_se_permitira' # http://localhost:puerto, otra_url
+
+        resource '*',
+          headers: :any,
+          credentials: true,
+          methods: [:get, :post, :put, :patch, :delete, :options, :head]
+      end
+    end
