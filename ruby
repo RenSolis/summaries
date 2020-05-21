@@ -1,6 +1,4 @@
-================================================================================================================
-
-BASES DE RUBY
+--------------------------------------- RUBY BASICS ---------------------------------------
 
 manejadores de versiones => rbenv, RVM, chruby
 
@@ -33,17 +31,62 @@ flag del intérprete en línea de comandos =>
   - requerir una librería antes de empezar la consola => irb -r 'librería'
   - deshabilitar las impresiones por defecto => irb --noecho
 
-================================================================================================================
+ARGF => stream que se usa en scripts para procesar archivos que son pesados por la terminal o por vía STDIN
 
-LIBRERÍAS Y MÉTODOS ESTANDAR DE RUBY
+variables predefinidas =>
+  - obtener el PID actual donde se está ejecutando Ruby => $$
+  - nombre del archivo actual en donde está siendo leido ARGF => $FILENAME
+  - indicador de saltos de línea (\n) => $/
 
-================================================================================================================
+parámetros =>
+  - formal parameters, parametros obligatorios que pide el método => def nombreMetodo(parametro)
+  - default parameters, parametros con valor asignado por defecto => def nombreMetodo(parametro = valor)
+  - block parameter, poder utilizar un bloque como parametro => def nombreMetodo(&block)
+  - optional parameters, valores que se le pasa a un parametro que añaden a un array => def nombreMetodo(*parametro)
+  - double splat parameter, solo acepta un hash como valor, y los agrega a un hash => def nombreMetodo(**parametro)
+    - en las versiones actuales es obsoleto
+  - NOTAS:
+    - no se puede utilizar un default parameter después de un optional parameter
 
-LIBRERÍAS Y MÉTODOS EXTERNOS DE RUBY
+iteraciones =>
+  - while => iteración que indica que se repitará mientras se cumpla la condición
+  - until => iteración para disminuir el contador
+  - number.times { block } =>  se utiliza para realizar iteraciones determinada cantidad de veces
 
-================================================================================================================
+string =>
+  - reemplazar una parte del string mediante un patrón (regexp o string) => string.gsub(patron, 'string')
+  - aumentar el último caracter del string alfanumerico => string.succ
 
-METAPROGRAMMING
+symbol =>
+  - se diferencia de los strings por tener el mismo object_id en cada instancia que se realiza por lo que no crea nuevos objetos y mejora la performancia
+
+float =>
+  - imprimir un float con determinados decimales => "%.cantidadf" % float # reemplazar cantidad con el número de decimales
+
+standard streams =>
+  - pedir datos mediante un prompt => gets 'mensaje' # opcionalmente recibe un mensaje
+
+file =>
+  - leer archivos => File.read('nombre_archivo')
+  - escribir archivos => File.new('nombre_archivo', 'w') # el segundo parametro es para indicar que escribiremos en el archivo
+    - terminada la funcionalidad se cierra el flujo => file.close
+
+--------------------------------------- THIRD-PARTY LIBRARIES ---------------------------------------
+
+instalar gema => gem('nombre_gema', 'version')
+
+cargar archivos =>
+  - leer y analizar el archivo cada vez que se llama => load 'nombre_archivo'
+  - leer y analizar el archivo solo una vez => require 'nombre_archivo'
+    - subconjunto para buscar el archivo dentro del mismo directorio => require_relative 'nombre_archivo'
+
+--------------------------------------- METAPROGRAMMING ---------------------------------------
+
+getters y setters =>
+  - solo lectura => attr_reader :atributo
+  - solo escritura => attr_writer :atributo
+  - lectura y escritura => attr_accessor :atributo
+
 
 
 

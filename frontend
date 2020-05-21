@@ -288,3 +288,7 @@ metodología ABEM (Atomic Block Element Modifier) => es una adaptación de la me
   - cuando un modificador igual se encuentre en varios componentes a las vez entonces se cambiará el nombre => .-componentName--modificador & {}
 
 manejar el resize de textarea => resize: value
+
+--------------------------------------- FRAMEWORKS ---------------------------------------
+
+tailwind =>

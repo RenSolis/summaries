@@ -1435,6 +1435,10 @@ crear tags mediante helpers =>
 
 indicar que metodos dentro de un controlador se volverá un método helper, agregando en el controlador => helper_method :metodo_definido
 
+-------------------------------------- ASSOCIATIONS ---------------------------------------
+
+-------------------------------------- TASKS ---------------------------------------
+
 tasks =>
   - llamar un tasks desde otro => Rake::Task['namespace:task'].invoke(args) # colocar los args que sean necesarios para el task
 

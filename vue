@@ -210,18 +210,6 @@ recomendaciones para creación de componentes =>
   - comunicación de padre a hijo mediante props
   - comunicación de hijo a padre mediante eventos
 
-librería HTTP client basado en promesas => npm install axios
-  - importar librería => import * as axios from 'axios'
-  - mandar petición GET => axios.get('url')
-  - todas las peticiones son asíncronas
-  - configuración de petición =>
-    response = await axios({
-      method: 'post|get|put|delete', // es el tipo de método HTTP
-      url: 'url',
-      headers: { 'key': valor }, // los headers que se utilizarán para la petición
-      data: { key: valor } // la data que se mandará a la API
-    })
-
 acceder a las variables de entorno => process.env.VARIABLE
   - es mejor manejar variables por archivo => export const VARIABLE = process.env.VARIABLE
 
@@ -451,189 +439,6 @@ manejar diferentes environment variables para probar =>
   - crear un .env.nombre_env => este archivo manejaría todas las variables que se necesiten
 
 ver la configuración de webpack para un environment => vue inspect --mode=nombre_env
-
-snapshot testing => comprobar que la UI no cambie inesperadamente
-
-testing jest =>
-  - instalar jest para proyectos ya creados => vue add unit-jest
-  - renderización de componentes =>
-    - mount => utilizado para renderizar componentes padres con sus componentes hijos
-      { mount } from '@vue/test-utils'
-      mount(Componente)
-    - shallowMount => utilizado para renderizar componentes hijos o padres que utilicen stubs para reemplazar por un objeto falso al componente hijo
-      { shallowMount } from '@vue/test-utils'
-      shallowMount(Componente)
-  - testing props =>
-    - configurando el montaje del componente con props =>
-      mount|shallowMount(Componente, { propsData: { /* valores props */ } })
-    - factory function para aplicar DRY, nos permitirá montar el componente que necesitemos dependendiendo del object que le pasemos =>
-      const factory = (propsData) => {
-        return mount|shallowMount(Componente, { ...propsData, /* props por default */ })
-      }
-    - cambiar el valor de los props de manera directa al wrapper => wrapper.setProps({ /* valores */ }) // realiza cambios en el view model
-    - acceder a los props => wrapper.vm.props().nombreProp
-    - acceder a los validators para los props => wrapper.vm.$options.props.nombre_prop.validator(valor_para_metodo) // esto devolverá true|false según la validación
-  - testing computed =>
-    - utilizar el método call para enlazar un objeto que reemplaze el this object del método computed, útil cuando se realice un stub del componente =>
-      Componente.computed.computedFunction.call({ /* valores para objecto this */ })
-    - acceder a los computed methods con el componente montado => wrapper.vm.metodoComputed
-    - hacer un mock de un computed method, al montar => mount|shallowMount(NombreComponente, { computed: get() {}, set() {} }) // nos obliga a configurar el getter y setter del computed
-  - triggering events =>
-    - modificar el valor de un input => wrapper.find('input').setValue('valor')
-    - lanzar un evento y si tiene un modificador se debe agregar también => wrapper.find('selector').trigger('nombre_evento.modificador')
-    - asegurar que Vue reactivity actualizo el DOM => wrapper.vm.$nextTick() // es un método async
-  - librería para tratar las promesas, permitiendonos esperar a que terminen las promesas faltantes antes que termine el test => yarn add flush-promises
-    - dentro del test => flushPromises() // esto reemplazará la funcionalidad de $nextTick
-  - mocks => cambiar el comportamiento de funciones de objetos globales
-    - crear los mocks =>
-      mount|shallowMount(Componente, {
-        mocks: {
-          /* mocks para reemplazar */
-        }
-      })
-    - reemplazar funcionalidad Vue.prototype.$http, al devolver una promesa los test que lo utilicen deben manejar async y la librería flush-promise, dentro de mocks property =>
-      $http: {
-        get: (_url, _data) => {
-          return new Promise((resolve, reject) => {
-            url = _url
-            data = _data
-            resolve()
-          })
-        }
-      }
-    - reemplazar funcionalidad Vue.prototype.$t (i18n), dentro de mocks property => $t: (msg) => msg
-      - configurar por default los mocks para no necesitar indicarlos en cada montaje del componente
-        import { config } from '@vue/test-utils'
-        import translations = ./translationsi18n.js'
-        config.mocks["$t"] = (msg) => translations['locale'][msg]
-    - reemplazar metodos al montar => mount(Componente, methods: { /* cambiar métodos */ })
-  - acceder a los métodos del componente => wrapper.vm.nombreMetodo()
-  - testing emitted events =>
-    - acceder a los emitted events => wrapper.emitted() // devolverá un object con todos los emitted events
-      - al acceder a unn emitted event del object nos devuelve un array que dentro contiene arrays con los valores que retorna cada vez que se emitio el evento => [ [valor], [valor], ... ]
-    - testear el evento sin montar el componente =>
-      const events = {}
-      const $emit = (event, ...args) => { events[event] = [...args] }
-      Componente.methods.metodoQueLlamaAlEmit.call({ $emit })
-      expect(events.nombreEvento).toBe(valor)
-    - ejecutar directamente el emit de un componente => wrapper.vm.$emit('nombreEvento', valor_que_devuelve) | wrapper.find(ComponenteHijo).vm.$emit('nombreEvento', parametros_que_devuelve)
-    - para acceder directamente a las veces que se emitio un emit => wrapper.emitted('nombreEmit')
-  - stubbing components => nos ayuda a reemplazar un componente por otro falso para eliminar comportamientos innecesarios y concentrarnos en el test del componente actual
-    - mount(NombreComponente, { stubs: { componenteHijo: true|"<tag>markup</tag>"|Componente } }) // se puede reemplazar indicando true, un markup customizado del componente o un componente
-    - directamente con shallowMount se realiza un stubbing de los componentes hijos
-  - finding elements =>
-    - realizar una búsqueda con querySelector => wrapper.find('selector')
-    - comprobar si un elemento es visible (v-show) => wrapper.find('selector').isVisible()
-    - búsqueda de componente =>
-      - importar el componente para buscarlo => wrapper.find(ChildComponentImported)
-      - buscar sin necesidad de importar => wrapper.find({ name: 'NombreComponente' })
-    - buscar cuando se tiene muchos elementos => wrapper.findAll(Componente|'selector')
-  - testing vuex =>
-    - mutations y getters => son simples funciones javascript para testear, manejando sus parametros
-    - actions =>
-      - realizar un mock de axios =>
-        url = ''
-        body = {}
-        mockError = false // para indicar cuando no salga correctamente que se maneje el error esperado
-        jest.mock('axios', () => {
-          post: (_url, _body) {
-            return new Promise((resolve) => {
-              if (mockError) throw Error('Mock error')
-              url = _url
-              body = _body
-              resolve(valor_esperado) // devolver el valor que se espera obtener de la API
-            })
-        })
-      - al hacer un mock de axios por cada consulta que se realice reemplazará los parametros que se pasa dentro del action a las variables que tenemos en el test
-      - testear cuando falla =>
-        mockError = true
-        await expect(actions.metodo({ commit: jest.fn() }, {})).rejects.toThrow('Nombre error')
-    - dentro de un componente =>
-      - crear una instancia temporal de Vue para utilizar Vuex aunque produce boilerplate =>
-        import { createLocalVue } from '@vue/test-utils'
-        const localVue = createLocalVue()
-        localVue.use(Vuex)
-        const store = new Vuex.Store({
-          /* state, getters, mutations, actions */
-        })
-        mount|shallowMount(Componente, { store, localVue })
-      - utilizar mocks al hacer el montaje del componente =>
-        mocks: {
-          $store: {
-            /* state, getters, mutations, actions */
-          }
-        }
-      - cuando se testea getters como normalmente se utilizan en el computed propery podemos personalizar los valores al montaje del componente
-        mount|shallowMount(Componente, { computed: { propiedad: () => valor } }
-      - testear mutations => mutations.nombreMutation(objetoState, payload) // el primero que recibe es el valor del state que debería tener y el segundo el valor que hará un cambio al state
-  - mock functions =>
-    - creación => metodo: jest.fn()
-    - indicar con que valores fue llamada la función => expect(mockFn).toHaveBeenCalledWith(argumento, argumento, ...)
-    - indicar cuantas veces fue llamada la función => expect(mockFn).toHaveBeenCalledTimes(cantidad)
-    - realizar un mock de console =>
-      jest.spyOn(console, 'log|warning|error)
-      expect(console.log|warning|error).toHaveBeenCalledWith('valor')
-    - limpiar los mocks => jest.clearAllMocks()
-  - testing vue-router =>
-    - utilizando mocks =>
-      mocks: {
-        $route: {
-          /* valores */
-        }
-      }
-    - testear router links =>
-      import { RouterLinkStub } from '@vue/test-utils'
-      mount(NombreComponente, { stubs: { RouterLink: RouterLinkStub } })
-      - acceder a las propiedads del router-link => wrapper.find(RouterLinkStub).props() // posee la propiedad 'to' que es la url donde se redirecciona el router-link
-  - obtener html de un elemento o del view model => wrapper.vm.html() | wrapper.find('selector').html()
-  - comprobar si un elemento existe => wrapper.vm.exists() | wrapper.find('selector').exists()
-  - matchers =>
-    - indicar el valor contrario al matcher => expect(objeto).not.metodoMatcher()
-    - esperar que el objeto sea como el esperado => expect(objeto).toBe(valorEsperado)
-    - esperar que contenga un elemento => expect(objeto).toContain(elementoDentro)
-    - esperar que el objeto sea mayo => expect(objeto).toGreaterThan(numero)
-    - esperar que el objeto sea mayor o igual => expect(objeto).toBeGreaterThanOrEqual(numero)
-    - esperar que el objeto se menor o igual => expect(objeto).toBeLessThanOrEqual(numero)
-    - esperar que el string sea igual al esperado => expect(string).toMatch(string|regexp)
-    - cuando se intenta comparar dos objects => expect(objeto).toEqual(esperado)
-    - esperar que el enumerable contenga la cantidad de elementos => expect(enumerable).toHaveLength(numero)
-    - esperar que el objeto sea undefined => expect(objeto).toBeUndefined()
-    - comprobar el contenido de un array => expect(array).toEqual(expect.arrayContaining([valor, valor, ...]))
-    - comprobar el contenido de un object => array(object).toEqual(expect.objectContaining({ key: valor, ... }))
-  - obtener las clases de un elemento encontrado => wrapper.classes() | wrapper.find('selector').classes()
-  - obtener el texto de un elemento => wrapper.find('selector').text()
-  - obtener los atributos del elemento => wrapper.find('selector').attributes()
-  - testing data =>
-    - cambiar los valores del data => wrapper.vm.setData({ /* valores */ }) // realiza cambios en el view model
-    - acceder a los atributos data del view model => wrapper.vm.$data.nombreAtributo
-  - testing slots =>
-    - al montar el componente => mount|shallowMount(Componente, { slots: { /* default, named slots */ } }) // el contenido del slot puede tener string de un html o también un commponente importado
-      - si se espera que solo un tipo de componente se use en el slot =>
-        const nombreComponenteWrapper = {
-          render(h) => h(ComponenteSlot, { props: { } }
-        }
-        mount|shallowMount(Componente, slots: { nombreSlot: nombreComponenteWrapper } })
-    - acceder a los slots => wrapper.vm.$slots
-  - utilizar el componente dentro de un body => mount|shallowMount(Componente, { attachToDocument: true })
-  - comprobar que un elemento es una instancia de Vue => wrapper.find('selector').isVueInstance()
-  - hooks =>
-    - funcionalidad que se realice antes que todos los tests => beforeEach(() => { /* funcionalidad */ })
-    - funcionalidad que se realice después que terminen los tests => afterEach(() => { /* funcionalidad */ })
-      - es recomendable eliminar el montaje una vez termine el test para limpiar los archivos => wrapper.destroy()
-  - acceder al elemento node cuando se realiza una busqueda => wrapper.find(elemento).element
-  - testing vuelidate =>
-    - acceder a los valores de vuelidate => wrapper.vm.$v.funcionalidadesDeVuelidate
-  - utilizar los componentes de Quasar Framework =>
-    import * as All from 'quasar'
-    const { Quasar } = All
-    const components = Object.keys(All).reduce((object, key) => {
-      const val = All[key]
-      if (val && val.component && val.component.name != null) object[key] = val
-      return object
-    }, {})
-    localVue.use(Quasar, { components })
-  - solucionar error de context por canvas => npm install jest-canvas-mock
-    - en el jest.config.js => setupFiles: ['jest-canvas-mock']
 
 storybook => es una documentación de UI
   - añadir storybook a vue cli => vue add storybook
@@ -967,6 +772,8 @@ vue-moment => librería para manejar formatos de fechas
     Vue.use(VueMoment, { moment })
   - crear un formato de una fecha donde indique el tiempo con respecto a la fecha actual => moment.duration({ milliseconds|seconds|minutes|hours|months|years: cantidad }).humanize()
 
+--------------------------------------- CSS FRAMEWORKS ---------------------------------------
+
 tailwind =>
   - instalar la librería => npm|yarn tailwindcss
   - crear archivo de configuracion para customizar => ./node_modules/.bin/tailwind init
@@ -981,3 +788,239 @@ tailwind =>
     @tailwind base;
     @tailwind components;
     @tailwind utilities;
+
+--------------------------------------- HTTP CLIENT ---------------------------------------
+
+axios =>
+  - realizar peticiones =>
+    - request básico => axios.nombreMetodo('url')
+      - realizar un request mediante una configuración como de instancia => axios.request(config)
+    - request avanzado =>
+      response = await axios({
+        method: 'post|get|put|delete',
+        url: 'url',
+        headers: { 'key': valor }, // los headers que se utilizarán para la petición
+        data: { key: valor } // la data que se mandará a la API
+      })
+  - crear una instancia =>
+    instance = axios.create({/* config */})
+    - valores de configuración =>
+      - baseURL: 'url' => es la url base que se le dará para las requests
+      - timeout: tiempo_en_milisegundos, => el tiempo de expiración de una request
+      - headers: { 'NombreHeader': 'valor' }, => los headers que tendrá el request
+      - withCredentials: true|false, => indica si se usa CORS o no
+  - interceptar requests o responses antes de que sean manejadas por then o catch, se puede hacer tanto a axios como a una instancia =>
+    - para request =>
+      axios.interceptors.request.use((config) => {
+        /* funcionalidad antes de que el request sea enviado */
+        return config;
+      });
+    - para response =>
+      axios.interceptors.response.use((config) => {
+        /* funcionalidad antes de que sea atrapado por el then */
+        return config;
+      }, (error) => {
+        /* funcionalidad antes de que sea atrapado por el catch */
+        return Promise.reject(error);
+      });
+    - remover un interceptor => axios.interceptors.request|response.eject(interceptor) // se debe almacenar en una variable el interceptor anteriormente
+
+vue-axios => un wrapper para integrar axios en vue
+  - import VueAxios from 'vue-axios'
+  - utilizar librería =>
+    Vue.use(VueAxios, axios|{ nombreInstancia: instancia } // se puede usar varias instancias cuando se usan distintos urls y configuraciones
+    new Vue({ ..., instancia, ... }) // si se utiliza instancias de axios
+  - como utilizarlo =>
+    - si es axios => this.axios.nombreMetodo('url') | this.$http.nombreMetodo('url')
+    - si es una instancia de axios => this.$http.nombreInstancia.nombreMetodo('url')
+
+--------------------------------------- TESTING ---------------------------------------
+
+testing jest =>
+  - instalar jest para proyectos ya creados => vue add unit-jest
+  - renderización de componentes =>
+    - mount => utilizado para renderizar componentes padres con sus componentes hijos
+      { mount } from '@vue/test-utils'
+      mount(Componente)
+    - shallowMount => utilizado para renderizar componentes hijos o padres que utilicen stubs para reemplazar por un objeto falso al componente hijo
+      { shallowMount } from '@vue/test-utils'
+      shallowMount(Componente)
+  - testing props =>
+    - configurando el montaje del componente con props =>
+      mount|shallowMount(Componente, { propsData: { /* valores props */ } })
+    - factory function para aplicar DRY, nos permitirá montar el componente que necesitemos dependendiendo del object que le pasemos =>
+      const factory = (propsData) => {
+        return mount|shallowMount(Componente, { ...propsData, /* props por default */ })
+      }
+    - cambiar el valor de los props de manera directa al wrapper => wrapper.setProps({ /* valores */ }) // realiza cambios en el view model
+    - acceder a los props => wrapper.props().nombreProp
+      - directamente se puede acceder => wrapper.props('nombreProp')
+    - acceder a los validators para los props => wrapper.vm.$options.props.nombre_prop.validator(valor_para_metodo) // esto devolverá true|false según la validación
+  - testing computed =>
+    - utilizar el método call para enlazar un objeto que reemplaze el this object del método computed, útil cuando se realice un stub del componente =>
+      Componente.computed.computedFunction.call({ /* valores para objecto this */ })
+    - acceder a los computed methods con el componente montado => wrapper.vm.metodoComputed
+    - hacer un mock de un computed method, al montar => mount|shallowMount(NombreComponente, { computed: get() {}, set() {} }) // nos obliga a configurar el getter y setter del computed
+  - triggering events =>
+    - modificar el valor de un input => wrapper.find('input').setValue('valor')
+    - lanzar un evento y si tiene un modificador se debe agregar también => wrapper.find('selector').trigger('nombre_evento.modificador')
+    - asegurar que Vue reactivity actualizo el DOM => wrapper.vm.$nextTick() // es un método async
+  - librería para tratar las promesas, permitiendonos esperar a que terminen las promesas faltantes antes que termine el test => yarn add flush-promises
+    - dentro del test => flushPromises() // esto reemplazará la funcionalidad de $nextTick
+  - mocks => cambiar el comportamiento de funciones de objetos globales
+    - crear los mocks =>
+      mount|shallowMount(Componente, {
+        mocks: {
+          /* mocks para reemplazar */
+        }
+      })
+    - reemplazar funcionalidad Vue.prototype.$http, al devolver una promesa los test que lo utilicen deben manejar async y la librería flush-promise, dentro de mocks property =>
+      $http: {
+        get: (_url, _data) => {
+          return new Promise((resolve, reject) => {
+            url = _url
+            data = _data
+            resolve()
+          })
+        }
+      }
+    - reemplazar funcionalidad Vue.prototype.$t (i18n), dentro de mocks property => $t: (msg) => msg
+      - configurar por default los mocks para no necesitar indicarlos en cada montaje del componente
+        import { config } from '@vue/test-utils'
+        import translations = ./translationsi18n.js'
+        config.mocks["$t"] = (msg) => translations['locale'][msg]
+    - reemplazar metodos al montar => mount(Componente, methods: { /* cambiar métodos */ })
+  - acceder a los métodos del componente => wrapper.vm.nombreMetodo()
+  - testing emitted events =>
+    - acceder a los emitted events => wrapper.emitted() // devolverá un object con todos los emitted events
+      - al acceder a unn emitted event del object nos devuelve un array que dentro contiene arrays con los valores que retorna cada vez que se emitio el evento => [ [valor], [valor], ... ]
+    - testear el evento sin montar el componente =>
+      const events = {}
+      const $emit = (event, ...args) => { events[event] = [...args] }
+      Componente.methods.metodoQueLlamaAlEmit.call({ $emit })
+      expect(events.nombreEvento).toBe(valor)
+    - ejecutar directamente el emit de un componente => wrapper.vm.$emit('nombreEvento', valor_que_devuelve) | wrapper.find(ComponenteHijo).vm.$emit('nombreEvento', parametros_que_devuelve)
+    - para acceder directamente a las veces que se emitio un emit => wrapper.emitted('nombreEmit')
+  - stubbing components => nos ayuda a reemplazar un componente por otro falso para eliminar comportamientos innecesarios y concentrarnos en el test del componente actual
+    - mount(NombreComponente, { stubs: { componenteHijo: true|"<tag>markup</tag>"|Componente } }) // se puede reemplazar indicando true, un markup customizado del componente o un componente
+    - directamente con shallowMount se realiza un stubbing de los componentes hijos
+  - finding elements =>
+    - realizar una búsqueda con querySelector => wrapper.find('selector')
+    - comprobar si un elemento es visible (v-show) => wrapper.find('selector').isVisible()
+    - búsqueda de componente =>
+      - importar el componente para buscarlo => wrapper.find(ChildComponentImported)
+      - buscar sin necesidad de importar => wrapper.find({ name: 'NombreComponente' })
+    - buscar cuando se tiene muchos elementos => wrapper.findAll(Componente|'selector')
+  - testing vuex =>
+    - mutations y getters => son simples funciones javascript para testear, manejando sus parametros
+    - actions =>
+      - realizar un mock de axios =>
+        url = ''
+        body = {}
+        mockError = false // para indicar cuando no salga correctamente que se maneje el error esperado
+        jest.mock('axios', () => {
+          post: (_url, _body) {
+            return new Promise((resolve) => {
+              if (mockError) throw Error('Mock error')
+              url = _url
+              body = _body
+              resolve(valor_esperado) // devolver el valor que se espera obtener de la API
+            })
+        })
+      - al hacer un mock de axios por cada consulta que se realice reemplazará los parametros que se pasa dentro del action a las variables que tenemos en el test
+      - testear cuando falla =>
+        mockError = true
+        await expect(actions.metodo({ commit: jest.fn() }, {})).rejects.toThrow('Nombre error')
+    - dentro de un componente =>
+      - crear una instancia temporal de Vue para utilizar Vuex aunque produce boilerplate =>
+        import { createLocalVue } from '@vue/test-utils'
+        const localVue = createLocalVue()
+        localVue.use(Vuex)
+        const store = new Vuex.Store({
+          /* state, getters, mutations, actions */
+        })
+        mount|shallowMount(Componente, { store, localVue })
+      - utilizar mocks al hacer el montaje del componente =>
+        mocks: {
+          $store: {
+            /* state, getters, mutations, actions */
+          }
+        }
+      - cuando se testea getters como normalmente se utilizan en el computed propery podemos personalizar los valores al montaje del componente
+        mount|shallowMount(Componente, { computed: { propiedad: () => valor } }
+      - testear mutations => mutations.nombreMutation(objetoState, payload) // el primero que recibe es el valor del state que debería tener y el segundo el valor que hará un cambio al state
+  - mock functions =>
+    - creación => metodo: jest.fn()
+    - indicar con que valores fue llamada la función => expect(mockFn).toHaveBeenCalledWith(argumento, argumento, ...)
+    - indicar cuantas veces fue llamada la función => expect(mockFn).toHaveBeenCalledTimes(cantidad)
+    - realizar un mock de console =>
+      jest.spyOn(console, 'log|warning|error)
+      expect(console.log|warning|error).toHaveBeenCalledWith('valor')
+    - limpiar los mocks => jest.clearAllMocks()
+  - testing vue-router =>
+    - utilizando mocks =>
+      mocks: {
+        $route: {
+          /* valores */
+        }
+      }
+    - testear router links =>
+      import { RouterLinkStub } from '@vue/test-utils'
+      mount(NombreComponente, { stubs: { RouterLink: RouterLinkStub } })
+      - acceder a las propiedads del router-link => wrapper.find(RouterLinkStub).props() // posee la propiedad 'to' que es la url donde se redirecciona el router-link
+  - obtener html de un elemento o del view model => wrapper.vm.html() | wrapper.find('selector').html()
+  - comprobar si un elemento existe => wrapper.vm.exists() | wrapper.find('selector').exists()
+  - matchers =>
+    - indicar el valor contrario al matcher => expect(objeto).not.metodoMatcher()
+    - esperar que el objeto sea como el esperado => expect(objeto).toBe(valorEsperado)
+    - esperar que contenga un elemento => expect(objeto).toContain(elementoDentro)
+    - esperar que el objeto sea mayo => expect(objeto).toGreaterThan(numero)
+    - esperar que el objeto sea mayor o igual => expect(objeto).toBeGreaterThanOrEqual(numero)
+    - esperar que el objeto se menor o igual => expect(objeto).toBeLessThanOrEqual(numero)
+    - esperar que el string sea igual al esperado => expect(string).toMatch(string|regexp)
+    - cuando se intenta comparar dos objects => expect(objeto).toEqual(esperado)
+    - esperar que el enumerable contenga la cantidad de elementos => expect(enumerable).toHaveLength(numero)
+    - esperar que el objeto sea undefined => expect(objeto).toBeUndefined()
+    - comprobar el contenido de un array => expect(array).toEqual(expect.arrayContaining([valor, valor, ...]))
+    - comprobar el contenido de un object => expect(object).toEqual(expect.objectContaining({ key: valor, ... }))
+    - esperar que el objeto sea igual en tipo y valor al esperado => expect(objeto).toStrictEqual(valor)
+  - obtener las clases de un elemento encontrado => wrapper.classes() | wrapper.find('selector').classes()
+  - obtener el texto de un elemento => wrapper.find('selector').text()
+  - obtener los atributos del elemento => wrapper.find('selector').attributes()
+  - testing data =>
+    - cambiar los valores del data => wrapper.vm.setData({ /* valores */ }) // realiza cambios en el view model
+    - acceder a los valores de data => Componente.data()
+    - acceder a los atributos data del view model => wrapper.vm.$data.nombreAtributo
+  - testing slots =>
+    - al montar el componente => mount|shallowMount(Componente, { slots: { /* default, named slots */ } }) // el contenido del slot puede tener string de un html o también un commponente importado
+      - si se espera que solo un tipo de componente se use en el slot =>
+        const nombreComponenteWrapper = {
+          render(h) => h(ComponenteSlot, { props: { } }
+        }
+        mount|shallowMount(Componente, slots: { nombreSlot: nombreComponenteWrapper } })
+    - acceder a los slots => wrapper.vm.$slots
+  - utilizar el componente dentro de un body => mount|shallowMount(Componente, { attachToDocument: true })
+  - comprobar que un elemento es una instancia de Vue => wrapper.find('selector').isVueInstance()
+  - hooks =>
+    - funcionalidad que se realice antes que todos los tests => beforeEach(() => { /* funcionalidad */ })
+    - funcionalidad que se realice después que terminen los tests => afterEach(() => { /* funcionalidad */ })
+      - es recomendable eliminar el montaje una vez termine el test para limpiar los archivos => wrapper.destroy()
+  - acceder al elemento node cuando se realiza una busqueda => wrapper.find(elemento).element
+  - testing vuelidate =>
+    - acceder a los valores de vuelidate => wrapper.vm.$v.funcionalidadesDeVuelidate
+  - utilizar los componentes de Quasar Framework =>
+    import * as All from 'quasar'
+    const { Quasar } = All
+    const components = Object.keys(All).reduce((object, key) => {
+      const val = All[key]
+      if (val && val.component && val.component.name != null) object[key] = val
+      return object
+    }, {})
+    localVue.use(Quasar, { components })
+  - solucionar error de context por canvas => npm install jest-canvas-mock
+    - en el jest.config.js => setupFiles: ['jest-canvas-mock']
+  - snapshot testing => comprobar que la UI no cambie inesperadamente
+    - instalar librería => npm|yarn jest-serializer-vue
+    - agregar configuración en package.json => "jest": { "snapshotSerializers": ["jest-serializer-vue"] }
+    - crear snapshot, al crear un test => expect(wrapper).toMatchSnapshot();
+    - actualizar snapshot => npm run test:unit -- -u // borrará el snapshot obsoleto
