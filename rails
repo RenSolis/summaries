@@ -1437,6 +1437,41 @@ indicar que metodos dentro de un controlador se volverá un método helper, agre
 
 -------------------------------------- ASSOCIATIONS ---------------------------------------
 
+tipos de associations =>
+  - indicar que un modelo pertenece a otro => belongs_to :modelo_singular
+    - usar siempre y cuando el modelo en su tabla posee el foreign key
+  - modelo con relación uno a uno => has_one :modelo_singular
+  - modelo con relación uno a muchos => has_many :modelo_plural
+  - modelo con relación muchos a muchos => has_many :modelo_plural, through: :modelo_intermedio_plural # el modelo que hace de intermediario debe tener belongs_to a los dos modelos
+    - funciona como shortcut para acceder a un modelo mediante otro simplemente siendo uno a muchos
+  - modelo con relación uno a uno entre 3 modelos => has_one :modelo_singular, through: :modelo_intermedio_singular # es un shortcut para acceder mediante relaciones has_one
+  - modelo con relación muchos a muchos sin modelo intermedio => has_and_belongs_to_many :modelo_plural
+    - se tiene que crear una tabla intermedia =>
+      create_table :modelo_1_plural_modelo_2_plural, id: false do |t|
+        t.belongs_to :modelo_1_singular
+        t.belongs_to :modelo_2_singular
+      end
+  - NOTA: usar has_many :through cuando necesitas una tabla intermedia para realizar validaciones, callbacks, o atributos extras
+  - polymorphic association, modelo puede pertenecer mas de un modelo en una sola relación (un foreign key) =>
+    - realizar la migración del modelo, donde el nombre es el que deseemos describir y debe terminar en able =>
+      t.references :nombreable, polymorphic: true
+      - como se representa el anterior al momento de realizar la migración =>
+        create_table :modelo_plural do |t|
+          t.bigint :nombreable_id
+          t.string :nombreable_type
+        end
+        add_index :modelo_plural, [:nombreable_type, :nombreable_id]
+    - modelos que contendrán el modelo que tendrán => has_many :modelo, as: :nombreable
+    - dentro del modelo que pertenecerá a estos => belongs_to :nombreable, polymorphic: true
+  - self join, un modelo necesita una relación asi mismo =>
+    has_many :modelo_plural, class_name: 'NombreModelo', foreign_key: 'columna'
+    belongs_to :modelo_singular, class_name: 'NombreModelo', optional: true
+
+-------------------------------------- MIGRATIONS ---------------------------------------
+
+crear migración para un belongs_to => t.belongs_to :modelo_singular
+  - agregar un index => t.belongs_to :modelo_singular, index: { unique: true }, foreign_key: true
+
 -------------------------------------- TASKS ---------------------------------------
 
 tasks =>

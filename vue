@@ -440,199 +440,7 @@ manejar diferentes environment variables para probar =>
 
 ver la configuración de webpack para un environment => vue inspect --mode=nombre_env
 
-storybook => es una documentación de UI
-  - añadir storybook a vue cli => vue add storybook
-  - configuración de storybook en .storybook/main.js =>
-    module.exports = {
-      stories: ['../src/components/**/*.stories.js'], // indicamos en donde se encuentran los archivos stories
-      addons: ['@storybook/addon-actions', '@storybook/addon-links', '@storybook/addon-knobs'], // son los plugins de storybook (los 3 más utilizados en este caso)
-    }
-  - realizar configuración para soportar archivo scss, en la carpeta .storybook/webpack.config.js =>
-    const path = require('path')
-    module.exports = ({ config }) => {
-      config.module.rules.push({
-        test: /\.scss$/,
-        loaders: ['style-loader', 'css-loader', 'sass-loader'],
-        include: path.resolve(__dirname, '../'),
-      })
-    }
-  - creación básica de un archivo, nombrarlo como nombreComponente.stories.js =>
-    import Componente from 'path/Componente'
-    import { withKnobs, tipoKnob } from '@storybook/addon-knobs' // el tipoKnobs serían para utilizar en los props y que se vuelvan editables (array, object, text, boolean, number)
-    import { action } from '@storybook/addon-action' // para utilizar eventos que son emitidos en el componente
-
-    export default { // características de como estará formada la carpeta de stories del archivo actual
-      title: 'Carpeta/NombreComponente', // se pueden agregar cuantos nombres de carpetas se necesiten
-      decorators: [withKnobs], // para indicar que se utilizará el addon knobs
-    }
-
-    export const nombreEjemplo = () => ({ // el nombre que se le dará a la variación en el story, pueden crearse varias en el archivo
-      components: { Componente }, // el componente que se utilizará
-      props: { // opcionalmente se ponen los props para agregarlos en
-        nombreProp: {
-          default: () => tipoKnob('nombreParaEditarEnKnob', valor)
-        }
-      },
-      methods: { // los actions que tiene para el componente (opcional)
-        nombreMetodo: action('eventoEmitido')
-      },
-      template: '<componente :nombreProp="nombreProp" @eventoEmitido="nombreMetodo" />' // es tal cual como usas un componente en otro
-    })
-  - importar el filtro global => el nombre que se le de al filtro debe ser tal cual que se está usando en el componente
-    import Vue from 'vue'
-    import filter from 'path/filter'
-    Vue.filter('nombreFilter', filter)
-  - utilizar librerías third-party =>
-    import Vue from 'vue'
-    import LibreriaComponente from 'modulo'
-    Vue.use(LibreriaComponente)
-  - utilizar los estilos, componentes de Quasar Framework =>
-    import 'quasar/dist/quasar.min.css' // es la librería de css comprimida de quasar
-    import Quasar from 'quasar'
-    const { NombreComponenteQuasar } = Quasar
-    Vue.use(Quasar, NombreComponenteQuasar) // nos permitirá poder utilizar los componentes de Quasar dentro del story
-  - añadir vuex =>
-    - dentro del preview.js => import Vuex from 'vuex'; Vue.use(Vuex);
-    - cuando se exporta =>
-      store: new Vuex.Store({ /* valores */ }),
-      computed: ...mapState(...) // para llamar al valor que se pasará al componente
-
 acceder a atributos de manera global por la instancia de Vue => Vue({ /* atributos */ }), acceder mediante this.$root.atributo, es mejor manejarlo con Vuex
-
-Quasar Framework => al tener componentes y configuraciones ya establecidas nos facilita la posibilidad de poder ser utilizada la aplicación en distintos dispositivos
-  - se puede utilizar quasar con un cli o dentro de vue cli, mejor quasar cli => sudo npm i -g @quasar/cli
-  - crear un proyecto quasar => quasar create nombre_proyecto
-  - crear un filtro global =>
-    - crear una carpeta src/filters donde se creen los filtros globales
-    - crear un archivo en src/boot/ que se llame filters.js =>
-      /* importar filtros */
-      export default ({ Vue }) => {
-        Vue.filter('nombreFiltro', filtroImportado) // para todos los filtros
-      }
-    - dentro del quasar.conf.js => boot: [...demasArchivos, 'filters']
-  - componentes de Quasar =>
-    - q-page => normalmente es un template que contiene el router-view
-      - agregarle padding al componente => <q-page padding>
-    - q-list => un componente que crea una lista
-      - indicar si los elementos tienen un fondo dark para cambiar el color de los items dentro => dark="true|false"
-      - indicar si cada item tendrá un separador => separator="true|false"
-      - indicar si la lista tendrá un borde => bordered="true|false"
-    - q-item => es el item que se utiliza dentro de la lista
-      - indicar que es clickable => clickable="true|false"
-      - indicar el tag que se usará => tag="nombretag"
-      - indicar el target => target="valor"
-      - indicar si tendrá el efecto ripple => v-ripple="true|false"
-      - con vue-router =>
-        - indicar la dirección url => to="/url"
-    - q-item-section => por cada vez que se coloque dentro del q-item lo separa en secciones
-      - indicar que la seccion será para avatar => avatar="true|false"
-      - indicar que se utilizará una clase para ajustar el ancho auto al contenido del elemento => aside="true|false"
-      - indicar que en flex que el contenido será al start => top="true|false"
-    - q-item-label => componente que indica el label del item dentro del q-item-section
-      - indicar que será el encabezado de la lista => header="true|false"
-      - la clase que se utilizará => class="nombreClase"
-    - q-icon => componente para indicar el ícono que se utilizará
-      - indicar el material design icon => name="nombreIcon"
-    - q-footer => una sección de footer
-      - agregar elevación y un box-shadow para el footer => elevated="true|false"
-    - q-tabs => es un menú de tabs
-    - q-tab => es un elemento dentro del menú de tabs
-      - se puede elegir el icono segun material design => icon="nombreIcono"
-      - el label que se utilizará para el tab => label="texto"
-    - q-route-tab => es un componente que hereda de q-tab y se puede conectar con vue-router
-      - indicar la ruta => to="/ruta"
-    - q-drawer => es el componente de sidebar
-      - indicar el modelo que se utilizará => v-model="nombreModelo"
-      - poner un borde => bordered
-      - indicar el punto donde no se mostrará => :breakpoint="numero_pixeles"
-    - q-layout => es un componente diseñado para manejar todo el window y envolver todo el contenido de la página
-      - indicar como estarán distribuidos los elementos de la página como header, sidebar, footer, etc. => view="valores"
-    - q-btn => es un componente para botones
-      - indicar que el botón será redondo => round="true|false"
-      - indicar el color, que será un color predefinido en quasar => color="nombreColor"
-      - indicar el icon del material design => icon="nombreIcon"
-      - indicar que el botón ocupará menos espacio => dense="true|false"
-      - indicar que el botón no tendrá bordes => flat="true|false"
-      - usar directiva que cierra los dialog => v-close-popup
-    - q-dialog => no es el plugin, es un componente para personalizar un dialog
-      - indicar el valor de si se mostrará o no => v-model="atributo"
-    - q-card => es un componente para agrupar contenido
-      - q-card-section => es un componente para indicar una sección dentro del card
-      - q-card-actions => es un componente que hace de sección para los botones que se tendrán
-    - q-input => es un componente que nos permite personalizar inputs
-      - indicar el modelo que manejará el valor => v-model="atributo"
-      - indicar que cuando se muestre se hará focus => autofocus="true|false"
-      - indicar el label que utilizará el componente => label="string"
-      - indicar la validación que manejará el input => rules="[val => condicion || 'texto de error']"
-      - indicar en los slots en que parte del contenido input se mostrará => v-slot:append|prepend
-        - se pueden colocar íconos al lado del input
-        - configurar para que sea un input date =>
-          <q-icon name="event" class="cursor-pointer"
-            <q-popup-proxy>
-              <q-date v-model="taskToSubmit.dueDate" />
-            </q-popup-proxy>
-          </q-icon>
-          - q-date => componente para selección de fecha
-        - poner el slot para input time =>
-          <q-icon name="access_time" class="cursor-pointer">
-            <q-popup-proxy>
-              <q-time v-model="taskToSubmit.dueTime" />
-            </q-popup-proxy>
-          </q-icon>
-          - q-time => componente para selección de tiempo
-    - q-banner => es un componente para mostrar un mensaje prominente
-      - indicar que ocupe menos espacio => dense="true|false"
-      - indicar que las actions estaran en la misma fila que el contenido => line-actions="true|false"
-  - plugins =>
-    - Dialog => es una ventana prompt de confirmación
-      - empezar a utilizarla, dentro de quasar.conf.js => plugins: [..., 'Dialog']
-      - iniciar el dialog en el componente =>
-        this.$q.dialog({
-          title: 'Texto',
-          message: 'Mensaje debajo del texto',
-          ok: {
-            push: true|false, // indicar que se puede clickear
-          },
-          cancel: {
-            color: 'negative' // indica el color que se utilizará para el botón
-          },
-          persistent: 'true|false' // indica si el dialog no se cerrará cuando se de click afuera o escape
-        })
-        .onOk(() => {
-          /* funcionalidad cuando se de click en ok */
-        })
-  - añadir una librería de componente third-party =>
-    - crear un archivo boot para añadir la librería => quasar new boot nombreLibrería
-    - dentro del src/boot/ se encontrará el archivo con una función que indicará a que atributos de la instancia de Vue, app podemos acceder
-    - en el quasar.conf.js => boot: ['nombreArchivoLibreria', ...]
-  - en el archivo quasar.variables.extension es donde podemos redefinir las variables
-  - crear uid's =>
-    - importar la librería => import { uid } from 'quasar'
-    - generar el uid => uid()
-  - utilizar event bus para indicar un emit global =>
-    - en el componente hijo => this.$root.$emit('nombreEvento', valor)
-    - en el componente padre => this.$root.$on('nombreEvento', (valor) => { /* funcionalidad */ })
-  - configurar quasar.variables.extension y agregar una nueva variable hará que quasar a la variable que nombre le cree una clase como text-nombreVariable que tendrá el color
-  - instalar storybook =>
-    - existen problemas de dependencia por storybook y quasar que usan distintas versiones => yarn|npm -D core-js@^2.0.0
-    - configurar automaticamente => npx -p @storybook/cli sb init --type vue
-    - configurar storybook para acceder a componentes quasar, directivas, filters y plugins (dentro de .storybook/preview.js) =>
-      // Quasar Setup
-      import 'quasar/dist/quasar.min.css';
-      import 'quasar/dist/quasar.css'
-      // Not Quasar Styles
-      import '../src/css/archivo.css';
-      // Directives
-      import directiva from '../src/directives/directiva';
-      // Filters
-      import filtro from '../src/filters/filtro';
-      // Plugins
-      import componente from 'nombre-librería';
-
-      import Vue from 'vue';
-      import Quasar from 'quasar';
-      Vue.use(Quasar, {});
-      /* Añadir plugins, filters y directivas */
 
 firebase =>
   - instalar firebase => npm o yarn firebase
@@ -834,6 +642,155 @@ vue-axios => un wrapper para integrar axios en vue
     - si es axios => this.axios.nombreMetodo('url') | this.$http.nombreMetodo('url')
     - si es una instancia de axios => this.$http.nombreInstancia.nombreMetodo('url')
 
+--------------------------------------- QUASAR FRAMEWORK ---------------------------------------
+
+// TODO desglosar esto para entenderse mejor
+
+usar cli quasar =>
+  - instalar cli => sudo npm i -g @quasar/cli
+  - empezar un proyecto => quasar create nombre_proyecto
+
+componentes de quasar =>
+  - q-page => normalmente es un template que contiene el router-view
+    - agregarle padding al componente => <q-page padding>
+  - q-list => un componente que crea una lista
+    - indicar si los elementos tienen un fondo dark para cambiar el color de los items dentro => dark="true|false"
+    - indicar si cada item tendrá un separador => separator="true|false"
+    - indicar si la lista tendrá un borde => bordered="true|false"
+  - q-item => es el item que se utiliza dentro de la lista
+    - indicar que es clickable => clickable="true|false"
+    - indicar el tag que se usará => tag="nombretag"
+    - indicar el target => target="valor"
+    - indicar si tendrá el efecto ripple => v-ripple="true|false"
+    - con vue-router =>
+      - indicar la dirección url => to="/url"
+  - q-item-section => por cada vez que se coloque dentro del q-item lo separa en secciones
+    - indicar que la seccion será para avatar => avatar="true|false"
+    - indicar que se utilizará una clase para ajustar el ancho auto al contenido del elemento => aside="true|false"
+    - indicar que en flex que el contenido será al start => top="true|false"
+  - q-item-label => componente que indica el label del item dentro del q-item-section
+    - indicar que será el encabezado de la lista => header="true|false"
+    - la clase que se utilizará => class="nombreClase"
+  - q-icon => componente para indicar el ícono que se utilizará
+    - indicar el material design icon => name="nombreIcon"
+  - q-footer => una sección de footer
+    - agregar elevación y un box-shadow para el footer => elevated="true|false"
+  - q-tabs => es un menú de tabs
+  - q-tab => es un elemento dentro del menú de tabs
+    - se puede elegir el icono segun material design => icon="nombreIcono"
+    - el label que se utilizará para el tab => label="texto"
+  - q-route-tab => es un componente que hereda de q-tab y se puede conectar con vue-router
+    - indicar la ruta => to="/ruta"
+  - q-drawer => es el componente de sidebar
+    - indicar el modelo que se utilizará => v-model="nombreModelo"
+    - poner un borde => bordered
+    - indicar el punto donde no se mostrará => :breakpoint="numero_pixeles"
+  - q-layout => es un componente diseñado para manejar todo el window y envolver todo el contenido de la página
+    - indicar como estarán distribuidos los elementos de la página como header, sidebar, footer, etc. => view="valores"
+  - q-btn => es un componente para botones
+    - indicar que el botón será redondo => round="true|false"
+    - indicar el color, que será un color predefinido en quasar => color="nombreColor"
+    - indicar el icon del material design => icon="nombreIcon"
+    - indicar que el botón ocupará menos espacio => dense="true|false"
+    - indicar que el botón no tendrá bordes => flat="true|false"
+    - usar directiva que cierra los dialog => v-close-popup
+  - q-dialog => no es el plugin, es un componente para personalizar un dialog
+    - indicar el valor de si se mostrará o no => v-model="atributo"
+  - q-card => es un componente para agrupar contenido
+    - q-card-section => es un componente para indicar una sección dentro del card
+    - q-card-actions => es un componente que hace de sección para los botones que se tendrán
+  - q-input => es un componente que nos permite personalizar inputs
+    - indicar el modelo que manejará el valor => v-model="atributo"
+    - indicar que cuando se muestre se hará focus => autofocus="true|false"
+    - indicar el label que utilizará el componente => label="string"
+    - indicar la validación que manejará el input => rules="[val => condicion || 'texto de error']"
+    - indicar en los slots en que parte del contenido input se mostrará => v-slot:append|prepend
+      - se pueden colocar íconos al lado del input
+      - configurar para que sea un input date =>
+        <q-icon name="event" class="cursor-pointer"
+          <q-popup-proxy>
+            <q-date v-model="taskToSubmit.dueDate" />
+          </q-popup-proxy>
+        </q-icon>
+        - q-date => componente para selección de fecha
+      - poner el slot para input time =>
+        <q-icon name="access_time" class="cursor-pointer">
+          <q-popup-proxy>
+            <q-time v-model="taskToSubmit.dueTime" />
+          </q-popup-proxy>
+        </q-icon>
+        - q-time => componente para selección de tiempo
+  - q-banner => es un componente para mostrar un mensaje prominente
+    - indicar que ocupe menos espacio => dense="true|false"
+    - indicar que las actions estaran en la misma fila que el contenido => line-actions="true|false"
+
+quasar utils =>
+  - uid =>
+    - importar uid util => import { uid } from 'quasar'
+    - generar el uid => uid()
+
+quasar global event bus =>
+  - en el componente hijo => this.$root.$emit('nombreEvento', valor)
+  - en el componente padre => this.$root.$on('nombreEvento', (valor) => { /* funcionalidad */ })
+
+crear filters globales =>
+  - crear una carpeta para src/filters donde crearemos todos los filtros
+  - crear un archivo boot para importar y agregar los filters a la instancia de Vue => src/boot/filters.js
+    /* importar filtros */
+    export default ({ Vue }) => {
+      Vue.filter('nombreFiltro', filtroImportado) // para todos los filtros
+    }
+  - dentro del quasar.conf.js => boot: [...demasArchivos, 'filters']
+
+quasar plugins =>
+  - Dialog => es una ventana prompt de confirmación
+    - empezar a utilizarla, dentro de quasar.conf.js => plugins: [..., 'Dialog']
+    - iniciar el dialog en el componente =>
+      this.$q.dialog({
+        title: 'Texto',
+        message: 'Mensaje debajo del texto',
+        ok: {
+          push: true|false, // indicar que se puede clickear
+        },
+        cancel: {
+          color: 'negative' // indica el color que se utilizará para el botón
+        },
+        persistent: 'true|false' // indica si el dialog no se cerrará cuando se de click afuera o escape
+      })
+      .onOk(() => {
+        /* funcionalidad cuando se de click en ok */
+      })
+
+instalar third-party libraries =>
+  - crear un archivo boot para añadir la librería, ya tendrá una función creada para guiarnos => quasar new boot nombreLibrería
+  - en el quasar.conf.js => boot: ['nombreArchivoLibreria', ...]
+
+quasar styles =>
+  - configurar variables globales => quasar.variables.extension_css
+    - cuando se agregan nuevas variables globales se crean también clases con estas => text-nombreVariable
+
+quasar con storybook =>
+  - configurar automaticamente => npx -p @storybook/cli sb init --type vue
+  - configurar storybook para acceder a componentes quasar, directivas, filters y plugins (dentro de .storybook/preview.js) =>
+    // Quasar Setup
+    import 'quasar/dist/quasar.min.css';
+    import 'quasar/dist/quasar.css'
+    // Not Quasar Styles
+    import '../src/css/archivo.css';
+    // Directives
+    import directiva from '../src/directives/directiva';
+    // Filters
+    import filtro from '../src/filters/filtro';
+    // Plugins
+    import componente from 'nombre-librería';
+
+    import Vue from 'vue';
+    import Quasar from 'quasar';
+    Vue.use(Quasar, {});
+    /* Añadir plugins, filters y directivas */
+  - NOTA: existen problemas de dependencia por storybook y quasar que usan distintas versiones => yarn|npm -D core-js@^2.0.0
+
+
 --------------------------------------- TESTING ---------------------------------------
 
 testing jest =>
@@ -1024,3 +981,64 @@ testing jest =>
     - agregar configuración en package.json => "jest": { "snapshotSerializers": ["jest-serializer-vue"] }
     - crear snapshot, al crear un test => expect(wrapper).toMatchSnapshot();
     - actualizar snapshot => npm run test:unit -- -u // borrará el snapshot obsoleto
+
+--------------------------------------- STORYBOOK ---------------------------------------
+
+// TODO desglosar y agregar seccion para preview.js (configuracion)
+storybook => es una documentación de UI
+  - añadir storybook a vue cli => vue add storybook
+  - configuración de storybook en .storybook/main.js =>
+    module.exports = {
+      stories: ['../src/components/**/*.stories.js'], // indicamos en donde se encuentran los archivos stories
+      addons: ['@storybook/addon-actions', '@storybook/addon-links', '@storybook/addon-knobs'], // son los plugins de storybook (los 3 más utilizados en este caso)
+    }
+  - realizar configuración para soportar archivo scss, en la carpeta .storybook/webpack.config.js =>
+    const path = require('path')
+    module.exports = ({ config }) => {
+      config.module.rules.push({
+        test: /\.scss$/,
+        loaders: ['style-loader', 'css-loader', 'sass-loader'],
+        include: path.resolve(__dirname, '../'),
+      })
+    }
+  - creación básica de un archivo, nombrarlo como nombreComponente.stories.js =>
+    import Componente from 'path/Componente'
+    import { withKnobs, tipoKnob } from '@storybook/addon-knobs' // el tipoKnobs serían para utilizar en los props y que se vuelvan editables (array, object, text, boolean, number)
+    import { action } from '@storybook/addon-action' // para utilizar eventos que son emitidos en el componente
+
+    export default { // características de como estará formada la carpeta de stories del archivo actual
+      title: 'Carpeta/NombreComponente', // se pueden agregar cuantos nombres de carpetas se necesiten
+      decorators: [withKnobs], // para indicar que se utilizará el addon knobs
+    }
+
+    export const nombreEjemplo = () => ({ // el nombre que se le dará a la variación en el story, pueden crearse varias en el archivo
+      components: { Componente }, // el componente que se utilizará
+      props: { // opcionalmente se ponen los props para agregarlos en
+        nombreProp: {
+          default: () => tipoKnob('nombreParaEditarEnKnob', valor)
+        }
+      },
+      methods: { // los actions que tiene para el componente (opcional)
+        nombreMetodo: action('eventoEmitido')
+      },
+      template: '<componente :nombreProp="nombreProp" @eventoEmitido="nombreMetodo" />' // es tal cual como usas un componente en otro
+    })
+  - importar el filtro global => el nombre que se le de al filtro debe ser tal cual que se está usando en el componente
+    import Vue from 'vue'
+    import filter from 'path/filter'
+    Vue.filter('nombreFilter', filter)
+  - utilizar librerías third-party =>
+    import Vue from 'vue'
+    import LibreriaComponente from 'modulo'
+    Vue.use(LibreriaComponente)
+  - utilizar los estilos, componentes de Quasar Framework =>
+    import 'quasar/dist/quasar.min.css' // es la librería de css comprimida de quasar
+    import Quasar from 'quasar'
+    const { NombreComponenteQuasar } = Quasar
+    Vue.use(Quasar, NombreComponenteQuasar) // nos permitirá poder utilizar los componentes de Quasar dentro del story
+  - añadir vuex =>
+    - dentro del preview.js => import Vuex from 'vuex'; Vue.use(Vuex);
+    - cuando se exporta =>
+      store: new Vuex.Store({ /* valores */ }),
+      computed: ...mapState(...) // para llamar al valor que se pasará al componente
+

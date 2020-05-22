@@ -559,6 +559,8 @@ desactivar la verificación SSL al clonar un repositorio => git -c http.sslVerif
 tratar con base64:
   - para realizar un codificación => base64 argumento
   - para realizar un decodificación => base64 -d argumento
+  - cantidad de líneas => base64 -w cantidad
+    - deshabilitar y colocar en una linea => base64 -w0
 
 ssh client => es un programa para entrar dentro de una máquina remota y ejecutar comandos
   - indicar el puerto => ssh -pPUERTO usuario@direccion
@@ -678,9 +680,6 @@ john => herramienta para descubrir contraseñas debiles dentro de un hash
 
 extraer un paquete .gz => gzip -d archivo.gz
 
-sudo => ejecutar comandos como otro usuario
-  - listar los privilegios del usuario => sudo -l
-
 ejecutar comandos dentro de nano => ctrl r, luego ctrl x
 
 privilege-escalation-awesome-scripts-suite => es una herramienta para poder obtener un seguimiento a rutas que puedan tener contraseñas dentro del sistema
@@ -703,3 +702,9 @@ entrar en ssh mode dentro de una conexion ssh => ~C hacerlo una vez, que salga e
 tratar hash SHA512 => sha512sum
 
 JWT Tokens => normalmente usan el algoritmo HS256 para encriptación
+
+ver el .bash_history para ver comandos
+
+si no se tiene permisos de escritura se puede crear un archivo en /tmp
+
+comprobar si usuario puede ejecutar comandos como administrador => sudo -l

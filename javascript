@@ -17,6 +17,8 @@ date => new Date()
     - cambiar el mes => date.setMonth(mes)
     - cambiar el año => date.setFullYear(año)
 
+obtener el tiempo transcurrido en milisegundos desde Enero 1 de 1970 => Date.now()
+
 clonar un objeto o array sin referencia: primero convertirlo en JSON.stringify(objeto) para después JSON.parse(objeto) y se considera una nueva instancia del objeto o array
 
 event 'onmouseover' es la misma funcionalidad de hover
