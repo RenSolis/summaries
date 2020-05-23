@@ -956,7 +956,7 @@ testing jest =>
         }
         mount|shallowMount(Componente, slots: { nombreSlot: nombreComponenteWrapper } })
     - acceder a los slots => wrapper.vm.$slots
-  - utilizar el componente dentro de un body => mount|shallowMount(Componente, { attachToDocument: true })
+  - utilizar el componente dentro de un body y acceder al document => mount|shallowMount(Componente, { attachToDocument: true })
   - comprobar que un elemento es una instancia de Vue => wrapper.find('selector').isVueInstance()
   - hooks =>
     - funcionalidad que se realice antes que todos los tests => beforeEach(() => { /* funcionalidad */ })
@@ -984,15 +984,15 @@ testing jest =>
 
 --------------------------------------- STORYBOOK ---------------------------------------
 
-// TODO desglosar y agregar seccion para preview.js (configuracion)
-storybook => es una documentación de UI
-  - añadir storybook a vue cli => vue add storybook
-  - configuración de storybook en .storybook/main.js =>
+utilizar storybook => vue add storybook
+
+configuraciones básicas de storybook =>
+  - en .storybook/main.js para añadir los addons =>
     module.exports = {
       stories: ['../src/components/**/*.stories.js'], // indicamos en donde se encuentran los archivos stories
       addons: ['@storybook/addon-actions', '@storybook/addon-links', '@storybook/addon-knobs'], // son los plugins de storybook (los 3 más utilizados en este caso)
     }
-  - realizar configuración para soportar archivo scss, en la carpeta .storybook/webpack.config.js =>
+  - configuración para usar scss en .storybook/webpack.config.js =>
     const path = require('path')
     module.exports = ({ config }) => {
       config.module.rules.push({
@@ -1001,44 +1001,50 @@ storybook => es una documentación de UI
         include: path.resolve(__dirname, '../'),
       })
     }
-  - creación básica de un archivo, nombrarlo como nombreComponente.stories.js =>
-    import Componente from 'path/Componente'
-    import { withKnobs, tipoKnob } from '@storybook/addon-knobs' // el tipoKnobs serían para utilizar en los props y que se vuelvan editables (array, object, text, boolean, number)
-    import { action } from '@storybook/addon-action' // para utilizar eventos que son emitidos en el componente
 
-    export default { // características de como estará formada la carpeta de stories del archivo actual
-      title: 'Carpeta/NombreComponente', // se pueden agregar cuantos nombres de carpetas se necesiten
-      decorators: [withKnobs], // para indicar que se utilizará el addon knobs
-    }
-
-    export const nombreEjemplo = () => ({ // el nombre que se le dará a la variación en el story, pueden crearse varias en el archivo
-      components: { Componente }, // el componente que se utilizará
-      props: { // opcionalmente se ponen los props para agregarlos en
-        nombreProp: {
-          default: () => tipoKnob('nombreParaEditarEnKnob', valor)
-        }
-      },
-      methods: { // los actions que tiene para el componente (opcional)
-        nombreMetodo: action('eventoEmitido')
-      },
-      template: '<componente :nombreProp="nombreProp" @eventoEmitido="nombreMetodo" />' // es tal cual como usas un componente en otro
-    })
-  - importar el filtro global => el nombre que se le de al filtro debe ser tal cual que se está usando en el componente
+realizar importaciones e instalaciones de plugins antes de los storybooks => .storybook/preview.js
+  - agregar addons, se debe importar y agregar el decorator =>
+    import { addDecorator } from '@storybook/vue'
+    import { addonLibreria } from '@storybook/addon-nombreAddon'
+    addDecorator(addonLibreria)
+  - importar plugins =>
+    import NombrePlugin from 'plugin'
     import Vue from 'vue'
-    import filter from 'path/filter'
-    Vue.filter('nombreFilter', filter)
-  - utilizar librerías third-party =>
-    import Vue from 'vue'
-    import LibreriaComponente from 'modulo'
-    Vue.use(LibreriaComponente)
-  - utilizar los estilos, componentes de Quasar Framework =>
-    import 'quasar/dist/quasar.min.css' // es la librería de css comprimida de quasar
-    import Quasar from 'quasar'
-    const { NombreComponenteQuasar } = Quasar
-    Vue.use(Quasar, NombreComponenteQuasar) // nos permitirá poder utilizar los componentes de Quasar dentro del story
-  - añadir vuex =>
-    - dentro del preview.js => import Vuex from 'vuex'; Vue.use(Vuex);
-    - cuando se exporta =>
-      store: new Vuex.Store({ /* valores */ }),
-      computed: ...mapState(...) // para llamar al valor que se pasará al componente
+    Vue.use(NombrePlugin)
 
+creación básica de un storybook (nombreArchivo.stories.js) =>
+  import Componente from 'path/Componente'
+  // tipoKnob es el tipo de atributo que se usará en el prop del componente
+  import { tipoKnob } from '@storybook/addon-knobs'
+  // action hace la simulación de eventos que son emitidos por el componente
+  import { action } from '@storybook/addon-action'
+
+  // title es la carpeta que se crea, se puede agregar carpetas anteriores
+  export default {
+    title: 'Carpeta/NombreComponente',
+  }
+
+  // ejemplo de como se usaría el componente
+  export const nombreArchivo = () => ({
+    components: { Componente },
+    props: {
+      nombreProp: {
+        default: () => tipoKnob('nombreParaEditarEnKnob', valor)
+      }
+    },
+    methods: {
+      nombreMetodo: action('eventoEmitido')
+    },
+    template: '<componente :nombreProp="nombreProp" @eventoEmitido="nombreMetodo" />'
+  })
+
+utilizar estilos de Quasar Framework en storybook =>
+  import 'quasar/dist/quasar.min.css' // es la librería de css comprimida de quasar
+  import Quasar from 'quasar'
+  const { NombreComponenteQuasar } = Quasar
+  Vue.use(Quasar, NombreComponenteQuasar) // nos permitirá poder utilizar los componentes de Quasar dentro del story
+
+usar vuex en storybook =>
+  - una vez importado vuex en preview.js, dentro de los storybooks, agregar en el export =>
+    - para usar el store => store: new Vuex.Store({ /* valores */ }),
+    - para indicar que valores se usarán => computed: ...mapState(/* valores en el store */)

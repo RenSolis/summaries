@@ -277,6 +277,11 @@ agregar color a un svg como background => solo para webkit
 
 agregar estilos a un elemento vacío => element:empty { /* atributos */ }
 
+
+manejar el resize de textarea => resize: value
+
+--------------------------------------- METHODOLOGIES ---------------------------------------
+
 metodología BEM (Block Element Modifier) => block-name__element-name--modifier-name
 
 BEVM (Block Element Variant Modifier) => block-name__element-name-variation -modifier-name
@@ -287,8 +292,49 @@ metodología ABEM (Atomic Block Element Modifier) => es una adaptación de la me
   - afectar directamente a los descendientes que tienen múltiples niveles de profundidad sin que se salga de control => .-modifierName > * > & {}
   - cuando un modificador igual se encuentre en varios componentes a las vez entonces se cambiará el nombre => .-componentName--modificador & {}
 
-manejar el resize de textarea => resize: value
-
 --------------------------------------- FRAMEWORKS ---------------------------------------
 
 tailwind =>
+  - instalar tailwind => npm|yarn tailwindcss
+  - crear un archivo principal donde importar sus clases =>
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+  - crear un script para realizar un build de las importaciones de tailwind => "build:css": "tailwind build archivo_principal -o archivo_builded"
+  - crear archivo de configuración de tailwind => npx tailwind init
+  - manejar un elemento con los breaks que usa tailwind => container
+    - configurar container => theme: { container: { /* configuracion */ } }
+      - indicar que el contenido se debe centrar => center: true|false
+      - indicar el padding => padding: 'cantidad'
+        - realizar por cada breakpoint => padding: { default: 'valor', varianteBreakpoint: 'valor' }
+  - background color =>
+    - asignar el background con el mismo color en un pseudo-elemento => bg-current
+  - text color =>
+    - asignar el texto con el mismo color por un pseudo-elemento => text-current
+  - font weight =>
+    - texto en bold => text-bold
+  - padding =>
+    - total padding => p-{numero}
+    - realizar un padding top y bottom => py-{numero}
+    - realizar un padding left y right => px-{numero}
+    - realizar un padding top => pt-{numero}
+    - realizar un padding right => pr-{numero}
+    - realizar un padding bottom => pb-{numero}
+    - realizar un padding left => pl-{numero}
+    - realizar un padding de 1px únicamente => {tipo-padding}-px
+  - margin
+    - realizar un margin left y right  => mx-{numero}
+      - que sea en auto => mx-auto
+  - border radius =>
+    - sin redondeado => rounded-none
+    - realizar un redondeado pequeño => rounded
+  - pseudoclases =>
+    - hover => hover:{variante}
+  - customizaciones =>
+    - cambiar breakpoints en el archivo de configuración =>
+      theme: {
+        screens: {
+          'varianteBreakpoint': '{numero}px' // el valor dado será el min-width en responsive
+        }
+      }
+  - NOTA: la mayoría de medidas se basan en rem
