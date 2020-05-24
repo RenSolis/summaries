@@ -213,121 +213,6 @@ recomendaciones para creación de componentes =>
 acceder a las variables de entorno => process.env.VARIABLE
   - es mejor manejar variables por archivo => export const VARIABLE = process.env.VARIABLE
 
-librería para poder cambiar de componentes por rutas => npm install vue-router | vue add router (con vue add router ya configura el proyecto con vue-router)
-  - características => modular, configuración basada en componentes, navigation API, route parameters
-  - HTML5 history mode => remover el fragment por default que hay en las URL's, para evitar los errores cuando se guardan los url como /#/path
-  - en el main.js =>
-    import router from './router.js'
-    new Vue({ router, ... }) // agregar en la instancia de Vue
-  - en el router.js =>
-    import Vue from 'vue'
-    import Router from 'vue-router'
-    Vue.use(Router)
-    export default new Router({
-      mode: 'history',
-      base: process.env.BASE_URL,
-      routes: [
-        {
-          opciones
-        }
-      ]
-    })
-    - opciones =>
-      - el path de la ruta => path: '/path' | '/path/:nombre_param'
-      - agregar el nombre del componente => name: 'nombre-componente'
-      - agregar el componente =>
-        - eager loading => component: Componente
-        - lazy loading => () => import(/* webpackChunkName: "nombre-bundle" */ 'path/componente'), opcionalmente se le agrega el comentario para que webpack ponga el bundle con el nombre dado, separa por bundles los archivos JS para mejorar la performancia y cuando sean llamados sea mas liviano el archivo (webpack code splitting), pero es recomendable agrupar en bundle componentes que esten sumamente relacionados
-      - named routes => en lugar de utilizar component usar components
-        components: {
-          default: ComponentePorDefault,
-          nombre_router_view: Componente,
-          ...
-        }
-        - en el router-link tag  => <router-link name="nombre_ruta_view" />, si no se coloca significa que es por default
-      - redireccionar a otra ruta => redirect: '/ruta'
-      - pasar los parametros como props => props: true|false| r => ({ nombre_param: convertir_valor_param(r.params.nombre_param) }), r es el objeto router
-      - pasar rutas nesteadas =>
-        children: [
-          { /* mismas opciones de las rutas, solo que el path no necesita slash al principio */ }
-        ]
-      - realizar validación antes de ir a la ruta cuando el parametro está mal =>
-        beforeEnter(to, from, next) {
-          /* validacion */
-          next(valor) // el valor debe ser true o false
-        }
-  - colocar donde se verán los componentes del router en app.vue, también se deben colocar dentro del componente que tendrá rutas nesteadas => <router-view />
-  - crear los links para otras rutas => <router-link to="/path"></router-link>
-  - crear un link con params => <router-link :to="{ name: 'nombre-componente', params: { nombre_param: value } }"></router-link>
-  - convertir en un diferente tag => <router-link tag="nombre_tag"></router-link>
-  - se pueden añadir clases y tambien bind events
-  - url no encontrada (404) => al último del router
-    { path: '*',  componente: Componente }
-  - redireccionar a otra ruta => this.$router.push({ name: 'nombre-componente' })
-  - darle un color generalizado para cuando se encuentra en la ruta => .router-link-active { propiedades }, aunque también se le puede cambiar la clase que se utiliza para cuando <router-link active-class="clase"></router-link>
-  - indicar en que path exacto estará activo el link => <router-link to="" exact></router-link>
-  - obtener el valor del parametro que se usa => this.$route.params.nombre_parametro
-
-librería para manejar estados => npm install vuex | vue add vuex
-  - nos permite poder centralizar la data para poder manejarla en los distintos componentes
-  - en el archivo main.js =>
-    import store from './store'
-    new Vue({ store, ... })
-  - es tener todos los archivos de vuex dentro de un folder store/
-  - en el store.js =>
-    import Vue from 'vue'
-    import Vuex from 'vuex'
-    Vue.use(Vuex)
-    export default new Vuex.Store({
-      strict: process.env.NODE_ENV !== 'production', // es opcional el modo estricto, nos ayuda a únicamente actualizar el valor del state con un mutate no con otros métodos dentro del componente
-      state: { // la data que queremos guardar y que siempre tiene un estado inicial
-        atributo: valor
-      },
-      mutations: { // son operaciones síncronas para modificar el state, espera al llamado del action
-        metodoMutation(state, valor) {
-          // set el state.atributo
-        }
-      },
-      actions: { // es igual a mutation solo que en lugar de mutar el state, hacen un commit al mutate, pueden ser async o sync, se llama desde el componente, son los encargados de llamar a los metodos mutate
-        async metodoAction({ state, getters, commit, dispatch, rootState }, valor) { // el segundo parametro es únicamente necesario si se actualizará el valor de un estado y el async únicamente porque se obtiene data mediante axios
-          const variable_valor = await axios()
-          commit('metodoMutation', variable_valor)
-        }
-      },
-      getters: { // hace fácil acceder a las partes del state, ejemplo: un elemento dentro de un array o un objeto o para realizar filtros
-        metodoGetter(state, getters, rootState) { acceder al valor } // los parametros son opcionales, el state es el estate del namespaced, el getters si es en el root namespaced entonces accederá a getters de todos los módulos, si es en un módulo solo accederá a getters locales, y el rootState es el state el root namespaced
-      }
-    })
-  - acceder a los valores del state, crear el atributo dentro del componente en el computed property =>
-    - si únicamente se necesita un state property => atributo() { return this.$store.state.atributo }
-    - si se necesitan varios, se tiene el helper mapState =>
-      - importar el helper => import { mapState } from 'vuex'
-      - dentro del computed property => ...mapState('nombre_modulo', { atributo: state => state.atributo }) | ...mapState('nombre_modulo', { atributo: 'atributo-del-state' }) | ...mapState('nombre_modulo', ['atributo-state']) // este únicamente si el atributo tendrá el mismo que del state, el nombre_modulo es opcional sino se accederá como root namespaced
-  - utilizar el action =>
-    - cuando solamente se utilizará un action => this.$store.dispatch('metodoAction')
-    - cuando se utilizan múltiples actions =>
-      - importar el helper => import { mapActions } from 'vuex'
-      - añadir dentro del methods property => ...mapActions('nombre_modulo', ['metodoAction']) | ...mapActions('nombre_modulo', { nombreMetodo: 'metodoAction' } // el nombre de modulo es opcional solamente si se necesita acceder a las propiedades del módulo sino utilizará el root namespaced
-      - se llamara al action como método propio del componente => this.metodoAction()
-    - dentro de la función se puede devolver la promesa de la consulta, como cuando se usa axios
-  - utilizar los getters =>
-    - dentro del computed propery =>
-      - importar el helper => import { mapGetters } from 'vuex'
-      - llamar los getters dentro de computed property => ...mapGetters('nombre_modulo', { metodoComputed: 'metodoGetter' }) | this.$store.getters.nombre_funcion | ...mapGetters({ nombreComputed: getters => getters['nombre_modulo/metodo_getter'] }) // opcionalmente se puede utilizar el nombre_modulo para acceder a las propiedades del módulo sino se utilizará del root namespaced
-  - utilizar los mutations (no recomendable) =>
-    - con el helper => ...mapMutations('nombre_modulo', misma_forma_que_los_demas_helpers) // el nombre modulo es opcional sino se accederá al root namespaced
-  - vuex recomienda utilizar los helpers
-  - manejar vuex en modulos para no sobrecargar de código el store/index.js =>
-    - crear una carpeta modules/ en store/, crear el modulo.js y exportarlo como objeto
-    - en store/index.js exportar el modulo y agregar dentro de la instancia de vuex => modules: { nombre_modulo: ObjetoImportado }
-    - el cambio afectará a los estados => this.$store.state.nombre_modulo.estado
-    - cuando se tienen varios métodos iguales como actions o getters en cada modulo se puede diferenciar cual utilizar => namespaced: true, en su respectivo archivo de módulo
-      - utilizar los getters o actions será => this.$store.getters|actions['nombre_modulo/metodo']
-      - se tiene un root namespaced => es el archivo store/index.js
-      - aunque no se coloque el namespaced el state siempre lo está
-      - cuando se crean dentro de los módulos getters, mutations o actions que también tiene el root namespaced se tiene que colocar el namespaced sino saldrá error por utilizar dos veces el mismo método pertenecientes root namespaced
-    - todas las propiedades que se agreguen en el store/index.js como root no serán heredados en los módulos
-
 configuración de vue => agregará o sobreescribirá la configuración que tiene para webpack
   - crear un archivo => vue.config.js
   - para proxy (webpack config), nos simplica el tener que usar el dominio de una URL externa =>
@@ -742,6 +627,10 @@ crear filters globales =>
     }
   - dentro del quasar.conf.js => boot: [...demasArchivos, 'filters']
 
+quasar classes =>
+  - positioning classes =>
+    - colocar en position absolute y en el centro => absolute-center
+
 quasar plugins =>
   - Dialog => es una ventana prompt de confirmación
     - empezar a utilizarla, dentro de quasar.conf.js => plugins: [..., 'Dialog']
@@ -790,6 +679,134 @@ quasar con storybook =>
     /* Añadir plugins, filters y directivas */
   - NOTA: existen problemas de dependencia por storybook y quasar que usan distintas versiones => yarn|npm -D core-js@^2.0.0
 
+configuración de quasar, cambios en quasar.conf.js =>
+  - indicar que se usarán todos los componentes de quasar, para no tener que agregar manualmete => framework: { all: true|'auto' }
+
+--------------------------------------- VUEX ---------------------------------------
+
+// TODO: arreglar vuex
+librería para manejar estados => npm install vuex | vue add vuex
+  - nos permite poder centralizar la data para poder manejarla en los distintos componentes
+  - en el archivo main.js =>
+    import store from './store'
+    new Vue({ store, ... })
+  - es tener todos los archivos de vuex dentro de un folder store/
+  - en el store.js =>
+    import Vue from 'vue'
+    import Vuex from 'vuex'
+    Vue.use(Vuex)
+    export default new Vuex.Store({
+      strict: process.env.NODE_ENV !== 'production', // es opcional el modo estricto, nos ayuda a únicamente actualizar el valor del state con un mutate no con otros métodos dentro del componente
+      state: { // la data que queremos guardar y que siempre tiene un estado inicial
+        atributo: valor
+      },
+      mutations: { // son operaciones síncronas para modificar el state, espera al llamado del action
+        metodoMutation(state, valor) {
+          // set el state.atributo
+        }
+      },
+      actions: { // es igual a mutation solo que en lugar de mutar el state, hacen un commit al mutate, pueden ser async o sync, se llama desde el componente, son los encargados de llamar a los metodos mutate
+        async metodoAction({ state, getters, commit, dispatch, rootState }, valor) { // el segundo parametro es únicamente necesario si se actualizará el valor de un estado y el async únicamente porque se obtiene data mediante axios
+          const variable_valor = await axios()
+          commit('metodoMutation', variable_valor)
+        }
+      },
+      getters: { // hace fácil acceder a las partes del state, ejemplo: un elemento dentro de un array o un objeto o para realizar filtros
+        metodoGetter(state, getters, rootState) { acceder al valor } // los parametros son opcionales, el state es el estate del namespaced, el getters si es en el root namespaced entonces accederá a getters de todos los módulos, si es en un módulo solo accederá a getters locales, y el rootState es el state el root namespaced
+      }
+    })
+  - acceder a los valores del state, crear el atributo dentro del componente en el computed property =>
+    - si únicamente se necesita un state property => atributo() { return this.$store.state.atributo }
+    - si se necesitan varios, se tiene el helper mapState =>
+      - importar el helper => import { mapState } from 'vuex'
+      - dentro del computed property => ...mapState('nombre_modulo', { atributo: state => state.atributo }) | ...mapState('nombre_modulo', { atributo: 'atributo-del-state' }) | ...mapState('nombre_modulo', ['atributo-state']) // este únicamente si el atributo tendrá el mismo que del state, el nombre_modulo es opcional sino se accederá como root namespaced
+  - utilizar el action =>
+    - cuando solamente se utilizará un action => this.$store.dispatch('metodoAction')
+    - cuando se utilizan múltiples actions =>
+      - importar el helper => import { mapActions } from 'vuex'
+      - añadir dentro del methods property => ...mapActions('nombre_modulo', ['metodoAction']) | ...mapActions('nombre_modulo', { nombreMetodo: 'metodoAction' } // el nombre de modulo es opcional solamente si se necesita acceder a las propiedades del módulo sino utilizará el root namespaced
+      - se llamara al action como método propio del componente => this.metodoAction()
+    - dentro de la función se puede devolver la promesa de la consulta, como cuando se usa axios
+  - utilizar los getters =>
+    - dentro del computed propery =>
+      - importar el helper => import { mapGetters } from 'vuex'
+      - llamar los getters dentro de computed property => ...mapGetters('nombre_modulo', { metodoComputed: 'metodoGetter' }) | this.$store.getters.nombre_funcion | ...mapGetters({ nombreComputed: getters => getters['nombre_modulo/metodo_getter'] }) // opcionalmente se puede utilizar el nombre_modulo para acceder a las propiedades del módulo sino se utilizará del root namespaced
+  - utilizar los mutations (no recomendable) =>
+    - con el helper => ...mapMutations('nombre_modulo', misma_forma_que_los_demas_helpers) // el nombre modulo es opcional sino se accederá al root namespaced
+  - vuex recomienda utilizar los helpers
+  - manejar vuex en modulos para no sobrecargar de código el store/index.js =>
+    - crear una carpeta modules/ en store/, crear el modulo.js y exportarlo como objeto
+    - en store/index.js exportar el modulo y agregar dentro de la instancia de vuex => modules: { nombre_modulo: ObjetoImportado }
+    - el cambio afectará a los estados => this.$store.state.nombre_modulo.estado
+    - cuando se tienen varios métodos iguales como actions o getters en cada modulo se puede diferenciar cual utilizar => namespaced: true, en su respectivo archivo de módulo
+      - utilizar los getters o actions será => this.$store.getters|actions['nombre_modulo/metodo']
+      - se tiene un root namespaced => es el archivo store/index.js
+      - aunque no se coloque el namespaced el state siempre lo está
+      - cuando se crean dentro de los módulos getters, mutations o actions que también tiene el root namespaced se tiene que colocar el namespaced sino saldrá error por utilizar dos veces el mismo método pertenecientes root namespaced
+    - todas las propiedades que se agreguen en el store/index.js como root no serán heredados en los módulos
+
+
+--------------------------------------- VUE ROUTER ---------------------------------------
+
+// TODO: ordenar vue-router
+librería para poder cambiar de componentes por rutas => npm install vue-router | vue add router (con vue add router ya configura el proyecto con vue-router)
+  - características => modular, configuración basada en componentes, navigation API, route parameters
+  - HTML5 history mode => remover el fragment por default que hay en las URL's, para evitar los errores cuando se guardan los url como /#/path
+  - en el main.js =>
+    import router from './router.js'
+    new Vue({ router, ... }) // agregar en la instancia de Vue
+  - en el router.js =>
+    import Vue from 'vue'
+    import Router from 'vue-router'
+    Vue.use(Router)
+    export default new Router({
+      mode: 'history',
+      base: process.env.BASE_URL,
+      routes: [
+        {
+          opciones
+        }
+      ]
+    })
+    - opciones =>
+      - el path de la ruta => path: '/path' | '/path/:nombre_param'
+      - agregar el nombre del componente => name: 'nombre-componente'
+      - agregar el componente =>
+        - eager loading => component: Componente
+        - lazy loading => () => import(/* webpackChunkName: "nombre-bundle" */ 'path/componente'), opcionalmente se le agrega el comentario para que webpack ponga el bundle con el nombre dado, separa por bundles los archivos JS para mejorar la performancia y cuando sean llamados sea mas liviano el archivo (webpack code splitting), pero es recomendable agrupar en bundle componentes que esten sumamente relacionados
+      - named routes => en lugar de utilizar component usar components
+        components: {
+          default: ComponentePorDefault,
+          nombre_router_view: Componente,
+          ...
+        }
+        - en el router-link tag  => <router-link name="nombre_ruta_view" />, si no se coloca significa que es por default
+      - redireccionar a otra ruta => redirect: '/ruta'
+      - pasar los parametros como props => props: true|false| r => ({ nombre_param: convertir_valor_param(r.params.nombre_param) }), r es el objeto router
+      - pasar rutas nesteadas =>
+        children: [
+          { /* mismas opciones de las rutas, solo que el path no necesita slash al principio */ }
+        ]
+      - realizar validación antes de ir a la ruta cuando el parametro está mal =>
+        beforeEnter(to, from, next) {
+          /* validacion */
+          next(valor) // el valor debe ser true o false
+        }
+  - colocar donde se verán los componentes del router en app.vue, también se deben colocar dentro del componente que tendrá rutas nesteadas => <router-view />
+  - crear los links para otras rutas => <router-link to="/path"></router-link>
+  - crear un link con params => <router-link :to="{ name: 'nombre-componente', params: { nombre_param: value } }"></router-link>
+  - convertir en un diferente tag => <router-link tag="nombre_tag"></router-link>
+  - se pueden añadir clases y tambien bind events
+  - url no encontrada (404) => al último del router
+    { path: '*',  componente: Componente }
+  - redireccionar a otra ruta => this.$router.push({ name: 'nombre-componente' })
+  - darle un color generalizado para cuando se encuentra en la ruta => .router-link-active { propiedades }, aunque también se le puede cambiar la clase que se utiliza para cuando <router-link active-class="clase"></router-link>
+  - indicar en que path exacto estará activo el link => <router-link to="" exact></router-link>
+  - obtener el valor del parametro que se usa => this.$route.params.nombre_parametro
+
+route object =>
+  - acceder únicamente al path => this.$route.path
+  - acceder al path incluyendo query y hash => this.$route.fullPath
 
 --------------------------------------- TESTING ---------------------------------------
 

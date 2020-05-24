@@ -277,8 +277,11 @@ agregar color a un svg como background => solo para webkit
 
 agregar estilos a un elemento vacío => element:empty { /* atributos */ }
 
-
 manejar el resize de textarea => resize: value
+
+--------------------------------------- HTML ATTRIBUTES ---------------------------------------
+
+role => mejorar la accessibilidad de la página, basado en el estándar de ARIA de accessibilidad web
 
 --------------------------------------- METHODOLOGIES ---------------------------------------
 
@@ -308,11 +311,23 @@ tailwind =>
       - indicar el padding => padding: 'cantidad'
         - realizar por cada breakpoint => padding: { default: 'valor', varianteBreakpoint: 'valor' }
   - background color =>
+    - indicar el background => bg-{color}
     - asignar el background con el mismo color en un pseudo-elemento => bg-current
   - text color =>
+    - indicar el color => text-{color}
     - asignar el texto con el mismo color por un pseudo-elemento => text-current
+  - text align => text-{valor-text-align}
+  - text transform => se utilizan los valores que tiene text-transform
+    - eliminar el text-transform => normal-case
+  - letter spacing => tracking-{tighter|tight|normal|wide|wider|widest}
+  - font size =>
+    - tamaño inicial => text-base
+    - según breakpoints => text-{xs|sm|lg|xl}
+    - según xl => text-{2xl|3xl|...|6xl}
   - font weight =>
     - texto en bold => text-bold
+  - line height => leading-{tight|snug|normal|relaxed|loose|3|...|10}
+    - volver al line-height inicial => leading-none
   - padding =>
     - total padding => p-{numero}
     - realizar un padding top y bottom => py-{numero}
@@ -323,13 +338,79 @@ tailwind =>
     - realizar un padding left => pl-{numero}
     - realizar un padding de 1px únicamente => {tipo-padding}-px
   - margin
+    - total margin => m-{numero}
+    - realizar un margin top y bottom => my-{numero}
     - realizar un margin left y right  => mx-{numero}
-      - que sea en auto => mx-auto
+    - realizar un margin top => mt-{numero}
+    - realizar un margin right => mr-{numero}
+    - realizar un margin bottom => mb-{numero}
+    - realizar un margin left => ml-{numero}
+    - realizar un margin negativo => -{tipo-margin}-{numero}
+    - realizar un auto => {tipo-margin}-auto
+    - realizar un margin de 1px únicamente => {tipo-margin}-px
+      - en negativo => -{tipo-margin}-px
+  - position => el mismo valor que se le da en position
+  - display => el mismo valor que se le da en display
+  - shadow =>
+    - según breakpoints, solo con shadow si require uno entre sm y md => shadow-{xs|sm|md|lg|xl}
+  - flexbox =>
+    - flex-shrink =>
+      - indicar que se encogerá el elemento => flex-shrink
+      - indicar que el elemento no se encongerá => flex-shrink-0
+    - flex =>
+      - permitir al item encogerse pero no crecer, tomando en cuenta su tamaño inicial => flex-initial
+      - permitir al item encogerse y crecer sin importar el tamaño inicial => flex-1
+      - permitir al item encogerse y crecer importando su tamaño inicial => flex-auto
+      - prevenir a un item encogerse o crecer => flex-none
+    - align items =>
+      - completar el alto del contenedor => items-stretch
+      - colocar en lo alto del contenedor => items-start
+      - colocar en el medio del contenedor => items-center
+      - colocar en lo bajo del centenedor => items-end
+      - alinear en lo alto del contenedor segun el alto de cada item, tomando su base para todos los items => items-base
+    - justify content =>
+      - al inicio del ancho del contenedor => justify-start
+      - al centro del ancho del contenedor => justify-center
+      - al final del ancho del contenedor => justify-end
+      - separar items con la misma distancia entre estos => justify-between
+      - separar items con la misma distancia entre estos y el inicio y final del contenedor => justify-around
+    - flex wrap =>
+      - prevenir que pase a una nueva línea los items => flex-no-wrap
+      - permitir a los items pasar a una nueva línea cuando supera el máximo del contenedor => flex-wrap
+      - permitir a los items pasar a una nueva línea en la parte superior cuando supera el máximo del contenedor => flex-wrap-reverse
+    - flex grow =>
+      - indicar que el item crecerá para ocupar el ancho del contenedor => flex-grow
+      - indicar que el item no modificará su tamaño según el ancho del contenedor => flex-grow-0
+  - width =>
+    - con número => w-{numero}
+    - con fracciones => w-{num/2|num/3|num/5|num/6|num/12}
+    - auto => w-auto
+    - de solo 1px => w-px
+    - el ancho completo contenedor => w-full
+    - el ancho completo del viewport => w-screen
+  - max-width =>
+    - por breakpoints => max-w-{xs|sm|md|lg|xl}
+    - sin max-width => max-w-none
+  - height =>
+    - con número => h-{numero}
+    - auto => h-auto
+    - de solo 1px => h-px
+    - el alto completo contenedor => h-full
+    - el alto completo del viewport => h-screen
+  - border =>
+    - indicar el color => border-{color}
   - border radius =>
     - sin redondeado => rounded-none
     - realizar un redondeado pequeño => rounded
+    - realizar un redondeado indicando cantidad => rounded-{sm|md|lg|full}
+    - se puede indicar en que parte realizar el redondeado => rounded-{t|b|l|r|tl|tr|bl|br}-{sm|md|lg|full|none}
   - pseudoclases =>
     - hover => hover:{variante}
+  - responsive =>
+    - breakpoint 640px => sm:{variante}
+    - breakpoint 768px => md:{variante}
+    - breakpoint 1024px => lg:{variante}
+    - breakpoint 1280px => xl:{variante}
   - customizaciones =>
     - cambiar breakpoints en el archivo de configuración =>
       theme: {
@@ -337,4 +418,5 @@ tailwind =>
           'varianteBreakpoint': '{numero}px' // el valor dado será el min-width en responsive
         }
       }
+  - aplicar estilos de las clases en clases customizadas => @apply nombreClase nombreClase ...;
   - NOTA: la mayoría de medidas se basan en rem

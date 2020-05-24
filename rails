@@ -1440,6 +1440,14 @@ indicar que metodos dentro de un controlador se volverá un método helper, agre
 tipos de associations =>
   - indicar que un modelo pertenece a otro => belongs_to :modelo_singular
     - usar siempre y cuando el modelo en su tabla posee el foreign key
+    - métodos =>
+      - obtener el objeto asociado => modelo.asociacion
+      - cambiar el objeto asociado => modelo.asociacion = nuevoObjeto
+      - sobreescribir el cache para obtener el objeto asociado => modelo.reload_asociacion
+      - realizar una instancia de un nuevo objeto asociado => modelo.build_asociacion(attributes = {})
+      - crear un nuevo objeto asociado => modelo.create_association(attributes = {})
+      - crear un nuevo objeto asociado y lanzar un error si el objeto es invalido => modelo.create_association!(attributes = {})
+    - opciones =>
   - modelo con relación uno a uno => has_one :modelo_singular
   - modelo con relación uno a muchos => has_many :modelo_plural
   - modelo con relación muchos a muchos => has_many :modelo_plural, through: :modelo_intermedio_plural # el modelo que hace de intermediario debe tener belongs_to a los dos modelos
@@ -1447,10 +1455,16 @@ tipos de associations =>
   - modelo con relación uno a uno entre 3 modelos => has_one :modelo_singular, through: :modelo_intermedio_singular # es un shortcut para acceder mediante relaciones has_one
   - modelo con relación muchos a muchos sin modelo intermedio => has_and_belongs_to_many :modelo_plural
     - se tiene que crear una tabla intermedia =>
-      create_table :modelo_1_plural_modelo_2_plural, id: false do |t|
-        t.belongs_to :modelo_1_singular
-        t.belongs_to :modelo_2_singular
-      end
+      - manualmente indicando el nombre de la tabla =>
+        create_table :modelo_con_mayor_length_modelo_con_menor_length, id: false do |t|
+          t.belongs_to :modelo_1_singular
+          t.belongs_to :modelo_2_singular
+        end
+      - indicar a Rails que cree la tabla intermedia =>
+        create_join_table :modelo_1_plural, :modelo_2_plural do |t|
+          t.index :modelo_1_id
+          t.index :modelo_2_id
+        end
   - NOTA: usar has_many :through cuando necesitas una tabla intermedia para realizar validaciones, callbacks, o atributos extras
   - polymorphic association, modelo puede pertenecer mas de un modelo en una sola relación (un foreign key) =>
     - realizar la migración del modelo, donde el nombre es el que deseemos describir y debe terminar en able =>
@@ -1467,10 +1481,28 @@ tipos de associations =>
     has_many :modelo_plural, class_name: 'NombreModelo', foreign_key: 'columna'
     belongs_to :modelo_singular, class_name: 'NombreModelo', optional: true
 
+controlling caching => todos los métodos de asociaciones de Rails son almacenadas en caché para cuando se vuelva a consultar se mejore la performancia con el valor guardado
+  - refrescar el cache cuando hay un cambio con reload => modelo.asociacion.reload.metodo
+
+controlling association scope => las asociaciones únicamente funcionan si los modelos se encuentran dentro del mismo module
+  - las asociaciones tienen únicamente el alcance del módulo
+  - realizar asociaiones en diferentes modules => tipo_asociacion :modelo, class_name: 'Modulo::...::Clase'
+
+asociaciones bidireccionales => Rails identifica cuando se realiza un cambio a una columna actualizando los valores de las asociaciones cuando se consulta por esa columna
+  - no se identifica las asociaciones bidireccionales cuando las asociaciones contienen un scope, o las opciones :foreign_key, :through
+  - indicar explícitamente que se usará una asociación bidireccional => inverse_of: :nombre_modelo
+
 -------------------------------------- MIGRATIONS ---------------------------------------
 
 crear migración para un belongs_to => t.belongs_to :modelo_singular
   - agregar un index => t.belongs_to :modelo_singular, index: { unique: true }, foreign_key: true
+
+agregar una referencia de otra tabla a una tabla ya existente => add_references :tabla_plural, :tabla_para_referencia
+
+create table =>
+  - indicar si se usará un id para la tabla => id: true|false
+
+crear join table, crea una tabla intermedia sin id de la tabla => create_join_table :modelo_1_plural, modelo_2_plural do |t| # crear id's para las tablas de los modelos
 
 -------------------------------------- TASKS ---------------------------------------
 
