@@ -587,8 +587,7 @@ extensiones comunes para backups => .bak, .sav, .old, .orig
 
 hacer que un startup file lea sus cambios sin necesidad de reiniciar el shell => source .nombre_startup_file
 
-==================================================================================================================================================================
-BASH
+--------------------------------------- BASH ---------------------------------------
 
 comentarios => #
 if compound command =>
@@ -600,8 +599,7 @@ comprobar si existe archivo => -f nombre_archivo
 
 leer archivo => . nombre_archivo
 
-==================================================================================================================================================================
-VIM
+--------------------------------------- VIM ---------------------------------------
 
 entrar en insert mode => i
 salir del archivo => :q
@@ -681,3 +679,5 @@ ocultar los número de línea => :set nonumber
 NERDTree => plugin para poder utilizar un menú de todos los archivos
   - split de manera horizontal => i
   - split de manera vertical => s
+- buscar una palabra => /palabra
+  - buscar una palabra sin case sensitive => /palabra\c

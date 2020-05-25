@@ -71,6 +71,12 @@ file =>
   - escribir archivos => File.new('nombre_archivo', 'w') # el segundo parametro es para indicar que escribiremos en el archivo
     - terminada la funcionalidad se cierra el flujo => file.close
 
+hash =>
+  - acceder a los atributos nesteados en un hash => hash.dig(key, key_nesteado, ...)
+
+basic object => es el objeto base de Ruby, funciona para crear objetos genéricos
+  - instanciar => BasicObject.new
+
 --------------------------------------- THIRD-PARTY LIBRARIES ---------------------------------------
 
 instalar gema => gem('nombre_gema', 'version')
@@ -97,7 +103,6 @@ rake file: son archivos que tienen la funcionalidad de mantenimiento o utilidad
   run: en línea de comandos 'bundle exec rake nombre_namespace:nombre_task'
   - crear un task con argumentos => task :nombre_task, [:nombreArg, ...] do |task, args|; args[:nombreArg]; end
 
-acceder a los atributos nesteados en un hash: 'hash.dig(key, key_nesteado, ...)'
 
 funcionalidad de métodos:
     para ver métodos disponibles 'object.methods' o 'Class.methods'

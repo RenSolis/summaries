@@ -1440,14 +1440,6 @@ indicar que metodos dentro de un controlador se volverá un método helper, agre
 tipos de associations =>
   - indicar que un modelo pertenece a otro => belongs_to :modelo_singular
     - usar siempre y cuando el modelo en su tabla posee el foreign key
-    - métodos =>
-      - obtener el objeto asociado => modelo.asociacion
-      - cambiar el objeto asociado => modelo.asociacion = nuevoObjeto
-      - sobreescribir el cache para obtener el objeto asociado => modelo.reload_asociacion
-      - realizar una instancia de un nuevo objeto asociado => modelo.build_asociacion(attributes = {})
-      - crear un nuevo objeto asociado => modelo.create_association(attributes = {})
-      - crear un nuevo objeto asociado y lanzar un error si el objeto es invalido => modelo.create_association!(attributes = {})
-    - opciones =>
   - modelo con relación uno a uno => has_one :modelo_singular
   - modelo con relación uno a muchos => has_many :modelo_plural
   - modelo con relación muchos a muchos => has_many :modelo_plural, through: :modelo_intermedio_plural # el modelo que hace de intermediario debe tener belongs_to a los dos modelos
@@ -1481,6 +1473,92 @@ tipos de associations =>
     has_many :modelo_plural, class_name: 'NombreModelo', foreign_key: 'columna'
     belongs_to :modelo_singular, class_name: 'NombreModelo', optional: true
 
+métodos de asociaciones =>
+  - belongs_to, has_one =>
+    - obtener el objeto asociado => modelo.asociacion
+    - cambiar el objeto asociado => modelo.asociacion = nuevoObjeto
+    - sobreescribir el cache para obtener el objeto asociado => modelo.reload_asociacion
+    - realizar una instancia de un nuevo objeto asociado => modelo.build_asociacion(attributes = {})
+    - crear un nuevo objeto asociado => modelo.create_association(attributes = {})
+    - crear un nuevo objeto asociado y lanzar un error si el objeto es invalido => modelo.create_association!(attributes = {})
+  - has_many, has_and_belongs_to_many =>
+    - obtener coleccion => modelo.collection
+    - añadir objectos a la coleccion => modelo.collection << objeto, objecto, ...
+    - remover uno o más objetos de la coleccion colocando sus foreign_key en null => modelo.collection.delete(objeto, objeto, ...) # pueden ser eliminados con respecto al valor del dependent
+      - en has_and_belongs_to_many elimina el record en la tabla intermedia
+    - eliminar uno o más objetos de la coleccion => modelo.collection.destroy(objeto, objeto, ...) # serán eliminados ignorando el dependent
+      - en has_and_belongs_to_many elimina el record en la tabla intermedia
+    - cambiar completamente la coleccion => modelo.collection = [objeto, objeto, ...]
+    - obtener un array con todos los id's => modelo.collection_singular_ids
+    - cambiar completamente la coleccion de id's => modelo.collection_singular_ids = [id, id, ...]
+    - limpiar la coleccion, usará la estrategia de eliminación por default nullify pero si es has_many :through usará delete_all => modelo.collection.clear
+      - en has_and_belongs_to_many elimina todos los elementos de la tabla intermedia
+    - comprobar si existe algún elemento en la colección => modelo.collection.empty?
+    - obtener un elemento de la colección => modelo.collection.find(id)
+      - en has_and_belongs_to_many devolverá una coleccion de elementos con el id
+    - obtener el número de elementos en la colección => modelo.collection.size
+    - comprobar si un elemento existe en la colección => modelo.collection.exists?(elemento)
+    - instanciar un nuevo elemento para la colección => modelo.collection.build(attributes = {})
+    - crear un nuevo elemento para la colección => modelo.collection.create(attributes = {})
+    - crear un nuevo elemento para la colección y lanzar una excepción si es inválido => modelo.collection.create!(attributes = {})
+    - sobreescribir el cache de la colección => modelo.collection.reload
+
+opciones de asociaciones =>
+  - opciones para belongs_to =>
+    - contar la cantidad de elementos asociados al modelo y mantenerlos en cache => counter_cache: true|false|:nombre_para_contador
+      - por default toma el valor del modelo_plural_count cuando se usa
+    - dependencia de cuando se elimina el modelo asociado =>
+      - eliminar los objetos asociados => dependent: :destroy
+      - eliminar los objetos asociados directamente de la base de datos (no ejecuta callbacks) => dependent: :delete
+    - indicar que el objeto asociado no será validado => optional: true|false
+  - opciones has_one =>
+    - dependencia de cuando se elimina el objeto asociado =>
+      - eliminar el objeto al que se asociado => dependent: :destroy
+      - eliminar el objeto al que se asociado directamente de la base de datos (no ejecuta callbacks) => dependent: :delete
+      - poner en null la foreign_key del objeto al que se asocia => dependent: :nullify # no utilizar si la tabla tiene un constraint de NOT NULL
+      - lanzar ActiveRecord::DeleteRestrictionError si se elimina el objeto asociado => dependent: :restrict_with_exception
+      - causar errores que serán añadidos al objeto => dependent: :restrict_with_errors
+    - opciones has_one :through =>
+      - utilizar un nombre distinto para la asociación => has_one :modelo_singular, through: :modelo_intermedio_plural, source: :modelo
+      - realizar asociación mediante polimorfismo => has_one :modelo_singular, through: :modelo_intermedio_plural, source: :able_del_polimorfirsmo, source_type: :modelo
+  - opciones has_many =>
+    - controlar que sucede con los objetos asociados cuando el propietario es eliminado =>
+      - eliminar todos los objetos asociados => dependent: :destroy
+      - eliminar todos los objetos directamente de la base de datos (sin ejecutar callbacks) => dependent: :delete_all
+      - poner en null todos los objectos (sin ejecutar callbacks) => dependent: :nullify
+      - lanzar ActiveRecord::DeleteRestrictionError si se elimina el objeto asociado => dependent: :restrict_with_exception
+      - causar errores que serán añadidos al objeto => dependent: :restrict_with_errors
+    - opciones has_many :through =>
+      - utilizar un nombre distinto para la asociación => has_many :modelo_plural, through: :modelo_intermedio_plural, source: :modelo
+      - realizar asociación mediante polimorfismo => has_many :modelo_plural, through: :modelo_intermedio_plural, source: :able_del_polimorfirsmo, source_type: :modelo
+  - opciones para has_and_belongs_to_many =>
+    - si se necesita utilizar una foreign key para la asociación distinta => association_foreign_key: :otro_modelo_id|'otro_modelo_id'
+    - indicar el nombre de la tabla intermedia si no se especifico basado en orden léxico (nombre con menor length primero) => join_table :nombre_tabla_intermedia
+  - opciones belongs_to, has_one =>
+    - actualizar update_timestamps el modelo asociado cuando uno objeto es guardado o eliminado => touch: true|false
+      - se puede especificar el atributo que se usará para indicar la actualización => touch: :nombre_columna
+  - opciones belongs_to, has_one, has_many =>
+    - Rails asume que la primary_key es el id del modelo asociado, pero si no es => primary_key: :nombre_id|'nombre_id'
+  - opciones belongs_to, has_one, has_many, has_and_belongs_to_many =>
+    - por defecto solo se guarda cuando es un nuevo record, siempre guardar el objeto asociado o eliminarlo cuando el objeto padre ha sido guardado => autosave: true|false
+    - si el nombre de la asociación deriva del modelo, indicar que modelo se usará => class_name: 'Modelo'
+    - Rails asume que la foreign_key es el modelo_id, pero si se necesita otro => foreign_key: :nombre_id|'nombre_id'
+    - validar que exista la asociación cuando se guarde el objeto => validate: true|false
+
+scope de asociaciones =>
+  - scope para has_many , has_and_belongs_to_many =>
+    - utilizar el clause group by => -> { group(sentencia) }
+    - indicar el orden en que se obtendrá la coleccion => -> { order(sentencia) }
+    - realizar una limitación de los elementos => -> { limit(cantidad) }
+    - indicar cuantos elementos se salteará de la coleccion => -> { offset(cantidad) }
+    - obtener una colección sin elementos duplicados => -> { distinct }
+      - se puede agregar un unique al index para obligar la unicidad => add_index :tabla_plural, [:tabla1_id, :tabla2_id], unique: true
+  - scopes para belongs_to, has_one, has_many, has_and_belongs_to_many =>
+    - indicar cuando se hará la asociacion => -> { where(columna: valor) }
+    - indicar que se cargarán tablas asociadas al objeto asociado => -> { includes(:tabla) }
+    - indicar que el objeto asociado únicamente se puede leer => -> { readonly }
+    - indicar que se sobreescribirá el select del objeto asociado => -> { select(consulta) }
+
 controlling caching => todos los métodos de asociaciones de Rails son almacenadas en caché para cuando se vuelva a consultar se mejore la performancia con el valor guardado
   - refrescar el cache cuando hay un cambio con reload => modelo.asociacion.reload.metodo
 
@@ -1490,7 +1568,23 @@ controlling association scope => las asociaciones únicamente funcionan si los m
 
 asociaciones bidireccionales => Rails identifica cuando se realiza un cambio a una columna actualizando los valores de las asociaciones cuando se consulta por esa columna
   - no se identifica las asociaciones bidireccionales cuando las asociaciones contienen un scope, o las opciones :foreign_key, :through
-  - indicar explícitamente que se usará una asociación bidireccional => inverse_of: :nombre_modelo
+  - indicar explícitamente que se usará una asociación bidireccional en el modelo en que lo necesitemos => inverse_of: :nombre_modelo
+
+callbacks de asociaciones =>
+  - realizar uno o más métodos antes de que se agregue un elemento a la asociación => asociacion :modelo, before_add: :metodo|[:metodo, :metodo, ...]
+  - realizar uno o más métodos después de que se agregue un elemento a la asociación => asociacion :modelo, after_add: :metodo|[:metodo, :metodo, ...]
+  - realizar uno o más métodos antes de que se elimine un elemento a la asociación => asociacion :modelo, before_remove: :metodo|[:metodo, :metodo, ...]
+  - realizar uno o más métodos después de que se elimine un elemento a la asociación => asociacion :modelo, after_remove: :metodo|[:metodo, :metodo, ...]
+
+extensiones de associations => permite agregar más funcionalidad a las asociaciones
+  - agregando directamente mediante un bloque => association :modelo do: funcionalidad; end
+  - agregando mediante un modulo => association :modelo, -> { extending NombreModulo }
+  - se crea un attr_accessor proxy_association para poder manejar valores atributos =>
+    - acceder al objeto propietario => proxy_association.owner
+    - acceder al objeto que describe la asociación => proxy_association.reflection
+    - acceder al objeto que realiza la asociación o la colección si es has_many => proxy_association.target
+
+single table inheritance => rails generate model nombre_modelo --parent=NombreModelo
 
 -------------------------------------- MIGRATIONS ---------------------------------------
 

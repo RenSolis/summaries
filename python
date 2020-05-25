@@ -93,6 +93,25 @@ valores que son falsos => False, '', [], (), {}, 0, 0.0
 iteradores =>
   - condicional de iteración primero => while condicional:
     - ejecutar funcionalidad cuando condición no cumple => else:
+  - iteración de cada elemento de un array => for elemento in array:
+    - si es una iteracción con dictionary el elemento será la key
+    - se puede destructurar los elementos de la coleccion si tiene colecciones dentro (ej: [[], []]), pero generará error si no todos son colecciones y si no todos tiene la misma cantidad de elementos
+  - palabras reservadas =>
+    - detener la iteración => break
+    - detener la iteración actual donde se encuentra y continuar con el siguiente item => continue
+
+- utilizar enumerate para obtener el índice dentro de un array => for indice, valor in enumerate(lista)
+  - indicar en que valor empezará el índice => enumerate(lista, numero)
+
+secuencia de números para iterar => range
+  - crear una secuencia desde 0 y el número máximo sin contarlo => range(numero_maximo)
+  - indicar que se empezará con otro número => range(numero_inicio, numero_maximo)
+  - indicar los saltos de la secuencia => range(numero_inicio, numero_maximo, cantidad_salto)
+  - NOTA: también se puede empezar con número negativos
+
+condicional en línea de código => valor if condicion else otro_valor
+
+funciones => def nombre_funcion():
 
 -------------------------------------- PYTHON CIBERSECURITY ---------------------------------------
 
