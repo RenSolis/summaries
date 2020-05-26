@@ -14,11 +14,6 @@ imprimir valores en consola => print(valor, valor), cada valor estará separado 
 ejecutar una librería mediante la terminal => pythonVERSION -m nombreLibreria
   - utilizarlo para empezar un servidor => pythonVERSION -m http.server numero_puerto
 
-cast =>
-  - convertir un string a un entero => int(string)
-  - convertir un string a un float => float(string)
-  - convertir un objeto a un string => str(int|float|boolean)
-
 realizar un comentario => # comentario
   - de múltiples líneas => """ comentario """
 
@@ -40,7 +35,27 @@ listas => son arrays que tienen la posibilidad de aumentar o disminuir de tamañ
 
 matrices => [[],[]] son listas dentro de una lista
 
-strings => son inmutables, los métodos crean un nuevo string
+integers => class int
+  - indicar binarios, con el prefijo 0b o 0B => 0bnumero
+  - indicar octal, con el prefijo 0o o 0O => 0onumero
+  - indicar hexadecimal, con el prefijo 0x o 0X => 0xnumero
+  - indicar que se utilizará un elevador cantidad * 10, la cantidad puede ser negativa => numeroecantidad | floate-cantidad
+  - NOTA: un integer no tiene un máximo ni mínimo, se basa en la memoria del sistema operativo
+
+floatings => class float
+  - indicar que se utilizará un elevador, la cantidad puede ser negativa => floatecantidad | floate-cantidad
+  - indicar cuando se supero el límite superior de un float, devolverá => inf
+  - indicar cuando se superó el límite inferior de un float, devolverá => 0.0
+
+complex numbers => class complex
+  - creación agregando el j al final => numero_real+numero_imaginarioj
+
+booleans => class bool
+  - un instancia verdadera => True
+  - una instancia falsa => False
+
+strings => son inmutables, los métodos crean un nuevo string, class str
+  - crear un string de múltiples líneas => '''texto'''
   - obtener la cantidad de caracteres => len(string)
   - obtener el caracter por índice => string[índice]
     - tiene las mismas características que una lista => string[inicio:fin:saltos]
@@ -66,6 +81,7 @@ strings => son inmutables, los métodos crean un nuevo string
   - obtener el index de un substring => string.find(substring) # en caso no se encuentre devolverá un -1
   - comprobar como inicia el string => string.startswith(substring)
   - comprobar como termina el string => string.endswith(substring)
+  - NOTA: se puede tener cuantos caracteres se necesiten la única limitación es la memoria de la máquina
 
 tuple => es una secuencia parecida a una lista
   - crear una tuple => (valor, valor, ...)
@@ -100,8 +116,11 @@ iteradores =>
     - detener la iteración => break
     - detener la iteración actual donde se encuentra y continuar con el siguiente item => continue
 
-- utilizar enumerate para obtener el índice dentro de un array => for indice, valor in enumerate(lista)
-  - indicar en que valor empezará el índice => enumerate(lista, numero)
+iterables e iterators built-in functions =>
+  - comprobar si todos los elementos son verdaderos => all(iterable)
+  - comprobar si ninguno de los elementos es verdadero => any(iterable)
+  - obtener una lista de tuplas que contenga los indices y valores de un iterable => enumerate(iterable)
+    - indicar en que valor empezará el índice => enumerate(iterable, numero)
 
 secuencia de números para iterar => range
   - crear una secuencia desde 0 y el número máximo sin contarlo => range(numero_maximo)
@@ -110,6 +129,32 @@ secuencia de números para iterar => range
   - NOTA: también se puede empezar con número negativos
 
 condicional en línea de código => valor if condicion else otro_valor
+
+obtener la clase del objeto => type(objeto)
+  - obtener el nombre => type(objeto).__name__
+  - obtener la clase padre => type(objeto).__class__
+
+math built-in function =>
+  - retornar un valor absoluto => abs(valor)
+  - obtener en una tuple el valor de la division y el residuo => divmod(valor, division)
+  - retornar el valor máximo de un iterable => max(iterable)
+  - retornar el valor mínimo de un iterable => min(iterable)
+  - elevar a una ponencia => pow(valor)
+  - redondear un float => round(float, cantidad_decimales) # cantidad_decimales es opcional, si no se coloca lo redondea sin decimales
+  - sumar todos los elementos de un iterable => sum(iterable)
+
+type conversion built-in functions =>
+  - convertir un objeto en una cadena imprimible => ascii(objeto) | repr(objeto)
+  - convertir a un integer a partir de un string o número => int(string|numero)
+  - convertir un integer en un binario => bin(integer)
+  - convertir a un float a partir de un string o integer => float(string|integer)
+  - convertir un objeto a un string => str(objeto)
+  - convertir un objeto a un boolean => bool(objeto)
+  - obtener la representación de integer como caracter => chr(integer)
+  - convertir a un complex number a partir de los argumentos => complex(numero_real, numero_imaginario)
+  - convertir un integer a un hexadecimal string => hex(integer)
+  - convertir un integer a un octal string => oct(integer)
+  - retornar la representación como un integer de un caracter => ord(caracter)
 
 funciones => def nombre_funcion():
 
@@ -123,3 +168,5 @@ importar librería para el sistema operativo y ejecutar comandos => __import__('
   - se puede ejecutar comandos al importar la librería => __import__('os').system('comandos')
 
 habilitar en os el tty => python -c 'import pty;pty.spawn("/bin/sh")'
+
+crear un servidor desde comando => python -m http.server puerto # el puerto es opcional, por defecto usa el 8000

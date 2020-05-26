@@ -679,5 +679,14 @@ ocultar los número de línea => :set nonumber
 NERDTree => plugin para poder utilizar un menú de todos los archivos
   - split de manera horizontal => i
   - split de manera vertical => s
-- buscar una palabra => /palabra
+  - refrescar los archivos =>
+    - solamente el directorio actual => r
+    - desde el root => R
+  - cambiar el ancho del split => ctrl + w + cantidad + >|<
+    - indicando la cantidad para ver cuanto espacio mover
+buscar una palabra => /palabra
   - buscar una palabra sin case sensitive => /palabra\c
+ejecutar comandos => :! comando
+manejar líneas de código =>
+  - ocultar lo seleccionado => zf
+  - mostrar lo seleccionado => zD

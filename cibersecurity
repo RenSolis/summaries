@@ -617,12 +617,14 @@ configurar los outputs del terminal => stty
 
 gobuster => es una herramienta para fuerza bruta
   - usar directorio/archivo para indicar el modo de fuerza bruta => gobuster dir
-    - indicar la url => gobuster dir -u url
-    - indicar el wordlist => gobuster dir -u url -w /usr/share/wordlists/archivo.txt
-      - dirbuster => tiene txt's que contienen diferentes nombres de directorios y archivos para comprobar su existencia
-        - big.txt => si no se encuentra descargar posee 20000 words
-    - indicar la extensión => gobuster dir -u url -w /usr/share/wordlists/archivo.txt -x extension
-    - output de los resultados => gobuster dir -u url -w /usr/share/wordlists/archivo.txt -x extension -o salida.out
+  - indicar la url => gobuster dir -u url
+  - indicar el wordlist => gobuster dir -u url -w /usr/share/wordlists/archivo.txt
+    - dirbuster => tiene txt's que contienen diferentes nombres de directorios y archivos para comprobar su existencia
+      - big.txt => si no se encuentra descargar posee 20000 words
+      - raft-large-words.txt
+  - indicar la extensión => gobuster dir -u url -w /usr/share/wordlists/archivo.txt -x extension
+  - output de los resultados => gobuster dir -u url -w /usr/share/wordlists/archivo.txt -x extension -o salida.out
+  - indicar la lista de extensiones para chequear => -x extension
 
 wfuzz => herramienta para fuerza bruta
   - indicar una salida con colores => -c
@@ -662,7 +664,7 @@ poner interactivo shell =>
 
 buscar archivos que tenga acceso el grupo local => find / -group internal 2>/dev/null
 
-netcat => herramienta para comprobar todas las conexiones activas de la computadora
+netcat => herramienta para comprobar todas las conexiones activas de la computadora, se puede usar con nc
   - mostrar los server sockets => -l
   - no mostrar nombre => -n
   - mostrar el PID => -p
@@ -708,3 +710,8 @@ ver el .bash_history para ver comandos
 si no se tiene permisos de escritura se puede crear un archivo en /tmp
 
 comprobar si usuario puede ejecutar comandos como administrador => sudo -l
+
+obtener el contenido de docx => unzip archivo.docx
+
+comprimir archivos => zip
+  - comprimiento un directorio => zip -r nombre_comprension archivos|*

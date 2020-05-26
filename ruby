@@ -86,6 +86,11 @@ cargar archivos =>
   - leer y analizar el archivo solo una vez => require 'nombre_archivo'
     - subconjunto para buscar el archivo dentro del mismo directorio => require_relative 'nombre_archivo'
 
+crear un servidor por webrick desde cli => httpd
+  - ejecutar el comando para crear el servidor => ruby -run -e httpd ubicacion_archivo|. [OPTIONS]
+    - indicar el número de puerto, por default 8080 => -p numero_puerto
+    - mostrar los request del cliente => -v
+
 --------------------------------------- METAPROGRAMMING ---------------------------------------
 
 getters y setters =>
