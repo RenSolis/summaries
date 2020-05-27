@@ -147,7 +147,7 @@ slots => es una forma de pasar contenido dentro de la etiqueta del componente <s
     - componente hijo => <slot v-for="element in elements" :nombreValor="element"></slot> // no necesariamente el v-for tiene que estar en el slot tambien en un nodo padre
     - componente padre =>
       <componente-hijo>
-        <template slot-scoped="{ nombreValor }">
+        <template slot-scope="{ nombreValor }">
           <!-- acciones con los valores del nombreValor -->
         </template>
       </componente-hijo>
