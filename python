@@ -160,6 +160,7 @@ funciones => def nombre_funcion():
 
 -------------------------------------- PYTHON CIBERSECURITY ---------------------------------------
 
+//TODO
 os => librería para manejar el sistema operativo
   - importar librería => import os
   - ejecutar comandos => os.system('comando')

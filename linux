@@ -1,9 +1,139 @@
-kernel: es la conexión entre el SO y el hardware
+--------------------------------------- FILESYSTEM HIERARCHY ---------------------------------------
 
-'man hier': para listar los directorios
+directorio root => /
 
-csh: C Shell es un interprete de comandos de Unix
+directorio con programas binarios necesarios para el sistema en boot y run => /bin
+  - lenguaje de comandos => bash
 
+directorio con programas binarios que realizan tareas vitales del sistema que son reservados para el usuario root => /sbin
+
+directorio que contiene los programas para que se ejecuten los programas de /bin => /lib
+
+directorio que contiene el kernel e imagenes iniciales de RAM => /boot
+  - directorio con la configuración del gestor de arranque múltiple (grub) => /grub
+    - archivo para configurar el boot loader => grub.conf
+
+directorio que representa los dispositivos físicamente instalados en el ordenador, tratados como archivos => /dev
+  - archivo para lanzar valores innecesarios => null
+
+directorio con archivos de configuración del sistema, contiene los shell scripts que inician cada uno de los servicios del sistema en el boot => /etc
+  - archivo donde se determinará cuando se ejecutarán los jobs => crontab
+  - archivo donde se muestran los dispositivos de almacenamiento y puntos de montaje asociados => fstab
+  - archivo con la lista de usuarios con su información => passwd
+
+directorio que todos los usuarios tienen por defecto para proteger el sistema de actividades errantes de los usuarios => /home
+
+directorio home para el usuario root => /root
+
+directorio para la recuperación parcial de un evento corrupto del filesystem, únicamente cuando pase algo realmente malo en el sistema => /lost+found
+
+directorio que contiene los puntos de montajes de media removibles, montados manualmente (sistemas de Linux antiguos) => /mnt
+
+directorio que contiene los puntos de montajes de media removibles, son montados automáticamente al insertarse (sistemas de Linux modernos) => /media
+
+directorio para instalación de software adicional, productos de software comerciales => /opt
+
+directorio con archivos virtuales que reciben y envían información al kernel => /proc
+
+directorio que almacena archivos de manera temporal => /tmp
+
+directorio que contiene los programas de uso común para todos los usuarios => /usr
+  - directorio con programas ejecutables instalados en la distribución => /bin
+  - directorio con archivos compartidos para los programas /usr/bin => /lib
+  - directorio con programas que no están incluidos en la distribución pero uso destinado para todo el sistema => /local
+  - directorio con programas de administración del sistema => /sbin
+  - directorio que contiene los datos compartidos usados en programas de /usr/bin, incluye archivos de configuración por defecto, íconos, etc. => /share
+    - directorio con la documentación de los paquetes instalados => /doc
+
+directorio para almacenar data estática como base de datos, spool files, correo de usuario, etc. => /var
+  - directorio que contiene los logs files de programas del sistema => /log
+
+--------------------------------------- COMMANDS ---------------------------------------
+
+listar filesystem hierarchy => man hier
+
+herramientas de redes => net-tools
+  - instalar en Debian => apt-get install net-tools
+
+cambiar el idioma del teclado => loadkeys idioma
+
+ver las historia de los comandos => history
+
+mostrar la fecha actual => date
+
+mostrar el calendario del mes actual => cal
+
+mostrar información de los ficheros => df
+
+mostrar la memoria libre => free
+
+cambiar de directorio => cd directorio
+  - último directorio trabajado => cd -
+
+cada comando maneja opciones y argumentos => comando -options arguments
+  - las opciones cambian el comando y los argumentos son manejados por el comando
+
+// TODO
+listar los archivos y directorios de uno o más directorios => ls directorio directorio ...
+  - mostrar todos los archivos (ocultos) y los directorios => ls -a directorio o ls --all directorio
+  - mostrar un formato largo => ls -l directorio
+  - mostrar detalles sobre el directorio => ls -dl directorio o ls -l --directory directorio
+  - mostrar con un slash los directorios para diferenciarlos de los archivos => ls -F directorio o ls --classify directorio
+  - mostrar los tamaños de los archivos en un formato leible para la personas => ls -lh directorio o ls -l --human-readable directorio
+  - ordenar por la fecha de modificación => ls -t directorio
+  - ordenar por el tamaño del archivo => ls -S directorio
+  - ordenar los directorios al revés => ls --reverse directorio
+  - mostrar los inode numbers para reconocer si son los mismos archivos en un hard link => ls -i directorio
+  campos en el listado de archivos y directorios:
+    - en la primera parte el primer valor que te dan es para reconocer si es archivo o directorio => - (archivo) d (directorio) l (symbolic link) y los demas caracteres son de permisos
+    - en la segunda parte muestra el número de links duros del archivo
+    - en la tercera parte muestra el nombre del propietario
+    - en la cuarta parte muestra el nombre del grupo al que pertenece
+    - en la quinta parte muestra el tamaño del archivo/directorio
+    - en la sexta parte muestra la última modificación que se hizo
+    - el la última parte muestra el nombre del archivo
+
+determinar el tipo de archivo => file nombre_archivo|directorio, puede ser usado en cualquier tipo porque para Linux todo es un archivo
+
+todos los archivos son manejados como texto => al mapearse los caracteres uno a uno a numeros
+
+pagers => programas que permiten ver archivos de texto largos en un manejador pagina por pagina
+
+ver el archivo con un manejador => less archivo
+
+symbolic link => son multiples nombres referenciando a un archivo, nos permite hacer cambios de versiones en los archivos evitandonos tener que cambiar el nombre donde se este utilizando, version moderna
+
+hard link => nos permite tener múltiples nombres en el archivo (igual a symbolic link) version antigua, cuando creamos un hard link estamos creando una entrada adicional al directorio para el archivo
+  limitaciones:
+    - no se puede referenciar al link si es que no existe en el mismo sitema de archivos (referencia a la misma particion)
+    - no se puede referenciar un directorio
+  cuando se elimina el archivo base se mantienen los contenidos de los archivos links
+
+tratar con symbolic|hard links:
+  - crear hard link => ln archivo link
+  - crear symbolic link => ln -s archivo link
+
+
+
+--------------------------------------- DEFINITIONS ---------------------------------------
+
+everything is a file => es una de las características de Unix donde maneja todo como si fuera un archivo
+
+boot loader => programa encargado de cargar el kernel con los parametros opcionales del kernel a la memoria
+  - GNU Grub
+  - Linux Loader (LILO)
+  - Load Linux (LOADLIN)
+
+--------------------------------------- SHELLS ---------------------------------------
+
+C Shell (csh) => es un intérprete de comandos de Unix
+  - instalar en Debian => apt-get install csh
+
+
+
+
+
+// esto es en etc
 rc: no es tipicamente usando en distribuciones Linux, pero es usado en BSD (derivado de Linux)
 rc.local: es usado para habilitar la ejecución de comandos adicionales al iniciarse sin tener que agregar symlinks (indica un acceso a un directorio)
 rc.sysinit: es especifico de Red Hat y se ejecuta como uno de los primeros scripts, a diferencia de rc.local que se ejecuta más tarde
@@ -35,12 +165,6 @@ buscar palabras en un archivo => grep busqueda nombre_archivo
   - grep -n => para indicar la línea de donde se encontró
   - grep -c => para mostrar la cantidad de lineas que contienen la palabra parecida
   - grep -v => para mostrar todas las líneas que no tienen esta palabra
-
-// UBUNTU
-
-instalar las herramientas para redes => 'sudo apt-get install net-tools'
-
-cambiar keyboard to spanish => loadkeys es
 
 // BASH SCRIPTING
 
@@ -130,98 +254,6 @@ configurar bind => /usr/share/doc/bind-9.9.4/sample/etc/named.rfc1912.zones
 
 
 //
-
-para los sistemas UNIX => todo es un archivo
-
-terminales por entorno de desarrollo => KDE usa konsole y GNOME usa gnome-terminal
-
-command history => es la forma en como se tiene almacenado los comandos anteriores comprobandose
-
-mostrar la fecha y tiempo actual => date
-
-mostrar el calendario del mes actual => cal
-
-mostrar el espacio libre de los discos => df
-
-mostrar la memoria libre => free
-
-cambiar de directorio => cd directorio
-  - último directorio trabajado => cd -
-  - usar directorio físico en lugar de symbolic links => cd -P directorio
-  - obligar a seguir los symbolic links => cd -L directorio
-
-cada comando maneja opciones y argumentos => comando -options arguments
-  - las opciones cambian el comando y los argumentos son manejados por el comando
-
-listar los archivos y directorios de uno o más directorios => ls directorio directorio ...
-  - mostrar todos los archivos (ocultos) y los directorios => ls -a directorio o ls --all directorio
-  - mostrar un formato largo => ls -l directorio
-  - mostrar detalles sobre el directorio => ls -dl directorio o ls -l --directory directorio
-  - mostrar con un slash los directorios para diferenciarlos de los archivos => ls -F directorio o ls --classify directorio
-  - mostrar los tamaños de los archivos en un formato leible para la personas => ls -lh directorio o ls -l --human-readable directorio
-  - ordenar por la fecha de modificación => ls -t directorio
-  - ordenar por el tamaño del archivo => ls -S directorio
-  - ordenar los directorios al revés => ls --reverse directorio
-  - mostrar los inode numbers para reconocer si son los mismos archivos en un hard link => ls -i directorio
-  campos en el listado de archivos y directorios:
-    - en la primera parte el primer valor que te dan es para reconocer si es archivo o directorio => - (archivo) d (directorio) l (symbolic link) y los demas caracteres son de permisos
-    - en la segunda parte muestra el número de links duros del archivo
-    - en la tercera parte muestra el nombre del propietario
-    - en la cuarta parte muestra el nombre del grupo al que pertenece
-    - en la quinta parte muestra el tamaño del archivo/directorio
-    - en la sexta parte muestra la última modificación que se hizo
-    - el la última parte muestra el nombre del archivo
-
-determinar el tipo de archivo => file nombre_archivo|directorio, puede ser usado en cualquier tipo porque para Linux todo es un archivo
-
-todos los archivos son manejados como texto => al mapearse los caracteres uno a uno a numeros
-
-pagers => programas que permiten ver archivos de texto largos en un manejador pagina por pagina
-
-ver el archivo con un manejador => less archivo
-
-linux filesystem hierarchy standard:
-  - / => el directorio root donde todo comienza
-  - /bin => contiene programas binarios que son necesarios para el sistema para boot y run
-  - /boot => contiene el kernel de Linux, imagenes iniciales de RAM
-    - /boot/grub/grub.conf => es usado para configurar el boot loader
-    - /boot/vmlinuz => el kernel de Linux
-  - /dev => contiene los device nodes, los dispositivos también son manejados como archivos
-  - /etc => contiene todos los archivos de configuración del sistema, además contiene los shell scripts que inician cada uno de los servicios del sistema cuando se hace boot
-    - /etc/crontab => archivo que define cuando se ejecutarán los jobs automatizados
-    - /etc/fstab => tabla de dispositivos de almacenamiento y sus puntos de montaje asociados
-    - /etc/passwd => una lista de las cuentas de usuarios
-  - /home => es un directorio que tienen todos los usuarios por defecto que nos permite proteger el sistema de actividades errantes del usuario
-  - /lib => contiene archivos compartidos usados por los programas core del sistema
-  - /lost+found => es un directorio para la recuperación parcial de un evento corrupto del filesystem, solamente habrá algo cuando pase algo realmente malo en el sistema
-  - /media => en sistemas Linux modernos es el directorio que contendrá los puntos de montajes de media removibles, que son montados automáticamente al insertarse
-  - /mnt => para sistemas Linux antiguos es el directorio que contendrá los puntos de montajes de media removibles que han sido montados manualmente
-  - /opt => es un directorio para instalar software adicional, productos de software comerciales
-  - /proc => es un sistema de archivos virtual mantenido por el kernel de Linux
-  - /root => es el directorio home para la cuenta root
-  - /sbin => contiene binarios del sistema, que son programas que realizan tareas vitales del sistema que son generalmente reservados para el superusuario
-  - /tmp => almacena información temporal de programas del sistema, cada vez que se el sistema es rebooted se limpia
-  - /usr => es el directorio base para los directorios que contienen todos los programas y archivos de soporte usados por el usuario regular
-    - /usr/bin => contiene los programas ejecutables instalados en la distribución Linux
-    - /usr/lib => contiene archivos compartidos para los programas en /usr/bin
-    - /usr/local => programas que no estan incluidos en la distribución pero su uso está destinado para todo el sistema
-    - /usr/sbin => contiene muchos programas de administración del sistema
-    - /usr/share => contiene toda los datos compartidos usados en programas de /usr/bin, incluye cosas como archivos de configuración por defecto, iconos, etc
-      - /usr/share/doc => contiene la documentación de la mayoría de paquetes instalados
-  - /var => se lamacena data estática como base de datos, spool files, correo de usuario, etc
-    - /var/log => contiene los logs files de varias actividades del sistema
-
-symbolic link => son multiples nombres referenciando a un archivo, nos permite hacer cambios de versiones en los archivos evitandonos tener que cambiar el nombre donde se este utilizando, version moderna
-
-hard link => nos permite tener múltiples nombres en el archivo (igual a symbolic link) version antigua, cuando creamos un hard link estamos creando una entrada adicional al directorio para el archivo
-  limitaciones:
-    - no se puede referenciar al link si es que no existe en el mismo sitema de archivos (referencia a la misma particion)
-    - no se puede referenciar un directorio
-  cuando se elimina el archivo base se mantienen los contenidos de los archivos links
-
-tratar con symbolic|hard links:
-  - crear hard link => ln archivo link
-  - crear symbolic link => ln -s archivo link
 
 copiar archivos o directorios => cp base destino
   - copiar o actualizar el archivo o directorio => cp -u base destino o cp --update base destino
@@ -684,6 +716,9 @@ NERDTree => plugin para poder utilizar un menú de todos los archivos
     - desde el root => R
   - cambiar el ancho del split => ctrl + w + cantidad + >|<
     - indicando la cantidad para ver cuanto espacio mover
+  - abrir en un nuevo tab => T
+    - moverse al siguiente tab => gt
+    - retroceder de tab => gT
 buscar una palabra => /palabra
   - buscar una palabra sin case sensitive => /palabra\c
 ejecutar comandos => :! comando
