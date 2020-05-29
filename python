@@ -40,12 +40,15 @@ integers => class int
   - indicar octal, con el prefijo 0o o 0O => 0onumero
   - indicar hexadecimal, con el prefijo 0x o 0X => 0xnumero
   - indicar que se utilizará un elevador cantidad * 10, la cantidad puede ser negativa => numeroecantidad | floate-cantidad
+  - la division doble entre dos números enteros retornará la división sin aproximación => int // int
   - NOTA: un integer no tiene un máximo ni mínimo, se basa en la memoria del sistema operativo
 
 floatings => class float
   - indicar que se utilizará un elevador, la cantidad puede ser negativa => floatecantidad | floate-cantidad
   - indicar cuando se supero el límite superior de un float, devolverá => inf
   - indicar cuando se superó el límite inferior de un float, devolverá => 0.0
+  - la division doble entre dos números flotantes retornará la división sin aproximación => float // float
+  - NOTA: cuando se realiza una suma entre .2 y .1 retornará un valor erroneo en la sumatoria
 
 complex numbers => class complex
   - creación agregando el j al final => numero_real+numero_imaginarioj
@@ -53,9 +56,12 @@ complex numbers => class complex
 booleans => class bool
   - un instancia verdadera => True
   - una instancia falsa => False
+    - valores que son falsos => False, '', [], (), {}, 0, 0.0, None
 
 strings => son inmutables, los métodos crean un nuevo string, class str
   - crear un string de múltiples líneas => '''texto'''
+    - dentro de una función sirve como docstring para describirla
+  - crear un raw string, imprime los escapes tal cual => r"string"
   - obtener la cantidad de caracteres => len(string)
   - obtener el caracter por índice => string[índice]
     - tiene las mismas características que una lista => string[inicio:fin:saltos]
@@ -74,6 +80,7 @@ strings => son inmutables, los métodos crean un nuevo string, class str
   - crear un string donde las variables dentro de este sean reemplazados => "%s %s ..." %(valor, valor, ...) # se puede utilizar cuantas veces se quiera el %s y se debe indicar la misma cantidad de valores que lo reemplazará
   - insertar valores dentro del string => " {} ".format(valor) # se puede utilizar cuantas veces se quieran los {} y con la misma cantidad para los valores del formato
     - también se puede agregar un nombre al valor que se insertará al string => " {a} ".format(a=valor) # esto hace más preciso cuando agreguemos un valor a cual nos referimos
+  - interpolación de string => f"{valor}"
   - un string no puede concatenarse con otro valor que no sea un string => string + str(valor) # por lo que se necesita hacer un cast para poder concatenar
   - obtener cuantas veces hay un string dentro de otro => string.count(substring)
   - comprobar si un string se encuentra dentro de otro => substring in string # devuelve un boolean
@@ -101,10 +108,6 @@ dictionary =>
 escribir código dentro como un string => exec("string codigo")
 
 deshabilitar los warnings => requests.packages.urllib3.disable_warnings()
-
-indicar un valor vacío => variable = None # lo toma como falso
-
-valores que son falsos => False, '', [], (), {}, 0, 0.0
 
 iteradores =>
   - condicional de iteración primero => while condicional:
@@ -156,7 +159,8 @@ type conversion built-in functions =>
   - convertir un integer a un octal string => oct(integer)
   - retornar la representación como un integer de un caracter => ord(caracter)
 
-funciones => def nombre_funcion():
+parametros =>
+  - parametro formal => def metodo(parametro):
 
 -------------------------------------- PYTHON CIBERSECURITY ---------------------------------------
 

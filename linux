@@ -70,50 +70,65 @@ mostrar la memoria libre => free
 cambiar de directorio => cd directorio
   - último directorio trabajado => cd -
 
-cada comando maneja opciones y argumentos => comando -options arguments
-  - las opciones cambian el comando y los argumentos son manejados por el comando
-
-// TODO
-listar los archivos y directorios de uno o más directorios => ls directorio directorio ...
-  - mostrar todos los archivos (ocultos) y los directorios => ls -a directorio o ls --all directorio
-  - mostrar un formato largo => ls -l directorio
-  - mostrar detalles sobre el directorio => ls -dl directorio o ls -l --directory directorio
-  - mostrar con un slash los directorios para diferenciarlos de los archivos => ls -F directorio o ls --classify directorio
-  - mostrar los tamaños de los archivos en un formato leible para la personas => ls -lh directorio o ls -l --human-readable directorio
-  - ordenar por la fecha de modificación => ls -t directorio
-  - ordenar por el tamaño del archivo => ls -S directorio
-  - ordenar los directorios al revés => ls --reverse directorio
+listar los archivos y directorios => ls archivo directorio ...
+  - mostrar todos los archivos incluyendo ocultos y directorios => ls -a|--all directorio
+  - mostrar un formato de listado largo => ls -l directorio
+    - primer campo, indica el tipo de archivo => - (archivo) | d (directorio) | l (symbolic link), los demás caracteres indican los permisos
+    - segundo campo => número de hard links del directorio
+    - tercer campo => nombre del propietario del archivo
+    - cuarto campo => nombre del grupo al que pertenece el archivo
+    - quinto campo => tamaño del archivo
+    - sexto campo => fecha de última modificación del archivo
+  - mostrar detalles sobre el directorio => ls -d|--directory directorio (usar con -l)
+  - mostrar los directorios y archivos diferenciandolos => ls -F|--classify directorio (usar con -l)
+  - mostrar el tamaño de los archivos de forma legible para la persona => ls -h|--human-readable directorio (usar con -l)
+  - ordenar por la fecha de modificación, el más reciente primero => ls -t directorio
+  - ordenar por el tamaño del archivo, más grande primero => ls -S directorio
+  - ordenar al revés => ls -r|--reverse directorio
   - mostrar los inode numbers para reconocer si son los mismos archivos en un hard link => ls -i directorio
-  campos en el listado de archivos y directorios:
-    - en la primera parte el primer valor que te dan es para reconocer si es archivo o directorio => - (archivo) d (directorio) l (symbolic link) y los demas caracteres son de permisos
-    - en la segunda parte muestra el número de links duros del archivo
-    - en la tercera parte muestra el nombre del propietario
-    - en la cuarta parte muestra el nombre del grupo al que pertenece
-    - en la quinta parte muestra el tamaño del archivo/directorio
-    - en la sexta parte muestra la última modificación que se hizo
-    - el la última parte muestra el nombre del archivo
 
-determinar el tipo de archivo => file nombre_archivo|directorio, puede ser usado en cualquier tipo porque para Linux todo es un archivo
+obtener el tipo de archivo => file archivo|directorio
 
-todos los archivos son manejados como texto => al mapearse los caracteres uno a uno a numeros
+ver un archivo con un pager => less archivo
 
-pagers => programas que permiten ver archivos de texto largos en un manejador pagina por pagina
+crear links entre archivos => ln
+  - crear un hard link => ln archivo nombre_link
+  - crear un symbolic link => ln -s archivo nombre_link
 
-ver el archivo con un manejador => less archivo
+copiar archivos => cp archivo|directorio destino
+  - copiar archivo únicamente si no existe el archivo destino o si este no tiene modificaciones posteriores al archivo base  => cp -u|--update base destino
+  - usar un prompt para indicar si sobreescribiremos con el archivo base al archivo destino => cp -i|--interactive base destino
+  - recursivamente copiar los archivos de un directorio => cp -r|--recursive base destino
+  - dar detalles de la copia del archivo => cp -v|--verbose base destino
+  - copiar un archivo con todas sus características (usuario, grupo, permisos, ...) no solo el contenido => cp -a|--archive base destino
 
-symbolic link => son multiples nombres referenciando a un archivo, nos permite hacer cambios de versiones en los archivos evitandonos tener que cambiar el nombre donde se este utilizando, version moderna
+mover o cambiar el nombre de un archivo => mv base destino
+  - mostrar un prompt cuando se mueve un archivo a un destino que ya existe => mv -i|--interactive base destino
+  - mover archivo únicamente si no existe el archivo destino o si este no tiene modificaciones posteriores al archivo base  => mv -u|--update base destino
+  - dar detalles del proceso => mv -v|--verbose base destino
 
-hard link => nos permite tener múltiples nombres en el archivo (igual a symbolic link) version antigua, cuando creamos un hard link estamos creando una entrada adicional al directorio para el archivo
-  limitaciones:
-    - no se puede referenciar al link si es que no existe en el mismo sitema de archivos (referencia a la misma particion)
-    - no se puede referenciar un directorio
-  cuando se elimina el archivo base se mantienen los contenidos de los archivos links
+remover archivos => rm archivo ...
+  - utilizar un prompt para confirmar la eliminación => rm -i|--interactive archivo
+  - eliminar directorio de manera recursiva => rm -r|--recursive directorio
+  - forzar la eliminación del archivo, ignorando si no existe y el prompt de confirmación => rm -f|--force archivo
+  - dar detalles de la eliminación => rm -v|--verbose archivo
 
-tratar con symbolic|hard links:
-  - crear hard link => ln archivo link
-  - crear symbolic link => ln -s archivo link
+tipos de comandos =>
+  - executable program => son todos los programas que se encuentran en /usr/bin, que han sido escritos en un lenguaje de scripting
+  - shell builtins => comandos creados por el shell (comandos básicos)
+  - shell functions => comandos creados por personalización
+  - alias => comandos que nos permite llamar de diferente manera uno o varios comandos
 
+obtener el tipo de comando => type comando
 
+mostrar las primeras líneas de un archivo => head archivo
+  - indicar cantidad de líneas que se mostrarán => head -n cantidad archivo
+
+mostras las últimas lineas de un archivo => tail archivo
+  - indicar cantidad de líneas que se mostrarán => tail -n cantidad archivo
+  - hacer un monitoreo a los cambios del archivo => tail -f archivo
+
+leer una entrada de archivos y escribirla en uno o más archivos sin interrumpir el pipeline => comando | tee archivo ... | continua pipeline
 
 --------------------------------------- DEFINITIONS ---------------------------------------
 
@@ -123,6 +138,17 @@ boot loader => programa encargado de cargar el kernel con los parametros opciona
   - GNU Grub
   - Linux Loader (LILO)
   - Load Linux (LOADLIN)
+
+inode number => contiene los metadatos de un archivo (tamaño, permisos, fecha de creación, propietario, ...)
+
+pagers => programas que permiten ver archivos de texto largos en un manejador de páginas
+
+hard link (versión antigua) => permite múltples nombres referenciando un archivo, permite hacer cambios en todos los archivos relacionados pero tiene limitaciones
+  - no se puede referenciar al link si no existe en el mismo sistema de archivos (referencia a la misma partición)
+  - no se puede referenciar un directorio
+  - cuando se elimina el archivo base se mantiene los archivos links
+
+symbolic link (versión moderna) => permite múltiples nombres referenciando un archivo, permite hacer cambios en todos los archivos relacionados y en el archivo base permite
 
 --------------------------------------- SHELLS ---------------------------------------
 
@@ -153,6 +179,8 @@ cambiar contraseña 'sudo passwd nombre_usuario'
 ping [direccion] => para ver si nos manda respuesta la direccion IP
 
 escribir en un archivo el STDOUT sin importar si es correcto o un error => comando >& nombre_archivo
+
+nautilus => abrir directorio en el gui
 
 ver los usuarios => cat /etc/passwd
 
@@ -254,28 +282,7 @@ configurar bind => /usr/share/doc/bind-9.9.4/sample/etc/named.rfc1912.zones
 
 
 //
-
-copiar archivos o directorios => cp base destino
-  - copiar o actualizar el archivo o directorio => cp -u base destino o cp --update base destino
-  - hacer un clone del archivo o directorio => cp -a base destino o cp --archive base destino
-  - usar un prompt para indicar si sobreescribir o no un archivo => cp -i base destino o cp --interactive base destino
-  - recursivamente copiar directorios y sus archivos => cp -r base destino o cp --recursive base destino
-  - mostrar mensajes informativos de como se realiza el copiado => cp -v base destino o cp --verbose base destino
-
-mover|cambiar nombre de  archivos o directorios => mv base destino
-  - mostrar un prompt para cuando se mueve un archivo que ya existe en el destino => mv -i base destino o mv --interactive base destino
-  - actualizar el destino => mv -u base destino o mv --update base destino
-  - mostrar mensajes informativos cuando se realiza => mv -v base destino o mv --verbose base destino
-
-remover archivos o directorios => rm archivo
-  - usar un prompt para confirmar si se desea eliminar o no => rm -i archivo o rm --interactive archivo
-  - eliminar directorios de manera recursiva => rm -r directorio o rm --recursive directorio
-  - ignorar los archivos no existentes y al prompt => rm -f archivo o rm --force archivo
-  - mostrar mensajes informativos de la eliminación => rm -v archivo o rm --verbose archivo
-
 modificar los hosts => en el archivo /etc/hosts
-
-inode number => contiene los metadatos de un archivo, siendo la forma en como el sistema operativo sabe donde está un archivo y qué archivo es
 
 manejar las particiones => fdisk /dev/sda
 
@@ -305,42 +312,6 @@ configurar el idioma:
     locale-gen
     echo LANG=es_PE.UTF-8 > /etc/locale.conf
     export LANG=es_PE.UTF-8
-
-fstab => se encuentra comúnmente en el directorio /etc/ como parte de la configuración del sistema, en este fichero se indica como montar cada dispositivo y qué configuración utilizar
-
-executable program => son los lenguajes de programacion que se pueden realizar scripts y todos son encontrados en /usr/bin
-
-shell builtins => son comandos internamente soportados por bash
-
-shell function => son pequeños shell scripts incorporados dentro del entorno
-
-output las primeras lineas de un archivo => head file
-  - indicar el número de lineas => head -n cantidad file
-
-output las ultimas lineas de un archivo => tail file
-  - indicar el número de lineas => tail -n cantidad file
-  - monitorear los cambios del archivo => tail -f file
-
-atrapar mediante el pipeline la entrada => comando | tee archivo | continua...
-
-regresar a un proceso suspendido => fg
-
-tipos de comandos =>
-  - programa ejecutable => son todos los archivos que se encuentran en /usr/bin, que han sido escritors en un scripting language
-  - shell builtins => son comandos creados por el shell (comandos básicos)
-  - shell functions => son comandos creados por personalización
-  - alias => es un comando que nos permite llamar de otra manera un comando
-
-reconocer el tipo de comando => type comando
-
-una lista de opciones time zone => <%= time_zone_select(objecto, 'time_zone', TZInfo::Timezone.all.sort) %>
-
-TZInfo::Timezone => es una librería para que nos maneje los time_zon
-
-apt-file => buscador de apt paquetes utiles dentro del sistema
-  - hacer un fetch por los archivos contenidos en apt-sources => apt-file update
-  - buscar por archivos en paquetes => apt-file search paquete
-
 say => convertir texto en audio usando GNUstep speech engine
 
 festival => convertir texto en audio
