@@ -113,6 +113,9 @@ remover archivos => rm archivo ...
   - forzar la eliminación del archivo, ignorando si no existe y el prompt de confirmación => rm -f|--force archivo
   - dar detalles de la eliminación => rm -v|--verbose archivo
 
+crear directorios => mkdir directorio ...
+  - crear un directorio dentro de directorios que aún no han sido creados => mkdir -p directorio
+
 tipos de comandos =>
   - executable program => son todos los programas que se encuentran en /usr/bin, que han sido escritos en un lenguaje de scripting
   - shell builtins => comandos creados por el shell (comandos básicos)
@@ -129,6 +132,155 @@ mostras las últimas lineas de un archivo => tail archivo
   - hacer un monitoreo a los cambios del archivo => tail -f archivo
 
 leer una entrada de archivos y escribirla en uno o más archivos sin interrumpir el pipeline => comando | tee archivo ... | continua pipeline
+
+mostrar un manual del comando => man comando
+  - mostrar las secciones de un comando => apropos comando | man -k comando
+    - obtener descripciones de las secciones => whatis comando
+  - ver la sección de un comando => man seccion comando
+
+mostrar mediante info pages la información de un comando, con diferencia que posee links para poder movernos entre páginas => info comando
+
+standards =>
+  - el standard output tiene como descriptor al 1 en un comando mientras que el standard error el 2
+  - redireccionando standard output =>
+    - sobreescribiendo un archivo => entrada > archivo
+    - añadiendo más líneas a un archivo => entrada >> archivo
+    - escribir en un archivo mediante el teclado => > archivo
+  - redireccionando standard error =>
+    - sobreescribiendo un archivo => entrada 2> archivo
+    - eliminando el standard error => entrada 2>/dev/null
+  - redireccionando standard output y standard error =>
+    - forma trandicional => entrada > archivo 2>&1
+    - forma actual => entrada &> archivo
+
+
+// TODO
+
+imprimir una palabra o bytes de lineas de texto => wc
+  - imprimir la cantidad de bytes => wc -c valor
+
+reportar u omitir lineas repetidas =>
+  - eliminar todos las lineas repetidas => ls archivo archivo | uniq
+  - mostrar solamente las lineas repetidas => ls archivo archivo | uniq -d
+
+imprimir en la pantalla => echo, todos los valores que tienen una funcionalidad son expansions
+  - pathname expansion, mostrar todos los archivos de la carpeta actual con wildcards => echo wildcard
+  - tilde expansion => echo ~nombre_usuario, el nombre_usuario es opcional, sino se utilizará al usuario actual
+  - arithmetic expansion => echo $((operacion aritmetica))
+  - brace expansion => es como un interador de todo el contenido del echo texto_{valor1, valor2, valor3} donde se imprimiria como texto_valor1 texto_valor2 texto_valor3
+    también se puede utilizar con rangos => echo valor_{1..2} o valor_{A..Z}, se puede de menor a mayor en números y caracteres
+  - parameter expansion => para mostrar los valores de las variables de entorno
+  - command substitution => poner los comandos dentro de un comando
+    comando $(comando | comando |...)
+  - double quotes => nos permiten poder escribir nombres largos para archivos que tienen espacios en blancos, también quita los saltos de línea en el output
+    - una forma de escapar de las expansions en double quotes es con un \
+  - single quotes => nos permite escapar de todo tipo de de expansions
+
+mostrar todas las variables de entorno => printenv
+
+indicar que el programa espere => sleep tiempo_segundos
+
+command line editing => bash usa la librería Readline
+  - los términos que usa esta librería =>
+    - killing = cutting
+    - yanking = pasting
+  - cursor movement commands =>
+    - mover el cursor al inicio de la linea => CTRL + A
+    - mover el cursor al final de la linea => CTRL + E
+    - mover el cursor un caracter a la derecha => CTRL + F
+    - mover el cursor un caracter a la izquierda => CTRL + B
+    - mover el cursor una palabra a la derecha => ALT + F
+    - mover el cursor una palabra a la izquierda => ALT + B
+    - limpiar la console => CTRL + L
+  - text editing comandos =>
+    - eliminar a la derecha => CTRL + D
+    - cambiar la letra anterior con la actual del cursor => CTRL + T
+    - cambiar la palabra anterior con la actual del cursor => ALT + T
+    - convertir la palabra que sigue en lowercase => ALT + L
+    - convertir la palabra que sigue en uppercase => ALT + U
+
+history => bash guarda los ultimos 500 comandos usados
+  - indicar que linea del history usar comando => !linea
+  - commandos =>
+    - mover al comando previo => CTRL + P
+    - mover al comando posterior => CTRL + N
+    - mover al primer comando => ALT + <
+    - mover al ultimo comando => ALT + >
+    - buscar en el history => CTRL + R
+
+los hosts que se agreguen en /etc/hosts serán puestos como https
+
+permissions =>
+  - mostrar la identidad del usuario actual => id
+  - archivo que tiene las cuentas de usuario => /etc/passwd
+  - archivo que tiene los grupos => /etc/group
+  - cuando se crea un grupo o usuario los archivos anteriores cambian como en /etc/shadow que tiene las contraseñas
+  - la práctica moderna de Linux para los grupos y usuarios es que un usuario solo pertenezca a un grupo y ese grupo tenga el mismo nombre que el usuario para facilitar la asignación
+  - atributos del archivo => se separan en 10 caracteres
+    - 1 caracter => indica el tipo del archivo
+      - archivo regular => -
+      - directorio => d
+      - symbolic link, tiene valores de atributo del archivo al azar porque solo indica donde está el archivo con los permisos => l
+      - character special file, se refiere a un device que maneja un flujo de bytes como un modem o un terminal => c
+      - block special file, device que manejen bloques de datos como disco duro o cd-rom drive  => b
+  - los restantes son atributos de permisos =>
+    - del 2 al 4 => permisos del propietario
+    - del 5 al 7 => permisos del grupo
+    - del 7 al 9 => permisos mundiales
+    - atributos de permisos =>
+      - r =>
+        - archivo => permite abrir y leer el archivo
+        - directorio => permite listar el contenido del directorio
+      - w =>
+        - archivo => permite escribir o truncar el archivo, pero esto no permite que el archivo sea renombrado o eliminado
+        - diretorio => permite a los archivos dentro del directorio puedan ser creados, eliminados y renombrados
+      - x =>
+        - archivo => permite que el archivo sea tratado como programa de ejecución (script)
+        - directorio => permite que se ingrese al directorio (cd)
+  - cambiar permisos del archivo => chmod, tiene dos formas distintas de hacer el cambio: representación octal numérica y representación symbolic
+    - permisos de archivos en binario y octal
+      octal     binario     modo archivo
+      0         000         ---
+      1         001         --x
+      2         010         -w-
+      3         011         -wx
+      4         100         r--
+      5         101         r-x
+      6         110         rw-
+      7         111         rwx
+    - representación symbolic
+      - representación del usuario (owner) => u
+      - representación del grupo => g
+      - representación del world => o
+      - representación de todos => a, también se puede omitir el uso y el sistema interpretara que es para todos
+      - agregar permisos al archivo => (u|g|o|a)+(r|w|x)
+      - eliminar permisos al archivo  => (u|g|o|a)-(r|w|x)
+      - poner los permisos tal cual se indican => (u|g|o|a)=(r|w|x), eliminara y agregara los permisos para tenerlo igual
+      - multiples especificaciones pueden ser separadas por comas => permiso, permiso
+   - controlar los permisos por defecto cuando se crea un archivo => umask valor
+   - permisos especiales =>
+     - sticky bit => conmumente usado para directorios nos dan la forma en que solo el owner y el superusuario
+      chmod 1775 archivo_o_directorio o chmod +t archivo_o_directorio
+    - bit SUID => el que ejecute va a tener los mismos permisos que el que creó el archivo, con cuidado porque puede acarrear problemas de seguridad
+      chmod 4775 archivo o chmod u+s archivo
+    - bit SGID => el que ejecute va a tener los mismos permisos que el grupo, util cuando se quiere configurar un directorio para colaborar con diferentes usuarios,
+                  el archivo que cree el usuario tendra los permisos del grupo que pertenece el directorio y no del grupo del usuario
+      chmod 2555 archivo_o_directorio o chmod g+s archivo_o_directorio
+  - ejecutar un shell con un diferente usuario y grupo id's => su nombre_usuario
+    - iniciar sesión con usuario diferente => su-l nombre_usuario, con el usuario root 'su -'
+    - ejecutar comando en el new shell => su -c 'comando', siempre tiene que estar el comando entre ''
+  - ejecutar comandos como otro usuario => sudo comando
+    - cambiar los permisos específicos de usuarios particulares configurando => /etc/sudoers
+  - la diferencia entre su y sudo => sudo no inicia un nuevo shell ni carga un entorno de otro usuario
+    - listar los permisos del usuario => sudo -l
+  - cambiar el propietario y grupo del archivo o directorio => chown
+    - cambiar el archivo a un usuario determinado => chown user archivo
+    - cambiar el archivo a un grupo determinado => chown :grupo archivo
+    - cambiar el archivo a un usuario y grupo determinado => chown user:group archivo
+    - cambiar el archivo a un usuario con su grupo por defecto en login => chown user: archivo
+  - en versiones antiguas de Linux para poder cambiar el grupo del archivo => chgrp group archivo
+  - cambiar contraseña de usuario => passwd user, usa strong password por lo cual valida que no sea muy corta, similar a la anterior o una palabra de diccionario
+    - agregar al usuario es únicamente si tienes privilegios sino únicamente => passwd, que cambiará tu propia contraseña
 
 --------------------------------------- DEFINITIONS ---------------------------------------
 
@@ -181,8 +333,6 @@ ping [direccion] => para ver si nos manda respuesta la direccion IP
 escribir en un archivo el STDOUT sin importar si es correcto o un error => comando >& nombre_archivo
 
 nautilus => abrir directorio en el gui
-
-ver los usuarios => cat /etc/passwd
 
 ver los grupos => cat /etc/group
 
@@ -317,168 +467,6 @@ say => convertir texto en audio usando GNUstep speech engine
 festival => convertir texto en audio
   con este paquete viene instalado text2wave => convertidor de texto a .wav files
     - guardar como .wav file => text2wave -o archivo.wav
-
-encontrar el directorio del ejecutable => which programa_executable
-
-ver descripcion de los shell bultins => help shell_builtin
-
-ver información útil del comando => comando --help
-
-crear directorio => mkdir directorio
-  - crear un directorio sin error de que no existan los padres => mkdir -p directorio/..../
-
-mostrar una página de manual => man command
-  - especificar la section del manual => man section command
-  - poder ver todas las secciones de un comando => apropos command o tambien con man -k command
-
-obtener descripciones de las secciones de un comando => whatis command
-
-mostrar mediante info pages la información sobre un comando, es una forma diferente para manejar => info command
-
-ver las documentaciones de los programas instalados => /usr/share/doc/
-
-se manejan los std mediante file descriptors => file descriptor 1 es stdout y file descriptor 2 es stderr
-
-redireccionando standard output =>
-  - a un archivo sobreescribiendolo => entrada > archivo
-  - a un archivo añadiendo => entrada >> archivo
-  - esperar la entrada a través del teclado => > archivo
-
-redireccionando standard error =>
-  - a un archivo => entrada 2> archivo
-  - redireccionar el standard error para no mostrarlo al hacer una busqueda => 2>/dev/null
-
-redireccionando stderr y stout =>
-  - forma tradicional => entrada > archivo 2>&1
-  - nueva forma => entrada &> archivo
-
-archivo /dev/null => el sistema lo llama bit bucket que es donde acepta entradas y no hace nada con ellas
-
-imprimir una palabra o bytes de lineas de texto => wc
-  - imprimir la cantidad de bytes => wc -c valor
-
-reportar u omitir lineas repetidas =>
-  - eliminar todos las lineas repetidas => ls archivo archivo | uniq
-  - mostrar solamente las lineas repetidas => ls archivo archivo | uniq -d
-
-imprimir en la pantalla => echo, todos los valores que tienen una funcionalidad son expansions
-  - pathname expansion, mostrar todos los archivos de la carpeta actual con wildcards => echo wildcard
-  - tilde expansion => echo ~nombre_usuario, el nombre_usuario es opcional, sino se utilizará al usuario actual
-  - arithmetic expansion => echo $((operacion aritmetica))
-  - brace expansion => es como un interador de todo el contenido del echo texto_{valor1, valor2, valor3} donde se imprimiria como texto_valor1 texto_valor2 texto_valor3
-    también se puede utilizar con rangos => echo valor_{1..2} o valor_{A..Z}, se puede de menor a mayor en números y caracteres
-  - parameter expansion => para mostrar los valores de las variables de entorno
-  - command substitution => poner los comandos dentro de un comando
-    comando $(comando | comando |...)
-  - double quotes => nos permiten poder escribir nombres largos para archivos que tienen espacios en blancos, también quita los saltos de línea en el output
-    - una forma de escapar de las expansions en double quotes es con un \
-  - single quotes => nos permite escapar de todo tipo de de expansions
-
-mostrar todas las variables de entorno => printenv
-
-indicar que el programa espere => sleep tiempo_segundos
-
-command line editing => bash usa la librería Readline
-  - los términos que usa esta librería =>
-    - killing = cutting
-    - yanking = pasting
-  - cursor movement commands =>
-    - mover el cursor al inicio de la linea => CTRL + A
-    - mover el cursor al final de la linea => CTRL + E
-    - mover el cursor un caracter a la derecha => CTRL + F
-    - mover el cursor un caracter a la izquierda => CTRL + B
-    - mover el cursor una palabra a la derecha => ALT + F
-    - mover el cursor una palabra a la izquierda => ALT + B
-    - limpiar la console => CTRL + L
-  - text editing comandos =>
-    - eliminar a la derecha => CTRL + D
-    - cambiar la letra anterior con la actual del cursor => CTRL + T
-    - cambiar la palabra anterior con la actual del cursor => ALT + T
-    - convertir la palabra que sigue en lowercase => ALT + L
-    - convertir la palabra que sigue en uppercase => ALT + U
-
-history => bash guarda los ultimos 500 comandos usados
-  - indicar que linea del history usar comando => !linea
-  - commandos =>
-    - mover al comando previo => CTRL + P
-    - mover al comando posterior => CTRL + N
-    - mover al primer comando => ALT + <
-    - mover al ultimo comando => ALT + >
-    - buscar en el history => CTRL + R
-
-los hosts que se agreguen en /etc/hosts serán puestos como https
-
-permissions =>
-  - mostrar la identidad del usuario actual => id
-  - archivo que tiene las cuentas de usuario => /etc/passwd
-  - archivo que tiene los grupos => /etc/group
-  - cuando se crea un grupo o usuario los archivos anteriores cambian como en /etc/shadow que tiene las contraseñas
-  - la práctica moderna de Linux para los grupos y usuarios es que un usuario solo pertenezca a un grupo y ese grupo tenga el mismo nombre que el usuario para facilitar la asignación
-  - atributos del archivo => se separan en 10 caracteres
-    - 1 caracter => indica el tipo del archivo
-      - archivo regular => -
-      - directorio => d
-      - symbolic link, tiene valores de atributo del archivo al azar porque solo indica donde está el archivo con los permisos => l
-      - character special file, se refiere a un device que maneja un flujo de bytes como un modem o un terminal => c
-      - block special file, device que manejen bloques de datos como disco duro o cd-rom drive  => b
-  - los restantes son atributos de permisos =>
-    - del 2 al 4 => permisos del propietario
-    - del 5 al 7 => permisos del grupo
-    - del 7 al 9 => permisos mundiales
-    - atributos de permisos =>
-      - r =>
-        - archivo => permite abrir y leer el archivo
-        - directorio => permite listar el contenido del directorio
-      - w =>
-        - archivo => permite escribir o truncar el archivo, pero esto no permite que el archivo sea renombrado o eliminado
-        - diretorio => permite a los archivos dentro del directorio puedan ser creados, eliminados y renombrados
-      - x =>
-        - archivo => permite que el archivo sea tratado como programa de ejecución (script)
-        - directorio => permite que se ingrese al directorio (cd)
-  - cambiar permisos del archivo => chmod, tiene dos formas distintas de hacer el cambio: representación octal numérica y representación symbolic
-    - permisos de archivos en binario y octal
-      octal     binario     modo archivo
-      0         000         ---
-      1         001         --x
-      2         010         -w-
-      3         011         -wx
-      4         100         r--
-      5         101         r-x
-      6         110         rw-
-      7         111         rwx
-    - representación symbolic
-      - representación del usuario (owner) => u
-      - representación del grupo => g
-      - representación del world => o
-      - representación de todos => a, también se puede omitir el uso y el sistema interpretara que es para todos
-      - agregar permisos al archivo => (u|g|o|a)+(r|w|x)
-      - eliminar permisos al archivo  => (u|g|o|a)-(r|w|x)
-      - poner los permisos tal cual se indican => (u|g|o|a)=(r|w|x), eliminara y agregara los permisos para tenerlo igual
-      - multiples especificaciones pueden ser separadas por comas => permiso, permiso
-   - controlar los permisos por defecto cuando se crea un archivo => umask valor
-   - permisos especiales =>
-     - sticky bit => conmumente usado para directorios nos dan la forma en que solo el owner y el superusuario
-      chmod 1775 archivo_o_directorio o chmod +t archivo_o_directorio
-    - bit SUID => el que ejecute va a tener los mismos permisos que el que creó el archivo, con cuidado porque puede acarrear problemas de seguridad
-      chmod 4775 archivo o chmod u+s archivo
-    - bit SGID => el que ejecute va a tener los mismos permisos que el grupo, util cuando se quiere configurar un directorio para colaborar con diferentes usuarios,
-                  el archivo que cree el usuario tendra los permisos del grupo que pertenece el directorio y no del grupo del usuario
-      chmod 2555 archivo_o_directorio o chmod g+s archivo_o_directorio
-  - ejecutar un shell con un diferente usuario y grupo id's => su nombre_usuario
-    - iniciar sesión con usuario diferente => su-l nombre_usuario, con el usuario root 'su -'
-    - ejecutar comando en el new shell => su -c 'comando', siempre tiene que estar el comando entre ''
-  - ejecutar comandos como otro usuario => sudo comando
-    - cambiar los permisos específicos de usuarios particulares configurando => /etc/sudoers
-  - la diferencia entre su y sudo => sudo no inicia un nuevo shell ni carga un entorno de otro usuario
-    - listar los permisos del usuario => sudo -l
-  - cambiar el propietario y grupo del archivo o directorio => chown
-    - cambiar el archivo a un usuario determinado => chown user archivo
-    - cambiar el archivo a un grupo determinado => chown :grupo archivo
-    - cambiar el archivo a un usuario y grupo determinado => chown user:group archivo
-    - cambiar el archivo a un usuario con su grupo por defecto en login => chown user: archivo
-  - en versiones antiguas de Linux para poder cambiar el grupo del archivo => chgrp group archivo
-  - cambiar contraseña de usuario => passwd user, usa strong password por lo cual valida que no sea muy corta, similar a la anterior o una palabra de diccionario
-    - agregar al usuario es únicamente si tienes privilegios sino únicamente => passwd, que cambiará tu propia contraseña
 
 procesos =>
   - listar los procesos => ps
@@ -690,6 +678,7 @@ NERDTree => plugin para poder utilizar un menú de todos los archivos
   - abrir en un nuevo tab => T
     - moverse al siguiente tab => gt
     - retroceder de tab => gT
+  - mostrar archivos ocultos => shift + i
 buscar una palabra => /palabra
   - buscar una palabra sin case sensitive => /palabra\c
 ejecutar comandos => :! comando

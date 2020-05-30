@@ -17,7 +17,7 @@ ejecutar una librería mediante la terminal => pythonVERSION -m nombreLibreria
 realizar un comentario => # comentario
   - de múltiples líneas => """ comentario """
 
-listas => son arrays que tienen la posibilidad de aumentar o disminuir de tamaño en medio de la ejecución
+list => son lists que tienen la posibilidad de aumentar o disminuir de tamaño en medio de la ejecución
   - se pueden obtener los valores también a partir de índices negativos
   - obtener un subconjunto de listas => lista[inicio:fin:saltos] indicando los indices, los saltos son de cada cuanto se toma un elemento
     - si es desde el inicio simplemente => lista[:fin]
@@ -32,8 +32,12 @@ listas => son arrays que tienen la posibilidad de aumentar o disminuir de tamañ
   - obtener el índice de una lista => lista.index(valor)
   - contar cuantos items de mismos valores se tiene en la lista => lista.count(valor)
   - convertir una lista en un string => lista.join(string) # opcionalmente el string será el separador entre los items de la lista
+  - crear un list de un set => list(set)
 
 matrices => [[],[]] son listas dentro de una lista
+
+set => estructura de datos que solo almacena valores únicos
+  - crear un set => set(list)
 
 integers => class int
   - indicar binarios, con el prefijo 0b o 0B => 0bnumero
@@ -92,8 +96,10 @@ strings => son inmutables, los métodos crean un nuevo string, class str
 
 tuple => es una secuencia parecida a una lista
   - crear una tuple => (valor, valor, ...)
+  - NOTA: a diferencia de un list este es inmutable
 
 dictionary =>
+  - crear un dictionary => dict()
   - comprobar si una key se encuentra en el dictionary => "key" in dictionary
   - obtener el valor de la key sin error cuando no existe => dictionary.get("key") # en caso no exista retorna un None
     - si no se encuentra la key se puede indicar que valor retornar => dictionary.get('key', value)
@@ -112,7 +118,7 @@ deshabilitar los warnings => requests.packages.urllib3.disable_warnings()
 iteradores =>
   - condicional de iteración primero => while condicional:
     - ejecutar funcionalidad cuando condición no cumple => else:
-  - iteración de cada elemento de un array => for elemento in array:
+  - iteración de cada elemento de un list => for elemento in list:
     - si es una iteracción con dictionary el elemento será la key
     - se puede destructurar los elementos de la coleccion si tiene colecciones dentro (ej: [[], []]), pero generará error si no todos son colecciones y si no todos tiene la misma cantidad de elementos
   - palabras reservadas =>
@@ -145,10 +151,11 @@ math built-in function =>
   - elevar a una ponencia => pow(valor)
   - redondear un float => round(float, cantidad_decimales) # cantidad_decimales es opcional, si no se coloca lo redondea sin decimales
   - sumar todos los elementos de un iterable => sum(iterable)
+    - recibe un segundo parametro que indica con que valor inicial empieza a sumar => sum(iterable, valor_inicial)
 
 type conversion built-in functions =>
   - convertir un objeto en una cadena imprimible => ascii(objeto) | repr(objeto)
-  - convertir a un integer a partir de un string o número => int(string|numero)
+  - convertir a un integer a partir de un string o número => int(string|numero, base=numero) # la base del entero es opcional
   - convertir un integer en un binario => bin(integer)
   - convertir a un float a partir de un string o integer => float(string|integer)
   - convertir un objeto a un string => str(objeto)

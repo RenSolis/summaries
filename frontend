@@ -279,6 +279,8 @@ agregar estilos a un elemento vacío => element:empty { /* atributos */ }
 
 manejar el resize de textarea => resize: value
 
+importar desde un node_modules => @import '~nombreModulo/path/archivo.scss'
+
 --------------------------------------- HTML ATTRIBUTES ---------------------------------------
 
 role => mejorar la accessibilidad de la página, basado en el estándar de ARIA de accessibilidad web

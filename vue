@@ -809,7 +809,8 @@ route object =>
   - acceder al path incluyendo query y hash => this.$route.fullPath
 
 --------------------------------------- TESTING ---------------------------------------
-
+// TODO actualizar los find por findComponent comprobando funcionalidad (get findComponent findComponentAll)
+  buscar get
 testing jest =>
   - instalar jest para proyectos ya creados => vue add unit-jest
   - renderización de componentes =>
@@ -973,7 +974,10 @@ testing jest =>
         }
         mount|shallowMount(Componente, slots: { nombreSlot: nombreComponenteWrapper } })
     - acceder a los slots => wrapper.vm.$slots
-  - utilizar el componente dentro de un body y acceder al document => mount|shallowMount(Componente, { attachToDocument: true })
+  - utilizar el componente dentro de un body y acceder al document =>
+    // crear un elemento div
+    document.body.appendChild(elemento)
+    mount|shallowMount(Componente, { attachTo: elemento })
   - comprobar que un elemento es una instancia de Vue => wrapper.find('selector').isVueInstance()
   - hooks =>
     - funcionalidad que se realice antes que todos los tests => beforeEach(() => { /* funcionalidad */ })
