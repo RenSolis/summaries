@@ -20,6 +20,9 @@ directorio con archivos de configuración del sistema, contiene los shell script
   - archivo donde se determinará cuando se ejecutarán los jobs => crontab
   - archivo donde se muestran los dispositivos de almacenamiento y puntos de montaje asociados => fstab
   - archivo con la lista de usuarios con su información => passwd
+  - archivo con la lista de los grupos => group
+  - archivo donde se encuentran los hosts, los hosts agregados se toman con https => hosts
+  - archivo donde se guardan las contraseñas de usuario y otra información de manera encriptada => shadow
 
 directorio que todos los usuarios tienen por defecto para proteger el sistema de actividades errantes de los usuarios => /home
 
@@ -56,8 +59,6 @@ herramientas de redes => net-tools
   - instalar en Debian => apt-get install net-tools
 
 cambiar el idioma del teclado => loadkeys idioma
-
-ver las historia de los comandos => history
 
 mostrar la fecha actual => date
 
@@ -153,69 +154,51 @@ standards =>
     - forma trandicional => entrada > archivo 2>&1
     - forma actual => entrada &> archivo
 
+contado de líneas, palabras y bytes de un archivo => wc archivo
+  - contar solo lineas => wc -l archivo
+  - contar solo palabras => wc -w archivo
+  - contar solo bytes => wc -c archivo
+
+reportar u omitir líneas repetidas =>
+  - omitir líneas repetidas => uniq archivo
+  - mostrar solamente la línea repetida => uniq -d archivo
+
+utilizar expansions =>
+  - pathname expansion, mostrar los archivos de la carpeta actual con wildcards => echo wildcard
+  - tilde expansion, acceder al home del usuario => ~nombre_usuario # el nombre es opcional, únicamente si se quiere acceder a otro usuario
+  - arithmetic expansion => echo $((operacion))
+  - brace expansion, iterador del contenido => echo text_{1,2,...} # text_1 text_2
+    - también se pueden usar rangos => echo text_{1..maximo} o echo text_{A..Z}
+  - parameter expansion, para mostrar los valores de las variables de entorno => echo ${variable:desde:hasta} # desde y hasta son opcionales, son para obtener una subparte del valor
+  - command sustitution, para utilizar un comando dentro de otro => comando $(comando | comando | ...)
+  - double quotes => nos permite escribir nombres de archivos con espacios, quita los saltos de línea en el output, para escapar de los expansions se puede usar \
+  - single quotes => nos permite escapar de los expansions
+
+indicar que el programa espere (en segundos) => sleep cantidad
+
+command line editing, bash usa GNU Readline =>
+  - movimientos del cursor =>
+    - al inicio de la línea => CTRL + a
+    - al final de la línea => CTRL + e
+    - un caracter a la derecha => CTRL + f
+    - un caracter a la izquierda => CTRL + b
+
+mostrar el historial de la línea de comandos => history
+  - indicar que línea del historial usar =>  history !numero_linea
+  - moverse entre historial de comandos =>
+    - comando previo => CTRL + p
+    - comando posterior => CTRL + n
+    - primer comando => ALT + <
+    - último comando => ALT + >
+    - buscar en el historial => CTRL + r
+
+permisos =>
+  - mostrar los id's del usuario actual => id
+  - NOTA: práctica moderna de Linux es que un usuario solo pertenezca a un grupo y ambos tengan el mismo nombre para facilitar su asignación
 
 // TODO
 
-imprimir una palabra o bytes de lineas de texto => wc
-  - imprimir la cantidad de bytes => wc -c valor
-
-reportar u omitir lineas repetidas =>
-  - eliminar todos las lineas repetidas => ls archivo archivo | uniq
-  - mostrar solamente las lineas repetidas => ls archivo archivo | uniq -d
-
-imprimir en la pantalla => echo, todos los valores que tienen una funcionalidad son expansions
-  - pathname expansion, mostrar todos los archivos de la carpeta actual con wildcards => echo wildcard
-  - tilde expansion => echo ~nombre_usuario, el nombre_usuario es opcional, sino se utilizará al usuario actual
-  - arithmetic expansion => echo $((operacion aritmetica))
-  - brace expansion => es como un interador de todo el contenido del echo texto_{valor1, valor2, valor3} donde se imprimiria como texto_valor1 texto_valor2 texto_valor3
-    también se puede utilizar con rangos => echo valor_{1..2} o valor_{A..Z}, se puede de menor a mayor en números y caracteres
-  - parameter expansion => para mostrar los valores de las variables de entorno
-  - command substitution => poner los comandos dentro de un comando
-    comando $(comando | comando |...)
-  - double quotes => nos permiten poder escribir nombres largos para archivos que tienen espacios en blancos, también quita los saltos de línea en el output
-    - una forma de escapar de las expansions en double quotes es con un \
-  - single quotes => nos permite escapar de todo tipo de de expansions
-
-mostrar todas las variables de entorno => printenv
-
-indicar que el programa espere => sleep tiempo_segundos
-
-command line editing => bash usa la librería Readline
-  - los términos que usa esta librería =>
-    - killing = cutting
-    - yanking = pasting
-  - cursor movement commands =>
-    - mover el cursor al inicio de la linea => CTRL + A
-    - mover el cursor al final de la linea => CTRL + E
-    - mover el cursor un caracter a la derecha => CTRL + F
-    - mover el cursor un caracter a la izquierda => CTRL + B
-    - mover el cursor una palabra a la derecha => ALT + F
-    - mover el cursor una palabra a la izquierda => ALT + B
-    - limpiar la console => CTRL + L
-  - text editing comandos =>
-    - eliminar a la derecha => CTRL + D
-    - cambiar la letra anterior con la actual del cursor => CTRL + T
-    - cambiar la palabra anterior con la actual del cursor => ALT + T
-    - convertir la palabra que sigue en lowercase => ALT + L
-    - convertir la palabra que sigue en uppercase => ALT + U
-
-history => bash guarda los ultimos 500 comandos usados
-  - indicar que linea del history usar comando => !linea
-  - commandos =>
-    - mover al comando previo => CTRL + P
-    - mover al comando posterior => CTRL + N
-    - mover al primer comando => ALT + <
-    - mover al ultimo comando => ALT + >
-    - buscar en el history => CTRL + R
-
-los hosts que se agreguen en /etc/hosts serán puestos como https
-
 permissions =>
-  - mostrar la identidad del usuario actual => id
-  - archivo que tiene las cuentas de usuario => /etc/passwd
-  - archivo que tiene los grupos => /etc/group
-  - cuando se crea un grupo o usuario los archivos anteriores cambian como en /etc/shadow que tiene las contraseñas
-  - la práctica moderna de Linux para los grupos y usuarios es que un usuario solo pertenezca a un grupo y ese grupo tenga el mismo nombre que el usuario para facilitar la asignación
   - atributos del archivo => se separan en 10 caracteres
     - 1 caracter => indica el tipo del archivo
       - archivo regular => -
@@ -301,6 +284,12 @@ hard link (versión antigua) => permite múltples nombres referenciando un archi
   - cuando se elimina el archivo base se mantiene los archivos links
 
 symbolic link (versión moderna) => permite múltiples nombres referenciando un archivo, permite hacer cambios en todos los archivos relacionados y en el archivo base permite
+
+bash expansions => son características del bash que nos permiten simplificar la utilización de comandos
+
+GNU Readline => librería que proporciona capacidad de edición de línea e historial a línea de comandos
+  - killing => cortar
+  - yanking => pegar
 
 --------------------------------------- SHELLS ---------------------------------------
 

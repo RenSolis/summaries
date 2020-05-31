@@ -23,6 +23,7 @@ list => son lists que tienen la posibilidad de aumentar o disminuir de tamaño e
     - si es desde el inicio simplemente => lista[:fin]
     - hasta el final => lista[inicio:]
   - revés de la lista => lista[::-1]
+  - ordenar lista para que este al inverso => reversed(list) # devuelve un objeto list_reverseiterator que debemos convertir a una lista
   - ordenar la lista ascendente => list.sort(reverse=False), si se pone el reverse True se ordenará de manera descendente
   - obtener el mayor de la lista => max(lista)
   - obtener el menor de la lista => min(lista)
@@ -92,6 +93,7 @@ strings => son inmutables, los métodos crean un nuevo string, class str
   - obtener el index de un substring => string.find(substring) # en caso no se encuentre devolverá un -1
   - comprobar como inicia el string => string.startswith(substring)
   - comprobar como termina el string => string.endswith(substring)
+  - centrar un string con una cantidad de caracteres distribuido mitad mitad en izquierda y derecha => string.center(cantidad_caracteres)
   - NOTA: se puede tener cuantos caracteres se necesiten la única limitación es la memoria de la máquina
 
 tuple => es una secuencia parecida a una lista
@@ -127,9 +129,15 @@ iteradores =>
 
 iterables e iterators built-in functions =>
   - comprobar si todos los elementos son verdaderos => all(iterable)
-  - comprobar si ninguno de los elementos es verdadero => any(iterable)
+  - comprobar si algundo de los elementos es verdadero => any(iterable)
   - obtener una lista de tuplas que contenga los indices y valores de un iterable => enumerate(iterable)
     - indicar en que valor empezará el índice => enumerate(iterable, numero)
+  - mergear cada item en una tuple que se almacenará en un list => zip(list, list, ...)
+    - si no tienen la misma cantidad de elementos los demás elementos no se agregarán a la list
+
+iterator => iter(iterable)
+  - moverse al siguiente elemento del iterator => next(iterator)
+    - lanzará un error cuando se pasa el límite del iterator
 
 secuencia de números para iterar => range
   - crear una secuencia desde 0 y el número máximo sin contarlo => range(numero_maximo)
@@ -165,6 +173,14 @@ type conversion built-in functions =>
   - convertir un integer a un hexadecimal string => hex(integer)
   - convertir un integer a un octal string => oct(integer)
   - retornar la representación como un integer de un caracter => ord(caracter)
+
+obtener los métodos de un objeto => dir(objeto)
+
+manejar archivos => file
+  - abrir un archivo => open('archivo', 'r'|'w')
+  - escribir en el archivo => file.write('contenido')
+  - leer las líneas del archivo => file.readlines()
+  - cerrar flujo => file.close()
 
 parametros =>
   - parametro formal => def metodo(parametro):
