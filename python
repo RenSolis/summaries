@@ -113,8 +113,6 @@ dictionary =>
   - eliminar una key y devolver el valor => dictionary.pop('key')
   - elimnar todas las keys => dictionary.clean()
 
-escribir código dentro como un string => exec("string codigo")
-
 deshabilitar los warnings => requests.packages.urllib3.disable_warnings()
 
 iteradores =>
@@ -176,25 +174,48 @@ type conversion built-in functions =>
 
 obtener los métodos de un objeto => dir(objeto)
 
+ver las variables disponibles en el scope => vars()
+  - ver las variables de scope global => globals()
+
 manejar archivos => file
   - abrir un archivo => open('archivo', 'r'|'w')
   - escribir en el archivo => file.write('contenido')
   - leer las líneas del archivo => file.readlines()
   - cerrar flujo => file.close()
+  - forma simple de controlar el proceso del archivo y asegurarse que se cierre el flujo => with open('archivo', 'r|w') as nombre_para_variable:
 
 parametros =>
   - parametro formal => def metodo(parametro):
 
--------------------------------------- PYTHON CIBERSECURITY ---------------------------------------
+escribir código como un string => exec('codigo') # es una característica muy peligrosa porque puede ejecutar cualquier código
+  - puede evaluar varias líneas de código
+  - siempre retorna None
 
-//TODO
-os => librería para manejar el sistema operativo
-  - importar librería => import os
+escribir solamente una expresión de código como string => eval('codigo')
+  - como segundo parametro se puede poner que variables estarán permitidas => eval('codigo', { variables })
+  - puede retornar el valor que se le indique en el código
+
+retornar un valor hash de un objeto => hash(objeto)
+  - dos objetos con los mismos valores retornan el mismo hash
+
+utilizar métodos directamente de una librería sin asignar una variable => __import__('librería').nombreMetodo
+
+-------------------------------------- GENERIC OPERTING SYSTEM SERVICES ---------------------------------------
+
+librería para manejar el sistema operativo => os
+  - importar librería =>
+    - definiendo en una variable => import os
   - ejecutar comandos => os.system('comando')
 
-importar librería para el sistema operativo y ejecutar comandos => __import__('os')
-  - se puede ejecutar comandos al importar la librería => __import__('os').system('comandos')
+-------------------------------------- UNIX SPECIFIC SERVICES ---------------------------------------
 
-habilitar en os el tty => python -c 'import pty;pty.spawn("/bin/sh")'
+librería para manejar concepto de pseudo-terminal => pty
+  - importar librería => import pty
+  - crear un proceso que conecte la termina de control con el io del proceso actual (engañando a comandos que se estan ejecutando en la terminal de control) => pty.spawn()
+    - para generar terminal interactiva => pty.spawn('bin/bash')
+    - habilitar tty => pty.spawn('/bin/sh')
 
-crear un servidor desde comando => python -m http.server puerto # el puerto es opcional, por defecto usa el 8000
+-------------------------------------- INTERNET PROTOCOLS ---------------------------------------
+
+librería para implementar servidores HTTP => http.server
+  - crear un servidor desde comando => python -m http.server puerto # el puerto es opcional, por defecto usa el 8000

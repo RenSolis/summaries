@@ -3,7 +3,10 @@
 directorio root => /
 
 directorio con programas binarios necesarios para el sistema en boot y run => /bin
-  - lenguaje de comandos => bash
+  - shell lenguaje de comandos, es como sh pero con mejores características y sintáxis => bash
+    - usarlo en un script solamente cuando las características son soportables por bash
+  - anteriormente era un ejecutable del shell, ahora es un symbolic link enlazado al shell dash => sh
+    - usarlo en un script si se necesita compatibilidad con sistemas con POSIX
 
 directorio con programas binarios que realizan tareas vitales del sistema que son reservados para el usuario root => /sbin
 
@@ -194,53 +197,49 @@ mostrar el historial de la línea de comandos => history
 
 permisos =>
   - mostrar los id's del usuario actual => id
+  - atributos de un archivo, distribuidos en 10 caracteres =>
+    - primer caracter, indica el tipo del archivo => - (archivo) | d (directorio) | l (symbolic link) | c (character special file) | b (block special file)
+    - caracteres restantes relacionados a los permisos =>
+      - del segundo caracter al cuarto caracter son permisos del propietario
+      - del quinto caracer al septimo caracter son permisos del grupo
+      - del octavo al decimo caracter son permisos mundiales
+    - valores de los permisos =>
+      - lectura => r
+        - archivo => permite abrir y leer el archivo
+        - directorio => permite listar los archivos de un directorio
+      - escritura => w
+        - archivo => permite escribir o truncar el archivo (no permite ser renombrado o eliminado)
+        - directorio => permite crear, eliminar, renombrar los archivos
+      - ejecución => x
+        - archivo => permite que el archivo sea tratado como un programa de ejecución (script)
+        - directorio => permite que se ingrese al directorio (cd)
+  - cambiar permisos => chmod
+    - representación octal numérica =>
+      octal   binario   modo archivo
+      0       000       ---
+      1       001       --x
+      2       010       -w-
+      3       011       -wx
+      4       100       r--
+      5       101       r-x
+      6       110       rw-
+      7       111       rwx
+    - representación simbólica =>
+      - representaciones =>
+        - usuario propiertario => u
+        - grupo => g
+        - mundial => o
+        - todos => a
+        - si no se especifíca representación toma por defecto todos para en lectura y ejecución, y únicamente escritura para el propietario
+      - añadir permisos al archivo => representacion+r|w|x
+      - eliminar permisos al archivo => representación-r|w|x
+      - sobreescribir los permisos con el valor dado => representacion=r|w|x
+  - establecer los permisos al crear archivos o directorios => umask valor
   - NOTA: práctica moderna de Linux es que un usuario solo pertenezca a un grupo y ambos tengan el mismo nombre para facilitar su asignación
 
 // TODO
 
 permissions =>
-  - atributos del archivo => se separan en 10 caracteres
-    - 1 caracter => indica el tipo del archivo
-      - archivo regular => -
-      - directorio => d
-      - symbolic link, tiene valores de atributo del archivo al azar porque solo indica donde está el archivo con los permisos => l
-      - character special file, se refiere a un device que maneja un flujo de bytes como un modem o un terminal => c
-      - block special file, device que manejen bloques de datos como disco duro o cd-rom drive  => b
-  - los restantes son atributos de permisos =>
-    - del 2 al 4 => permisos del propietario
-    - del 5 al 7 => permisos del grupo
-    - del 7 al 9 => permisos mundiales
-    - atributos de permisos =>
-      - r =>
-        - archivo => permite abrir y leer el archivo
-        - directorio => permite listar el contenido del directorio
-      - w =>
-        - archivo => permite escribir o truncar el archivo, pero esto no permite que el archivo sea renombrado o eliminado
-        - diretorio => permite a los archivos dentro del directorio puedan ser creados, eliminados y renombrados
-      - x =>
-        - archivo => permite que el archivo sea tratado como programa de ejecución (script)
-        - directorio => permite que se ingrese al directorio (cd)
-  - cambiar permisos del archivo => chmod, tiene dos formas distintas de hacer el cambio: representación octal numérica y representación symbolic
-    - permisos de archivos en binario y octal
-      octal     binario     modo archivo
-      0         000         ---
-      1         001         --x
-      2         010         -w-
-      3         011         -wx
-      4         100         r--
-      5         101         r-x
-      6         110         rw-
-      7         111         rwx
-    - representación symbolic
-      - representación del usuario (owner) => u
-      - representación del grupo => g
-      - representación del world => o
-      - representación de todos => a, también se puede omitir el uso y el sistema interpretara que es para todos
-      - agregar permisos al archivo => (u|g|o|a)+(r|w|x)
-      - eliminar permisos al archivo  => (u|g|o|a)-(r|w|x)
-      - poner los permisos tal cual se indican => (u|g|o|a)=(r|w|x), eliminara y agregara los permisos para tenerlo igual
-      - multiples especificaciones pueden ser separadas por comas => permiso, permiso
-   - controlar los permisos por defecto cuando se crea un archivo => umask valor
    - permisos especiales =>
      - sticky bit => conmumente usado para directorios nos dan la forma en que solo el owner y el superusuario
       chmod 1775 archivo_o_directorio o chmod +t archivo_o_directorio
@@ -250,7 +249,7 @@ permissions =>
                   el archivo que cree el usuario tendra los permisos del grupo que pertenece el directorio y no del grupo del usuario
       chmod 2555 archivo_o_directorio o chmod g+s archivo_o_directorio
   - ejecutar un shell con un diferente usuario y grupo id's => su nombre_usuario
-    - iniciar sesión con usuario diferente => su-l nombre_usuario, con el usuario root 'su -'
+    - iniciar sesión con usuario diferente => su -l nombre_usuario, con el usuario root 'su -'
     - ejecutar comando en el new shell => su -c 'comando', siempre tiene que estar el comando entre ''
   - ejecutar comandos como otro usuario => sudo comando
     - cambiar los permisos específicos de usuarios particulares configurando => /etc/sudoers
@@ -265,7 +264,54 @@ permissions =>
   - cambiar contraseña de usuario => passwd user, usa strong password por lo cual valida que no sea muy corta, similar a la anterior o una palabra de diccionario
     - agregar al usuario es únicamente si tienes privilegios sino únicamente => passwd, que cambiará tu propia contraseña
 
+procesos =>
+  - listar los procesos => ps
+    - listar todos los procesos independientemente de la terminal en que se encuentre => ps x
+    - listar todos los procesos con más detalles independientemente de la terminal => ps aux
+    - estados de los procesos =>
+      - ejecutandos o listo para empezar => R (running)
+      - el proceso no esta corriendo y está a la espera de un evento => S (sleep)
+      - el proceso está esperando una I/O como un disco duro => D (uninterruptible sleep)
+      - el proceso ha sido detenido => T (stopped)
+      - proceso difunto o 'zombie', es un proceso hijo finalizado pero que el padre no ha limpiado => Z
+      - proceso de alta prioridad, es posible darle más importancia al agregarle al proceso más tiempo, esta propiedad del proceso se llama amabilidad, pero se dice que es
+        menos agradable porque toma más tiempo de la CPU, dejando menos para todos los demás => <
+      - un proceso de baja prioridad (buen proceso) obtendrá tiempo del procesador una vez que se terminen los procesos de alta prioridad => N
+  - listar los procesos de manera dinámica (continuamente actualizandose), ordenandose por la actividad del CPU => top
+  - listar los jobs que han sido lanzados desde la terminal, se verán los procesos background lanzados por la terminal => jobs
+  - poner en background el proceso => comando &, el output del comando nos indica el PID
+    - si el proceso ya existe => bg %job_number
+  - retornar un proceso al foreground => fg %job_number
+  - poner en pausa un proceso => CTRL + Z, cuando se esta ejecutando el proceso lo cual manda una señal llamada TSTP (terminal stop)
+  - terminar un proceso en foreground => CTRL + C, envia una señal llamada INT (interrupt)
+  - terminar procesos mandando señales => kill [-signal] PID o kill %job_number, cuando no se especifica el signa toma el valor TERM
+    - HUP (hang up), cuando se cierra una terminal y los procesos en foreground terminan => 1
+    - INT (interrupt), termina el programa, tiene la misma funcionalidad que CTRL + C => 2
+    - KILL (kill), sería el último recurso para terminar un proceso porque lo realiza directamente desde el kernel => 9
+    - TERM (terminate), es el valor por defecto, termina el proceso => 15
+    - CONT (continue), restaura el proceso después de una señal de STOP => 18
+    - STOP (stop), detiene el proceso sin terminarlo => 19
+  - eliminar multiples proceso => killall [-u user] [-signal] name|PID
+  - mostrar una lista de los procesos ordenados de padre-hijos => pstree
+  - mostrar un snapshot de los recursos del sistema como memoria, swap, y disk I/O => vmstat
+    - indicar el tiempo (en segundos) de actualización de los recursos => vmstat tiempo
+  - programa gráfico que muestra un grafo con la carga del sistema => xload
+  - mostrar un grafo en la terminal donde se muestre la carga del sistema => tload
+
+
 --------------------------------------- DEFINITIONS ---------------------------------------
+
+distribución => es un paquete que consiste en el kernel de Linux y una selección de aplicaciones que son mantenidas por una compañía o comunidad de usuarios
+  - su objetivo es optimizar el kernel y las aplicaciones que se ejecutan en el sistema operativo
+  - tipos de distribuciones =>
+    - Debian =>
+      - manejador de paquetes => dpkg
+      - formato de paquete => deb
+    - Red Hat Enterprise Linux (RHEL) => dedicado a facilitar el uso de Linux en entornos de servidores profesionales (comercial)
+    - Fedora =>
+      - manejador de paquetes => rpm
+    - SUSE => conocido por YaST (comercial)
+      - YaST => permite instalar y configurar software y hardware, configurar las redes y servidores
 
 everything is a file => es una de las características de Unix donde maneja todo como si fuera un archivo
 
@@ -290,6 +336,10 @@ bash expansions => son características del bash que nos permiten simplificar la
 GNU Readline => librería que proporciona capacidad de edición de línea e historial a línea de comandos
   - killing => cortar
   - yanking => pegar
+
+character special file => se refiere a un device que maneja un flujo de bytes como modem o terminal
+
+block special file => device que manejen bloques de datos como disco duro o cd-rom drive
 
 --------------------------------------- SHELLS ---------------------------------------
 
@@ -421,8 +471,6 @@ configurar bind => /usr/share/doc/bind-9.9.4/sample/etc/named.rfc1912.zones
 
 
 //
-modificar los hosts => en el archivo /etc/hosts
-
 manejar las particiones => fdisk /dev/sda
 
 ver la formación de las particiones => lsblk
@@ -456,40 +504,6 @@ say => convertir texto en audio usando GNUstep speech engine
 festival => convertir texto en audio
   con este paquete viene instalado text2wave => convertidor de texto a .wav files
     - guardar como .wav file => text2wave -o archivo.wav
-
-procesos =>
-  - listar los procesos => ps
-    - listar todos los procesos independientemente de la terminal en que se encuentre => ps x
-    - listar todos los procesos con más detalles independientemente de la terminal => ps aux
-    - estados de los procesos =>
-      - ejecutandos o listo para empezar => R (running)
-      - el proceso no esta corriendo y está a la espera de un evento => S (sleep)
-      - el proceso está esperando una I/O como un disco duro => D (uninterruptible sleep)
-      - el proceso ha sido detenido => T (stopped)
-      - proceso difunto o 'zombie', es un proceso hijo finalizado pero que el padre no ha limpiado => Z
-      - proceso de alta prioridad, es posible darle más importancia al agregarle al proceso más tiempo, esta propiedad del proceso se llama amabilidad, pero se dice que es
-        menos agradable porque toma más tiempo de la CPU, dejando menos para todos los demás => <
-      - un proceso de baja prioridad (buen proceso) obtendrá tiempo del procesador una vez que se terminen los procesos de alta prioridad => N
-  - listar los procesos de manera dinámica (continuamente actualizandose), ordenandose por la actividad del CPU => top
-  - listar los jobs que han sido lanzados desde la terminal, se verán los procesos background lanzados por la terminal => jobs
-  - poner en background el proceso => comando &, el output del comando nos indica el PID
-    - si el proceso ya existe => bg %job_number
-  - retornar un proceso al foreground => fg %job_number
-  - poner en pausa un proceso => CTRL + Z, cuando se esta ejecutando el proceso lo cual manda una señal llamada TSTP (terminal stop)
-  - terminar un proceso en foreground => CTRL + C, envia una señal llamada INT (interrupt)
-  - terminar procesos mandando señales => kill [-signal] PID o kill %job_number, cuando no se especifica el signa toma el valor TERM
-    - HUP (hang up), cuando se cierra una terminal y los procesos en foreground terminan => 1
-    - INT (interrupt), termina el programa, tiene la misma funcionalidad que CTRL + C => 2
-    - KILL (kill), sería el último recurso para terminar un proceso porque lo realiza directamente desde el kernel => 9
-    - TERM (terminate), es el valor por defecto, termina el proceso => 15
-    - CONT (continue), restaura el proceso después de una señal de STOP => 18
-    - STOP (stop), detiene el proceso sin terminarlo => 19
-  - eliminar multiples proceso => killall [-u user] [-signal] name|PID
-  - mostrar una lista de los procesos ordenados de padre-hijos => pstree
-  - mostrar un snapshot de los recursos del sistema como memoria, swap, y disk I/O => vmstat
-    - indicar el tiempo (en segundos) de actualización de los recursos => vmstat tiempo
-  - programa gráfico que muestra un grafo con la carga del sistema => xload
-  - mostrar un grafo en la terminal donde se muestre la carga del sistema => tload
 
 ventajas de lanzar un programa gráfico desde la consola =>
   - el programa no está listada como opciones en el menú
