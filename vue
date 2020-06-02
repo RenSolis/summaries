@@ -1028,6 +1028,8 @@ realizar importaciones e instalaciones de plugins antes de los storybooks => .st
     import { addDecorator } from '@storybook/vue'
     import { addonLibreria } from '@storybook/addon-nombreAddon'
     addDecorator(addonLibreria)
+    - withKnobs({/* configuraciones */}) =>
+      - indicar si se mostrará el html tal cual o se imprimirá el string, por defecto se muestra el string con true => escapeHTML: true|false
   - importar plugins =>
     import NombrePlugin from 'plugin'
     import Vue from 'vue'

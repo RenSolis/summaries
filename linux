@@ -195,6 +195,18 @@ mostrar el historial de la línea de comandos => history
     - último comando => ALT + >
     - buscar en el historial => CTRL + r
 
+instalación de software =>
+  - deb =>
+    - realizar consultas al caché de apt => apt-cache
+    - buscar un paquete para obtener su información => apt-cache|apt search paquete
+    - instalar un paquete => apt-get|apt install paquete
+    - desinstalar un paquete => apt-get|apt remove paquete
+    - remover un paquete con sus archivos de configuración => apt-get|apt purge paquete
+  - rpm =>
+    - buscar un paquete para obtener su información => yum|dnf search paquete
+    - instalar un paquete => yum|dnf install paquete
+    - desinstalar un paquete => yum|dnf remove paquete
+
 permisos =>
   - mostrar los id's del usuario actual => id
   - atributos de un archivo, distribuidos en 10 caracteres =>
@@ -302,16 +314,29 @@ procesos =>
 --------------------------------------- DEFINITIONS ---------------------------------------
 
 distribución => es un paquete que consiste en el kernel de Linux y una selección de aplicaciones que son mantenidas por una compañía o comunidad de usuarios
-  - su objetivo es optimizar el kernel y las aplicaciones que se ejecutan en el sistema operativo
-  - tipos de distribuciones =>
-    - Debian =>
-      - manejador de paquetes => dpkg
-      - formato de paquete => deb
-    - Red Hat Enterprise Linux (RHEL) => dedicado a facilitar el uso de Linux en entornos de servidores profesionales (comercial)
-    - Fedora =>
-      - manejador de paquetes => rpm
-    - SUSE => conocido por YaST (comercial)
-      - YaST => permite instalar y configurar software y hardware, configurar las redes y servidores
+  - objetivo de optimizar el kernel y las aplicaciones que se ejecutan
+  - Debian =>
+  - Red Hat Enterprise Linux (RHEL) => dedicado a facilitar el uso de Linux en entornos de servidores profesionales (comercial)
+  - Fedora =>
+  - SUSE => conocido por YaST (comercial)
+    - YaST => permite instalar y configurar software y hardware, configurar las redes y servidores
+
+sistemas embebidos => es una combinación del hardware y software diseñados para una función específica dentro de un sistema grande, usualmente parte de otros dispositivos para ayudar a controlar estos
+  - Android => sistema operativo
+  - Raspberry Pi => plataforma para desarrollo de hardware
+    - Raspbian => pertenece a la distribución Debian
+
+software embebido => son parte de un sistema embebido para acceder al hardware y hacerlo usable
+
+instalacion de paquetes de software =>
+  - Debian, Ubuntu y Linux Mint utilizan dpkg, apt-get y apt para las instalaciones, generalmente referidos a los paquetes deb
+  - Red Hat, Fedora y CentOS utilizan rpm, yum y dnf para las instalaciones, generalmente referidos a los paquetes rpm
+
+dependencias => son paquetes necesarios por los programas para su funcionamiento
+
+Network File System (NFS) => es un protocolo estandar para compartir sistemas de archivos únicamente en Unix/Linux
+
+Samba => es un software para la implementación de un protocolo para compartir archivos entre diferentes sistemas operativos, también permitiendo compartir impresoras, todo sobre una red local
 
 everything is a file => es una de las características de Unix donde maneja todo como si fuera un archivo
 
@@ -688,3 +713,8 @@ ejecutar comandos => :! comando
 manejar líneas de código =>
   - ocultar lo seleccionado => zf
   - mostrar lo seleccionado => zD
+
+--------------------------------------- PACKAGES ---------------------------------------
+
+figlet => mostrar caracteres de manera larga en la terminal
+  - fliget texto

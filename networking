@@ -10,3 +10,5 @@ topología de red => nos permite identificar como están conectados los nodos
   - topología de malla => todos los nodos están conectados entre sí, permitiendo poder actuar como servidor y como cliente
     - forma óptima de mantener la conexión entre dispositivos ya que se reduce a uno la cantidad de dispositivos por los que viaja la información y en caso de que falle puede ser enviado por otro
   - topología de árbol => conectan varios nodos mediante nodos intermedios que darán conexiones con los demás nodos
+
+DHCP => responsable de asignar la dirección IP al host cuando se hace la conexión con el cable o wireless
