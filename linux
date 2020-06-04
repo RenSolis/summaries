@@ -338,6 +338,74 @@ Network File System (NFS) => es un protocolo estandar para compartir sistemas de
 
 Samba => es un software para la implementación de un protocolo para compartir archivos entre diferentes sistemas operativos, también permitiendo compartir impresoras, todo sobre una red local
 
+servicio de directorio (SD) => aplicación o conjunto de aplicaciones que almacena y organiza la información sobre los usuarios de una red de ordenadores y los recursos de red que permite a los administradores gestionar el acceso a estos recursos
+
+Network System Information (NIS) => protocolo de SD cliente-servidor, para el envío de datos de configuración en sistemas distribuidos (modelo OSI: capa de aplicación)
+
+daemon (servicio) => programa que se ejecuta como proceso en el background, se distingue con el d al final de cada nombre de proceso
+
+system security services daemon (SSSD) => software que provisiona un conjunto de daemons para manejar el acceso remoto a SD y autenticación de mecanismos
+
+imagemagick => es una herramienta para la línea de comandos que nos permite convertir entre formatos de imagenes
+
+free software => es un enfoque social
+  - criterios => refiriendose al free software como libertad
+    - libertad corre en cualquier programa que se desee y para cualquier proposito (freedom 0)
+    - libertad de estudiar como funciona un programa y cambiarlo si el computador lo necesita (freedom 1) => el propósito del source code donde se puede mejorar el software como requiramos
+    - libertad para distribuir copias que ayuden a otros (freedom 2) => una comunidad de usuarios y desarrolladores que tienen la libertad de modificar y mejorar el software base
+    - libertad de poder distribuir copias a otros de versiones modificadas (freedom 3) => un fork a un proyecto compartiendo tus modificaciones para beneficiar al resto
+
+open source software => es un enfoque pragmático para el desarrollo de software
+
+Free/Libre and Open Source Software (FLOSS) => software que se encuentra licensiado para que los usuarios puedan estudiar, modificar y mejorar su diseño
+
+copyleft => método para convertir un programa en software libre y exigir todas las versiones del mismo también lo sean
+
+licencia permisiva => licencia flexible para poder ser redistribuida de manera libre o privativa
+
+creative commons => organización global sin fines de lucro que permite compartir, reutilizar la creatividad y el conocimiento a través de la provisión de herramientas legales gratuitas
+  - combinaciones y licencias => mientras mas características seleccione más restrictivo es
+    - CC BY ("Atribucion") => permite a cualquiera editar y distribuir la obra siempre que se mencione al autor
+    - CC BY-SA ("Atribucion - Compartir igual") => igual que CC BY pero el trabajo modificado solo puede distribuirse bajo la misma licencia
+    - CC BY-ND ("Atribucion - No derivada") => igual a CC BY pero el trabajo solo puede ser transmitido sin modificaciones
+    - CC BY-NC ("Atribucion - No comercial") => puede ser editada y distribuida nombrando al autor, pero solo bajo condiciones no comerciales
+    - CC BY-NC-SA ("Atribucion - No comercial - Compartir Igual") => igual a CC BY-NC pero solo puede compartirse bajo la misma licencia
+    - CC BY-NC-ND ("Atribucion - No comercial - No derivada") => licencia más restrictiva, solamente con atribución al autor, sin cambios y bajo condiciones no comerciales
+
+GNU GLP v3 (copyleft) => garantiza a los usuarios finales la libertad de usar, estudiar, compartir (copiar) y modificar el software, proteger el software de intentos de apropiación
+  - lanzar software =>
+    - si es necesario, protegerse contra el empleador con una exención de derechos de autor (que usted elija la licencia)
+    - agregar un aviso de copyright a cada archivo
+    - agregar un archivo que se llame COPYNG con el texto completo de la licencia del software
+    - agregar una referencia a la licencia en cada archivo
+  - combinar software propietario con software libre bajo GLP v3 => se puede siempre y cuando se marque la diferencia entre los dos softwares
+    - NOTA: en caso se integre el software libre para que forme parte del producto, se debe publicar el producto bajo GLP de acuerdo al principio copyleft
+
+GNU Affero General Public License (GNU AGPL) (copyleft) => licencia diseñada para asegurar la cooperación con la comunidad en el caso de software que corra en servidores de red
+
+licencia BSD (permisiva) => licencia de software otorgada principalmente a sistemas BSD
+
+GNU Lesser General Public License (GNU LGPL) (permisiva) => libertad de compartir y modificar el software para todos los usuarios
+
+modelo de negocio en FLOSS =>
+  - crowdfunding => recolección de donaciones a través de una plataforma
+  - dual licensing => software libre también se ofrece en paralelo bajo una licencia más restrictiva o incluso propietaria
+
+entornos de escritorio =>
+  - Gnome => sigue el principio KISS con aplicaciones muy racionalizadas y limpias
+    - basadas en GTK Toolkit
+    - nombre terminal => Gnome Terminal
+  - KDE => selección amplia de aplicaciones y permite al usuario la posibilidad de configurar el entorno
+    - utilizan librería Qt
+    - nombre terminal => Konsole
+
+OpenDocument => es un formato de archivo abierto y estándar para almacenamiento de documentos de ofimáticos
+
+hipervisor => responsable de administrar distintos sistemas operativos para en una misma computadora
+  - Xen => más antiguo de los hipervisores
+  - KVM => desarrollo patrocinado por Red Hat, usado en servicios de nubes públicas como en configuraciones de nubes privadas
+  - VirtualBox => pertenece a Oracle, es mayormente utilizado por usuarios finales por su facilidad de uso y administración
+
 everything is a file => es una de las características de Unix donde maneja todo como si fuera un archivo
 
 boot loader => programa encargado de cargar el kernel con los parametros opcionales del kernel a la memoria

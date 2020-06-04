@@ -809,7 +809,7 @@ route object =>
   - acceder al path incluyendo query y hash => this.$route.fullPath
 
 --------------------------------------- TESTING ---------------------------------------
-// TODO actualizar los find por findComponent comprobando funcionalidad (get findComponent findComponentAll)
+// TODO actualizar los find por findComponent comprobando funcionalidad (get findComponent findComponentAll), toBeVisible con jest-dom
   buscar get
 testing jest =>
   - instalar jest para proyectos ya creados => vue add unit-jest
@@ -836,6 +836,8 @@ testing jest =>
       Componente.computed.computedFunction.call({ /* valores para objecto this */ })
     - acceder a los computed methods con el componente montado => wrapper.vm.metodoComputed
     - hacer un mock de un computed method, al montar => mount|shallowMount(NombreComponente, { computed: get() {}, set() {} }) // nos obliga a configurar el getter y setter del computed
+  - testing watchers =>
+    - para llamar un watcher y testear sus posibles valores => wrapper.vm.$options.watch.nombreAtributo.call(wrapper.vm, newValor, oldValor)
   - triggering events =>
     - modificar el valor de un input => wrapper.find('input').setValue('valor')
     - lanzar un evento y si tiene un modificador se debe agregar también => wrapper.find('selector').trigger('nombre_evento.modificador')
