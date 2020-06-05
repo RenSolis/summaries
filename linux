@@ -406,6 +406,20 @@ hipervisor => responsable de administrar distintos sistemas operativos para en u
   - KVM => desarrollo patrocinado por Red Hat, usado en servicios de nubes públicas como en configuraciones de nubes privadas
   - VirtualBox => pertenece a Oracle, es mayormente utilizado por usuarios finales por su facilidad de uso y administración
 
+keepass => administrador de contraseñas de código abierto
+
+bitwarden => administrador de contraseñas de código abierto pero con almacenamiento en la nube
+
+Transport Layer Security (TLS) => protocolo que ofrece seguridad a través de conexiones de red mediante el uso de criptografía, es el sucesor de SSL y se utiliza en el protocolo HTTPS
+
+GNU Privacy Guard (GnuPG) => es utilizado para firmar, cifrar y descrifrar textos, correos electrónicos que se validen con la clave pública y para descifrar los datos se usará la clave privada que se genera, aparte de que si se cambio el valor del contenido automáticamente se invalidaría
+
+encriptación de disco =>
+  - stacked encryption => los archivos y directorios se encriptan antes de ser almacenados en el sistema de archivos y se descifrán después de leerlos (existen en el sistema de archivos como si no estuvieran encriptados)
+  - block device encryption => ocurre debajo de la capa del sistema de archivos asegurandose que todo lo que se escribe en el block device este cifrado, (metadatos, estructura de directorios y los permisos también están encriptados)
+    - dm-crypt => es el encriptor de bloques para sistemas Linux, y se puede utilizar mediante con la extensión Linux Unified Key Setup (LUKS), no require acceso root
+  - EncFS =>  una forma fácil de proteger los datos en Linux que no requiere los privilegios de root para implementar y puede funcionar en un sistema de archivos existente sin modificaciones
+
 everything is a file => es una de las características de Unix donde maneja todo como si fuera un archivo
 
 boot loader => programa encargado de cargar el kernel con los parametros opcionales del kernel a la memoria

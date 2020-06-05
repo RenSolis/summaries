@@ -1073,3 +1073,5 @@ usar vuex en storybook =>
   - una vez importado vuex en preview.js, dentro de los storybooks, agregar en el export =>
     - para usar el store => store: new Vuex.Store({ /* valores */ }),
     - para indicar que valores se usarán => computed: ...mapState(/* valores en el store */)
+
+--------------------------------------- INTERNALIZATION ---------------------------------------
