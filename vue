@@ -128,6 +128,9 @@ pasar valores del componente hijo al padre =>
   - pasar mediante callback functions =>
     - el padre crea el método que se utilizará y se coloca en el componente hijo => <nombre-componente :metodo_creado="nombre_metodo" />
     - en el componente hijo se agrega en el props => props { metodo_creado: Function }, y para usarlo es @evento="metodo_creado()"
+  - utilizar un v-model para utilizar un atributo en data que reciba directamente el valor del child component =>
+    - parent component => <componente-hijo v-model="atributo" />
+    - child component => this.$emit('input', valor)
 
 pasar valores entre componentes hermanos =>
   - automaticamente al realizarse un evento emit al padre actualizará el valor dado a los otros componentes que usan el prop
@@ -1075,3 +1078,30 @@ usar vuex en storybook =>
     - para indicar que valores se usarán => computed: ...mapState(/* valores en el store */)
 
 --------------------------------------- INTERNALIZATION ---------------------------------------
+
+instalar vue-i18n => npm|yarn vue-i18n
+
+utilizar vue-i18n en Vue por defecto =>
+  - importar la librería => import VueI18n from 'vue-i18n'
+  - utilizar la librería => Vue.use(VueI18n)
+
+crear instancia para utilizar mensajes customizados para cada lenguaje =>
+  const i18n = new VueI18n({
+    locale: '', // idioma que se usara por defecto
+    messages: {
+      idioma: {},
+      idioma: {},
+      ...
+    }
+  })
+  - esto se agrega dentro de la instancia de Vue
+
+--------------------------------------- WYSIWYG ---------------------------------------
+
+tinyMCE =>
+  instalación => npm|yarn @tinymce/tinymce-vue
+
+--------------------------------------- MATHJAX ---------------------------------------
+
+vue-mathjax
+  => crear un script que contenga => https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.2/MathJax.js?config=TeX-AMS_HTML dentro del head para poder utilizar la librería

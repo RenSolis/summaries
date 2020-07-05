@@ -31,8 +31,6 @@ flag del intérprete en línea de comandos =>
   - requerir una librería antes de empezar la consola => irb -r 'librería'
   - deshabilitar las impresiones por defecto => irb --noecho
 
-ARGF => stream que se usa en scripts para procesar archivos que son pesados por la terminal o por vía STDIN
-
 variables predefinidas =>
   - obtener el PID actual donde se está ejecutando Ruby => $$
   - nombre del archivo actual en donde está siendo leido ARGF => $FILENAME
@@ -670,6 +668,7 @@ relativos de each:
   - usar varias veces un each => coleccion.cycle(cantidad) { bloque_codigo } => en la cantidad se indica cuantas veces se ejecutará este each
   - recorrer la coleccion y devolver el valor => coleccion.map { bloque_codigo }, también conocido como collect
   - el método map! es sobreeescrito en Array porque únicamente devolverá un array
+https://stackoverflow.com/questions/1538789/how-to-sum-array-of-numbers-in-ruby
 
 iterar strings:
   - por cada byte del string => string.each_byte { bloque_codigo }, por el valor de cada byte que genera los caracteres
@@ -1020,13 +1019,6 @@ tratando métodos como objetos:
     - enlazar con un nuevo objeto => unbound.bind(objeto)
   - utilizar el método del padre => variable_metodo.super_methodr
   - usar un método padre para determinada clase hija (cuando hay una larga jerarquía) => sobreescribir el método y dentro de este ClasePadre.instance_method(:nombre_metodo).bind(self).call
-
-librería CSV:
-  - leer un archivo CSV => CSV.read('file')
-  - ver las filas del CSV => CSV.foreach('file', headers: true) do |row|; funcionalidad; el headers se indica siempre que se tenga un fila para indicar que valores tendra cada una de las que siguen
-    - agregar el header nos permite obtener por el valor de cada fila dependiendo del header de la columna => row[:header_columna]
-    - la fila cuando está con headers se puede convertir y tratar como hash => row.to_hash
-  - escribir en un CSV => CSV.open('file', 'wb') do |csv|; csv << [valores]; end
 
 realizar operaciones con strings:
   - crear funcionalidades a través un string => eval("string funcionalidad")

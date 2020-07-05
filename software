@@ -21,6 +21,8 @@ factory method => consiste en utilizar una clase constructora abstracta con mét
 
 graph database => es una base de datos que usa una estrucura de graphs para representar y almacenar datos (Amazon Neptune, AllegroGraph, etc.)
 
+binary large object (BLOB) => son elementos utilizados como base de datos para almacenar datos de gran tamaño que cambian de forma dinámica
+
 ------------------------ FRONTEND ------------------------
 
 deep linking => es cuando se puede acceder a distintos paths sin necesidad de pasar por la página principal para acceder a ellos

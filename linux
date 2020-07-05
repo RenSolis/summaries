@@ -1,124 +1,18 @@
---------------------------------------- FILESYSTEM HIERARCHY ---------------------------------------
-
-directorio root => /
-
-directorio con programas binarios necesarios para el sistema en boot y run => /bin
-  - shell lenguaje de comandos, es como sh pero con mejores características y sintáxis => bash
-    - usarlo en un script solamente cuando las características son soportables por bash
-  - anteriormente era un ejecutable del shell, ahora es un symbolic link enlazado al shell dash => sh
-    - usarlo en un script si se necesita compatibilidad con sistemas con POSIX
-
-directorio con programas binarios que realizan tareas vitales del sistema que son reservados para el usuario root => /sbin
-
-directorio que contiene los programas para que se ejecuten los programas de /bin => /lib
-
-directorio que contiene el kernel e imagenes iniciales de RAM => /boot
-  - directorio con la configuración del gestor de arranque múltiple (grub) => /grub
-    - archivo para configurar el boot loader => grub.conf
-
-directorio que representa los dispositivos físicamente instalados en el ordenador, tratados como archivos => /dev
-  - archivo para lanzar valores innecesarios => null
-
-directorio con archivos de configuración del sistema, contiene los shell scripts que inician cada uno de los servicios del sistema en el boot => /etc
-  - archivo donde se determinará cuando se ejecutarán los jobs => crontab
-  - archivo donde se muestran los dispositivos de almacenamiento y puntos de montaje asociados => fstab
-  - archivo con la lista de usuarios con su información => passwd
-  - archivo con la lista de los grupos => group
-  - archivo donde se encuentran los hosts, los hosts agregados se toman con https => hosts
-  - archivo donde se guardan las contraseñas de usuario y otra información de manera encriptada => shadow
-
-directorio que todos los usuarios tienen por defecto para proteger el sistema de actividades errantes de los usuarios => /home
-
-directorio home para el usuario root => /root
-
-directorio para la recuperación parcial de un evento corrupto del filesystem, únicamente cuando pase algo realmente malo en el sistema => /lost+found
-
-directorio que contiene los puntos de montajes de media removibles, montados manualmente (sistemas de Linux antiguos) => /mnt
-
-directorio que contiene los puntos de montajes de media removibles, son montados automáticamente al insertarse (sistemas de Linux modernos) => /media
-
-directorio para instalación de software adicional, productos de software comerciales => /opt
-
-directorio con archivos virtuales que reciben y envían información al kernel => /proc
-
-directorio que almacena archivos de manera temporal => /tmp
-
-directorio que contiene los programas de uso común para todos los usuarios => /usr
-  - directorio con programas ejecutables instalados en la distribución => /bin
-  - directorio con archivos compartidos para los programas /usr/bin => /lib
-  - directorio con programas que no están incluidos en la distribución pero uso destinado para todo el sistema => /local
-  - directorio con programas de administración del sistema => /sbin
-  - directorio que contiene los datos compartidos usados en programas de /usr/bin, incluye archivos de configuración por defecto, íconos, etc. => /share
-    - directorio con la documentación de los paquetes instalados => /doc
-
-directorio para almacenar data estática como base de datos, spool files, correo de usuario, etc. => /var
-  - directorio que contiene los logs files de programas del sistema => /log
-
 --------------------------------------- COMMANDS ---------------------------------------
-
-listar filesystem hierarchy => man hier
 
 herramientas de redes => net-tools
   - instalar en Debian => apt-get install net-tools
 
 cambiar el idioma del teclado => loadkeys idioma
 
-mostrar la fecha actual => date
-
-mostrar el calendario del mes actual => cal
-
 mostrar información de los ficheros => df
-
-mostrar la memoria libre => free
 
 cambiar de directorio => cd directorio
   - último directorio trabajado => cd -
 
-listar los archivos y directorios => ls archivo directorio ...
-  - mostrar todos los archivos incluyendo ocultos y directorios => ls -a|--all directorio
-  - mostrar un formato de listado largo => ls -l directorio
-    - primer campo, indica el tipo de archivo => - (archivo) | d (directorio) | l (symbolic link), los demás caracteres indican los permisos
-    - segundo campo => número de hard links del directorio
-    - tercer campo => nombre del propietario del archivo
-    - cuarto campo => nombre del grupo al que pertenece el archivo
-    - quinto campo => tamaño del archivo
-    - sexto campo => fecha de última modificación del archivo
-  - mostrar detalles sobre el directorio => ls -d|--directory directorio (usar con -l)
-  - mostrar los directorios y archivos diferenciandolos => ls -F|--classify directorio (usar con -l)
-  - mostrar el tamaño de los archivos de forma legible para la persona => ls -h|--human-readable directorio (usar con -l)
-  - ordenar por la fecha de modificación, el más reciente primero => ls -t directorio
-  - ordenar por el tamaño del archivo, más grande primero => ls -S directorio
-  - ordenar al revés => ls -r|--reverse directorio
-  - mostrar los inode numbers para reconocer si son los mismos archivos en un hard link => ls -i directorio
-
 obtener el tipo de archivo => file archivo|directorio
 
 ver un archivo con un pager => less archivo
-
-crear links entre archivos => ln
-  - crear un hard link => ln archivo nombre_link
-  - crear un symbolic link => ln -s archivo nombre_link
-
-copiar archivos => cp archivo|directorio destino
-  - copiar archivo únicamente si no existe el archivo destino o si este no tiene modificaciones posteriores al archivo base  => cp -u|--update base destino
-  - usar un prompt para indicar si sobreescribiremos con el archivo base al archivo destino => cp -i|--interactive base destino
-  - recursivamente copiar los archivos de un directorio => cp -r|--recursive base destino
-  - dar detalles de la copia del archivo => cp -v|--verbose base destino
-  - copiar un archivo con todas sus características (usuario, grupo, permisos, ...) no solo el contenido => cp -a|--archive base destino
-
-mover o cambiar el nombre de un archivo => mv base destino
-  - mostrar un prompt cuando se mueve un archivo a un destino que ya existe => mv -i|--interactive base destino
-  - mover archivo únicamente si no existe el archivo destino o si este no tiene modificaciones posteriores al archivo base  => mv -u|--update base destino
-  - dar detalles del proceso => mv -v|--verbose base destino
-
-remover archivos => rm archivo ...
-  - utilizar un prompt para confirmar la eliminación => rm -i|--interactive archivo
-  - eliminar directorio de manera recursiva => rm -r|--recursive directorio
-  - forzar la eliminación del archivo, ignorando si no existe y el prompt de confirmación => rm -f|--force archivo
-  - dar detalles de la eliminación => rm -v|--verbose archivo
-
-crear directorios => mkdir directorio ...
-  - crear un directorio dentro de directorios que aún no han sido creados => mkdir -p directorio
 
 tipos de comandos =>
   - executable program => son todos los programas que se encuentran en /usr/bin, que han sido escritos en un lenguaje de scripting
@@ -126,49 +20,9 @@ tipos de comandos =>
   - shell functions => comandos creados por personalización
   - alias => comandos que nos permite llamar de diferente manera uno o varios comandos
 
-obtener el tipo de comando => type comando
-
-mostrar las primeras líneas de un archivo => head archivo
-  - indicar cantidad de líneas que se mostrarán => head -n cantidad archivo
-
-mostras las últimas lineas de un archivo => tail archivo
-  - indicar cantidad de líneas que se mostrarán => tail -n cantidad archivo
-  - hacer un monitoreo a los cambios del archivo => tail -f archivo
-
-leer una entrada de archivos y escribirla en uno o más archivos sin interrumpir el pipeline => comando | tee archivo ... | continua pipeline
-
-mostrar un manual del comando => man comando
-  - mostrar las secciones de un comando => apropos comando | man -k comando
-    - obtener descripciones de las secciones => whatis comando
-  - ver la sección de un comando => man seccion comando
-
-mostrar mediante info pages la información de un comando, con diferencia que posee links para poder movernos entre páginas => info comando
-
-standards =>
-  - el standard output tiene como descriptor al 1 en un comando mientras que el standard error el 2
-  - redireccionando standard output =>
-    - sobreescribiendo un archivo => entrada > archivo
-    - añadiendo más líneas a un archivo => entrada >> archivo
-    - escribir en un archivo mediante el teclado => > archivo
-  - redireccionando standard error =>
-    - sobreescribiendo un archivo => entrada 2> archivo
-    - eliminando el standard error => entrada 2>/dev/null
-  - redireccionando standard output y standard error =>
-    - forma trandicional => entrada > archivo 2>&1
-    - forma actual => entrada &> archivo
-
-contado de líneas, palabras y bytes de un archivo => wc archivo
-  - contar solo lineas => wc -l archivo
-  - contar solo palabras => wc -w archivo
-  - contar solo bytes => wc -c archivo
-
-reportar u omitir líneas repetidas =>
-  - omitir líneas repetidas => uniq archivo
-  - mostrar solamente la línea repetida => uniq -d archivo
-
 utilizar expansions =>
   - pathname expansion, mostrar los archivos de la carpeta actual con wildcards => echo wildcard
-  - tilde expansion, acceder al home del usuario => ~nombre_usuario # el nombre es opcional, únicamente si se quiere acceder a otro usuario
+  - tilde expansion, acceder al home del usuario => ~nombre_usuario # el nombre es opcional, únicamente si se quiere acceder a otro usuario (conocida como ruta relative-to-home)
   - arithmetic expansion => echo $((operacion))
   - brace expansion, iterador del contenido => echo text_{1,2,...} # text_1 text_2
     - también se pueden usar rangos => echo text_{1..maximo} o echo text_{A..Z}
@@ -207,255 +61,7 @@ instalación de software =>
     - instalar un paquete => yum|dnf install paquete
     - desinstalar un paquete => yum|dnf remove paquete
 
-permisos =>
-  - mostrar los id's del usuario actual => id
-  - atributos de un archivo, distribuidos en 10 caracteres =>
-    - primer caracter, indica el tipo del archivo => - (archivo) | d (directorio) | l (symbolic link) | c (character special file) | b (block special file)
-    - caracteres restantes relacionados a los permisos =>
-      - del segundo caracter al cuarto caracter son permisos del propietario
-      - del quinto caracer al septimo caracter son permisos del grupo
-      - del octavo al decimo caracter son permisos mundiales
-    - valores de los permisos =>
-      - lectura => r
-        - archivo => permite abrir y leer el archivo
-        - directorio => permite listar los archivos de un directorio
-      - escritura => w
-        - archivo => permite escribir o truncar el archivo (no permite ser renombrado o eliminado)
-        - directorio => permite crear, eliminar, renombrar los archivos
-      - ejecución => x
-        - archivo => permite que el archivo sea tratado como un programa de ejecución (script)
-        - directorio => permite que se ingrese al directorio (cd)
-  - cambiar permisos => chmod
-    - representación octal numérica =>
-      octal   binario   modo archivo
-      0       000       ---
-      1       001       --x
-      2       010       -w-
-      3       011       -wx
-      4       100       r--
-      5       101       r-x
-      6       110       rw-
-      7       111       rwx
-    - representación simbólica =>
-      - representaciones =>
-        - usuario propiertario => u
-        - grupo => g
-        - mundial => o
-        - todos => a
-        - si no se especifíca representación toma por defecto todos para en lectura y ejecución, y únicamente escritura para el propietario
-      - añadir permisos al archivo => representacion+r|w|x
-      - eliminar permisos al archivo => representación-r|w|x
-      - sobreescribir los permisos con el valor dado => representacion=r|w|x
-  - establecer los permisos al crear archivos o directorios => umask valor
-  - NOTA: práctica moderna de Linux es que un usuario solo pertenezca a un grupo y ambos tengan el mismo nombre para facilitar su asignación
-
-// TODO
-
-permissions =>
-   - permisos especiales =>
-     - sticky bit => conmumente usado para directorios nos dan la forma en que solo el owner y el superusuario
-      chmod 1775 archivo_o_directorio o chmod +t archivo_o_directorio
-    - bit SUID => el que ejecute va a tener los mismos permisos que el que creó el archivo, con cuidado porque puede acarrear problemas de seguridad
-      chmod 4775 archivo o chmod u+s archivo
-    - bit SGID => el que ejecute va a tener los mismos permisos que el grupo, util cuando se quiere configurar un directorio para colaborar con diferentes usuarios,
-                  el archivo que cree el usuario tendra los permisos del grupo que pertenece el directorio y no del grupo del usuario
-      chmod 2555 archivo_o_directorio o chmod g+s archivo_o_directorio
-  - ejecutar un shell con un diferente usuario y grupo id's => su nombre_usuario
-    - iniciar sesión con usuario diferente => su -l nombre_usuario, con el usuario root 'su -'
-    - ejecutar comando en el new shell => su -c 'comando', siempre tiene que estar el comando entre ''
-  - ejecutar comandos como otro usuario => sudo comando
-    - cambiar los permisos específicos de usuarios particulares configurando => /etc/sudoers
-  - la diferencia entre su y sudo => sudo no inicia un nuevo shell ni carga un entorno de otro usuario
-    - listar los permisos del usuario => sudo -l
-  - cambiar el propietario y grupo del archivo o directorio => chown
-    - cambiar el archivo a un usuario determinado => chown user archivo
-    - cambiar el archivo a un grupo determinado => chown :grupo archivo
-    - cambiar el archivo a un usuario y grupo determinado => chown user:group archivo
-    - cambiar el archivo a un usuario con su grupo por defecto en login => chown user: archivo
-  - en versiones antiguas de Linux para poder cambiar el grupo del archivo => chgrp group archivo
-  - cambiar contraseña de usuario => passwd user, usa strong password por lo cual valida que no sea muy corta, similar a la anterior o una palabra de diccionario
-    - agregar al usuario es únicamente si tienes privilegios sino únicamente => passwd, que cambiará tu propia contraseña
-
-procesos =>
-  - listar los procesos => ps
-    - listar todos los procesos independientemente de la terminal en que se encuentre => ps x
-    - listar todos los procesos con más detalles independientemente de la terminal => ps aux
-    - estados de los procesos =>
-      - ejecutandos o listo para empezar => R (running)
-      - el proceso no esta corriendo y está a la espera de un evento => S (sleep)
-      - el proceso está esperando una I/O como un disco duro => D (uninterruptible sleep)
-      - el proceso ha sido detenido => T (stopped)
-      - proceso difunto o 'zombie', es un proceso hijo finalizado pero que el padre no ha limpiado => Z
-      - proceso de alta prioridad, es posible darle más importancia al agregarle al proceso más tiempo, esta propiedad del proceso se llama amabilidad, pero se dice que es
-        menos agradable porque toma más tiempo de la CPU, dejando menos para todos los demás => <
-      - un proceso de baja prioridad (buen proceso) obtendrá tiempo del procesador una vez que se terminen los procesos de alta prioridad => N
-  - listar los procesos de manera dinámica (continuamente actualizandose), ordenandose por la actividad del CPU => top
-  - listar los jobs que han sido lanzados desde la terminal, se verán los procesos background lanzados por la terminal => jobs
-  - poner en background el proceso => comando &, el output del comando nos indica el PID
-    - si el proceso ya existe => bg %job_number
-  - retornar un proceso al foreground => fg %job_number
-  - poner en pausa un proceso => CTRL + Z, cuando se esta ejecutando el proceso lo cual manda una señal llamada TSTP (terminal stop)
-  - terminar un proceso en foreground => CTRL + C, envia una señal llamada INT (interrupt)
-  - terminar procesos mandando señales => kill [-signal] PID o kill %job_number, cuando no se especifica el signa toma el valor TERM
-    - HUP (hang up), cuando se cierra una terminal y los procesos en foreground terminan => 1
-    - INT (interrupt), termina el programa, tiene la misma funcionalidad que CTRL + C => 2
-    - KILL (kill), sería el último recurso para terminar un proceso porque lo realiza directamente desde el kernel => 9
-    - TERM (terminate), es el valor por defecto, termina el proceso => 15
-    - CONT (continue), restaura el proceso después de una señal de STOP => 18
-    - STOP (stop), detiene el proceso sin terminarlo => 19
-  - eliminar multiples proceso => killall [-u user] [-signal] name|PID
-  - mostrar una lista de los procesos ordenados de padre-hijos => pstree
-  - mostrar un snapshot de los recursos del sistema como memoria, swap, y disk I/O => vmstat
-    - indicar el tiempo (en segundos) de actualización de los recursos => vmstat tiempo
-  - programa gráfico que muestra un grafo con la carga del sistema => xload
-  - mostrar un grafo en la terminal donde se muestre la carga del sistema => tload
-
-
---------------------------------------- DEFINITIONS ---------------------------------------
-
-distribución => es un paquete que consiste en el kernel de Linux y una selección de aplicaciones que son mantenidas por una compañía o comunidad de usuarios
-  - objetivo de optimizar el kernel y las aplicaciones que se ejecutan
-  - Debian =>
-  - Red Hat Enterprise Linux (RHEL) => dedicado a facilitar el uso de Linux en entornos de servidores profesionales (comercial)
-  - Fedora =>
-  - SUSE => conocido por YaST (comercial)
-    - YaST => permite instalar y configurar software y hardware, configurar las redes y servidores
-
-sistemas embebidos => es una combinación del hardware y software diseñados para una función específica dentro de un sistema grande, usualmente parte de otros dispositivos para ayudar a controlar estos
-  - Android => sistema operativo
-  - Raspberry Pi => plataforma para desarrollo de hardware
-    - Raspbian => pertenece a la distribución Debian
-
-software embebido => son parte de un sistema embebido para acceder al hardware y hacerlo usable
-
-instalacion de paquetes de software =>
-  - Debian, Ubuntu y Linux Mint utilizan dpkg, apt-get y apt para las instalaciones, generalmente referidos a los paquetes deb
-  - Red Hat, Fedora y CentOS utilizan rpm, yum y dnf para las instalaciones, generalmente referidos a los paquetes rpm
-
-dependencias => son paquetes necesarios por los programas para su funcionamiento
-
-Network File System (NFS) => es un protocolo estandar para compartir sistemas de archivos únicamente en Unix/Linux
-
-Samba => es un software para la implementación de un protocolo para compartir archivos entre diferentes sistemas operativos, también permitiendo compartir impresoras, todo sobre una red local
-
-servicio de directorio (SD) => aplicación o conjunto de aplicaciones que almacena y organiza la información sobre los usuarios de una red de ordenadores y los recursos de red que permite a los administradores gestionar el acceso a estos recursos
-
-Network System Information (NIS) => protocolo de SD cliente-servidor, para el envío de datos de configuración en sistemas distribuidos (modelo OSI: capa de aplicación)
-
-daemon (servicio) => programa que se ejecuta como proceso en el background, se distingue con el d al final de cada nombre de proceso
-
-system security services daemon (SSSD) => software que provisiona un conjunto de daemons para manejar el acceso remoto a SD y autenticación de mecanismos
-
-imagemagick => es una herramienta para la línea de comandos que nos permite convertir entre formatos de imagenes
-
-free software => es un enfoque social
-  - criterios => refiriendose al free software como libertad
-    - libertad corre en cualquier programa que se desee y para cualquier proposito (freedom 0)
-    - libertad de estudiar como funciona un programa y cambiarlo si el computador lo necesita (freedom 1) => el propósito del source code donde se puede mejorar el software como requiramos
-    - libertad para distribuir copias que ayuden a otros (freedom 2) => una comunidad de usuarios y desarrolladores que tienen la libertad de modificar y mejorar el software base
-    - libertad de poder distribuir copias a otros de versiones modificadas (freedom 3) => un fork a un proyecto compartiendo tus modificaciones para beneficiar al resto
-
-open source software => es un enfoque pragmático para el desarrollo de software
-
-Free/Libre and Open Source Software (FLOSS) => software que se encuentra licensiado para que los usuarios puedan estudiar, modificar y mejorar su diseño
-
-copyleft => método para convertir un programa en software libre y exigir todas las versiones del mismo también lo sean
-
-licencia permisiva => licencia flexible para poder ser redistribuida de manera libre o privativa
-
-creative commons => organización global sin fines de lucro que permite compartir, reutilizar la creatividad y el conocimiento a través de la provisión de herramientas legales gratuitas
-  - combinaciones y licencias => mientras mas características seleccione más restrictivo es
-    - CC BY ("Atribucion") => permite a cualquiera editar y distribuir la obra siempre que se mencione al autor
-    - CC BY-SA ("Atribucion - Compartir igual") => igual que CC BY pero el trabajo modificado solo puede distribuirse bajo la misma licencia
-    - CC BY-ND ("Atribucion - No derivada") => igual a CC BY pero el trabajo solo puede ser transmitido sin modificaciones
-    - CC BY-NC ("Atribucion - No comercial") => puede ser editada y distribuida nombrando al autor, pero solo bajo condiciones no comerciales
-    - CC BY-NC-SA ("Atribucion - No comercial - Compartir Igual") => igual a CC BY-NC pero solo puede compartirse bajo la misma licencia
-    - CC BY-NC-ND ("Atribucion - No comercial - No derivada") => licencia más restrictiva, solamente con atribución al autor, sin cambios y bajo condiciones no comerciales
-
-GNU GLP v3 (copyleft) => garantiza a los usuarios finales la libertad de usar, estudiar, compartir (copiar) y modificar el software, proteger el software de intentos de apropiación
-  - lanzar software =>
-    - si es necesario, protegerse contra el empleador con una exención de derechos de autor (que usted elija la licencia)
-    - agregar un aviso de copyright a cada archivo
-    - agregar un archivo que se llame COPYNG con el texto completo de la licencia del software
-    - agregar una referencia a la licencia en cada archivo
-  - combinar software propietario con software libre bajo GLP v3 => se puede siempre y cuando se marque la diferencia entre los dos softwares
-    - NOTA: en caso se integre el software libre para que forme parte del producto, se debe publicar el producto bajo GLP de acuerdo al principio copyleft
-
-GNU Affero General Public License (GNU AGPL) (copyleft) => licencia diseñada para asegurar la cooperación con la comunidad en el caso de software que corra en servidores de red
-
-licencia BSD (permisiva) => licencia de software otorgada principalmente a sistemas BSD
-
-GNU Lesser General Public License (GNU LGPL) (permisiva) => libertad de compartir y modificar el software para todos los usuarios
-
-modelo de negocio en FLOSS =>
-  - crowdfunding => recolección de donaciones a través de una plataforma
-  - dual licensing => software libre también se ofrece en paralelo bajo una licencia más restrictiva o incluso propietaria
-
-entornos de escritorio =>
-  - Gnome => sigue el principio KISS con aplicaciones muy racionalizadas y limpias
-    - basadas en GTK Toolkit
-    - nombre terminal => Gnome Terminal
-  - KDE => selección amplia de aplicaciones y permite al usuario la posibilidad de configurar el entorno
-    - utilizan librería Qt
-    - nombre terminal => Konsole
-
-OpenDocument => es un formato de archivo abierto y estándar para almacenamiento de documentos de ofimáticos
-
-hipervisor => responsable de administrar distintos sistemas operativos para en una misma computadora
-  - Xen => más antiguo de los hipervisores
-  - KVM => desarrollo patrocinado por Red Hat, usado en servicios de nubes públicas como en configuraciones de nubes privadas
-  - VirtualBox => pertenece a Oracle, es mayormente utilizado por usuarios finales por su facilidad de uso y administración
-
-keepass => administrador de contraseñas de código abierto
-
-bitwarden => administrador de contraseñas de código abierto pero con almacenamiento en la nube
-
-Transport Layer Security (TLS) => protocolo que ofrece seguridad a través de conexiones de red mediante el uso de criptografía, es el sucesor de SSL y se utiliza en el protocolo HTTPS
-
-GNU Privacy Guard (GnuPG) => es utilizado para firmar, cifrar y descrifrar textos, correos electrónicos que se validen con la clave pública y para descifrar los datos se usará la clave privada que se genera, aparte de que si se cambio el valor del contenido automáticamente se invalidaría
-
-encriptación de disco =>
-  - stacked encryption => los archivos y directorios se encriptan antes de ser almacenados en el sistema de archivos y se descifrán después de leerlos (existen en el sistema de archivos como si no estuvieran encriptados)
-  - block device encryption => ocurre debajo de la capa del sistema de archivos asegurandose que todo lo que se escribe en el block device este cifrado, (metadatos, estructura de directorios y los permisos también están encriptados)
-    - dm-crypt => es el encriptor de bloques para sistemas Linux, y se puede utilizar mediante con la extensión Linux Unified Key Setup (LUKS), no require acceso root
-  - EncFS =>  una forma fácil de proteger los datos en Linux que no requiere los privilegios de root para implementar y puede funcionar en un sistema de archivos existente sin modificaciones
-
-everything is a file => es una de las características de Unix donde maneja todo como si fuera un archivo
-
-boot loader => programa encargado de cargar el kernel con los parametros opcionales del kernel a la memoria
-  - GNU Grub
-  - Linux Loader (LILO)
-  - Load Linux (LOADLIN)
-
-inode number => contiene los metadatos de un archivo (tamaño, permisos, fecha de creación, propietario, ...)
-
-pagers => programas que permiten ver archivos de texto largos en un manejador de páginas
-
-hard link (versión antigua) => permite múltples nombres referenciando un archivo, permite hacer cambios en todos los archivos relacionados pero tiene limitaciones
-  - no se puede referenciar al link si no existe en el mismo sistema de archivos (referencia a la misma partición)
-  - no se puede referenciar un directorio
-  - cuando se elimina el archivo base se mantiene los archivos links
-
-symbolic link (versión moderna) => permite múltiples nombres referenciando un archivo, permite hacer cambios en todos los archivos relacionados y en el archivo base permite
-
-bash expansions => son características del bash que nos permiten simplificar la utilización de comandos
-
-GNU Readline => librería que proporciona capacidad de edición de línea e historial a línea de comandos
-  - killing => cortar
-  - yanking => pegar
-
-character special file => se refiere a un device que maneja un flujo de bytes como modem o terminal
-
-block special file => device que manejen bloques de datos como disco duro o cd-rom drive
-
---------------------------------------- SHELLS ---------------------------------------
-
-C Shell (csh) => es un intérprete de comandos de Unix
-  - instalar en Debian => apt-get install csh
-
-
-
-
+----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----
 
 // esto es en etc
 rc: no es tipicamente usando en distribuciones Linux, pero es usado en BSD (derivado de Linux)
@@ -464,25 +70,7 @@ rc.sysinit: es especifico de Red Hat y se ejecuta como uno de los primeros scrip
 
 vmlinux: archivo ejecutable enlazado estáticamente y que contiene el núcleo Linux
 
-crear grupo y usuario => sudo groupadd -g valor nombre_grupo
-
-eliminar grupo => groupdel nombre_grupo
-
-crear usuario => sudo useradd nombre_usuario
-
-eliminar usuario => sudo userdel nombre_usuario
-
-cambiar contraseña 'sudo passwd nombre_usuario'
-
-ping [direccion] => para ver si nos manda respuesta la direccion IP
-
-escribir en un archivo el STDOUT sin importar si es correcto o un error => comando >& nombre_archivo
-
 nautilus => abrir directorio en el gui
-
-ver los grupos => cat /etc/group
-
-listar los grupos => groups
 
 buscar palabras en un archivo => grep busqueda nombre_archivo
   - grep -i => para eliminar el case-sensitive
@@ -492,43 +80,18 @@ buscar palabras en un archivo => grep busqueda nombre_archivo
 
 // BASH SCRIPTING
 
-ver todos los shells disponibles => cat /etc/shells
-
-para ver el bash actual => which bash
-
-agregar texto dentro de un archivo => cat < archivo
-
-concatenar mas texto dentro de un archivo => cat << archivo
-
 comentar múltiples lineas => : ' lineas '
-
-comparaciones =>
-  - para poder usar los shortcuts es entre [] sino para usar los normales (())
-  - dependiendo de la cantidad de condicionales se agrega []
-  - en lugar de usar && se puede usar -a
-  - en lugar de usar || se puede uasr -o
-  - comparaciones de números
-    - numero -eq numero2 => comprobar si los números son iguales
-    - numero -ge numero2 => comprobar si el primer número es mayor o igual al segundo
-    - numero -gt numero2 => comprobar si el primer numero es mayor al segundo
-    - numero -le numero2 => comprobar si el primer numero es menor o igual al segundo
-    - numero -lt numero2 => comprobar si el primer numero es menor al segundo
-    - numero -ne numero2 => comprobar si el primer numero es diferente al segundo
 
 case statement =>
   case $variable in
     "VALUE" )
       lineas de código ;;
 
-todos las keywords para terminar es la palabra al revés
-
 crear un rango => {inicial..final..incremento}
 
 crear for condition => for in {rango} ó for (( como un for normal ))
 
 args=("$@") =>  es una forma de pedir cuantos argumentos sean necesarios
-
-ver la cantidad de argumentos => $#
 
 case string =>
   - ${variable^} => capitalize
@@ -674,15 +237,7 @@ ver todos los alias creados => alias
 startup files =>
   - login shell session => es el prompt solicita nuestro usuario y contraseña
     - script de configuración que aplica a todos los usuarios => /etc/profile
-    - script de configuración personal, se usa para extender o sobreescribir las configuraciones globales => ~/.bash_profile, para definir las environment variables usar este archivo
-    - si no es encuentra .bash_profile, se lee el siguiente archivo => ~/.bash_login
-    - si no se encuentra .bash_profile ni .bash_login, se lee el siguente archivo => ~/.profile
-  - non-login shell session => normalmente cuando iniciamos una sesion de terminal en la GUI
-    - script de configuración que se aplica a todos los usuarios => /etc/.bash.bashrc
-    - script de configuración personal por usuarios => ~/.bashrc, para todas las configuraciones que no tengan que ver con las environment variables
   - los non-login startup files heredan el environment de los login shell startup files
-
-indicar que la variable será usado en los procesos del shell actual => export VARIABLE
 
 extensiones comunes para backups => .bak, .sav, .old, .orig
 
@@ -776,6 +331,7 @@ insertar todo el contenido de otro archivo en el archivo actual, lo insertará a
 guardar y salir del archivo actual => ZZ
 autocompletar la palabra => en insert mode, CTRL + n
 mostrar los números de línea => :set number
+  - indicar de manera relativa => :set number relativenumber
 ocultar los número de línea => :set nonumber
 NERDTree => plugin para poder utilizar un menú de todos los archivos
   - split de manera horizontal => i

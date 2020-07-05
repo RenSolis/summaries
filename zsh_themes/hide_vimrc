@@ -1,0 +1,37 @@
+filetype plugin indent on
+" show existing tab with 4 spaces width
+set tabstop=2
+" when indenting with '>', use 4 spaces width
+set shiftwidth=2
+" On pressing tab, insert 4 spaces
+set expandtab
+
+set number
+set relativenumber
+
+autocmd BufWritePre * :%s/\s\+$//e
+
+call plug#begin()
+Plug 'danilo-augusto/vim-afterglow'
+call plug#end()
+
+let g:afterglow_blackout=1
+
+set runtimepath^=~/.vim/bundle/ctrlp.vim
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git|coverage\'
+
+let NERDTreeIgnore = ['.git', 'node_modules', 'coverage']
+let NERDTreeShowHidden=1
+
+call plug#begin()
+Plug 'dracula/vim'
+Plug 'gilgigilgil/anderson.vim'
+Plug 'relastle/bluewery.vim'
+Plug 'artanikin/vim-synthwave84'
+Plug 'flazz/vim-colorschemes'
+Plug 'jcherven/jummidark.vim'
+Plug 'franbach/miramare'
+Plug 'storyn26383/vim-vue'
+call plug#end()
+
+colorscheme Tomorrow-Night

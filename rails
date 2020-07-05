@@ -1438,12 +1438,6 @@ indicar que metodos dentro de un controlador se volverá un método helper, agre
 -------------------------------------- ASSOCIATIONS ---------------------------------------
 
 tipos de associations =>
-  - indicar que un modelo pertenece a otro => belongs_to :modelo_singular
-    - usar siempre y cuando el modelo en su tabla posee el foreign key
-  - modelo con relación uno a uno => has_one :modelo_singular
-  - modelo con relación uno a muchos => has_many :modelo_plural
-  - modelo con relación muchos a muchos => has_many :modelo_plural, through: :modelo_intermedio_plural # el modelo que hace de intermediario debe tener belongs_to a los dos modelos
-    - funciona como shortcut para acceder a un modelo mediante otro simplemente siendo uno a muchos
   - modelo con relación uno a uno entre 3 modelos => has_one :modelo_singular, through: :modelo_intermedio_singular # es un shortcut para acceder mediante relaciones has_one
   - modelo con relación muchos a muchos sin modelo intermedio => has_and_belongs_to_many :modelo_plural
     - se tiene que crear una tabla intermedia =>
@@ -1598,25 +1592,7 @@ create table =>
 
 crear join table, crea una tabla intermedia sin id de la tabla => create_join_table :modelo_1_plural, modelo_2_plural do |t| # crear id's para las tablas de los modelos
 
--------------------------------------- TASKS ---------------------------------------
-
-tasks =>
-  - llamar un tasks desde otro => Rake::Task['namespace:task'].invoke(args) # colocar los args que sean necesarios para el task
-
--------------------------------------- MIGRATIONS ---------------------------------------
-
 indicar si se aceptarán valores nulos => t.tipo :columna, null: true|false
-
--------------------------------------- AUTHENTICATION ---------------------------------------
-
-bcrypt => es una gema de un sofisticado y seguro algoritmo de hash para hashing passwords
-  - indicar que a los atributos que culminen en _digest se les tratará como hash, agregando en el modelo => hash_secure_password
-    - añade validaciones como presence, menos o igual a 72 bytes y un atributo de confirmacion que estará como nombre_atributo_confirmation
-    - indicar que solo afectará a una columna => has_secure_password :nombre_columna_sin_digest
-    - indicar que no se necesitarán las validaciones => has_secure_password :nombre_columna_sin_digest, validations: false
-  - realizar autenticación => si es correcto devolverá el objeto sino false
-    - por defecto toma el password => objeto.authenticate('valor')
-    - indicar por otra columna => objeto.authenticate_nombre_columna('valor')
 
 --------------------------------------- API ---------------------------------------
 
